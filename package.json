@@ -1,0 +1,19 @@
+{
+  "name": "links-front",
+  "version": "0.0.0",
+  "description": "links view",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cosmic-develop/links-front.git"
+  },
+  "author": "gillchristian",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cosmic-develop/links-front/issues"
+  },
+  "homepage": "https://github.com/cosmic-develop/links-front#readme"
+}
