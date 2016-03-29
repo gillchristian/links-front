@@ -20870,14 +20870,14 @@
 	  }
 
 	  _createClass(Links, [{
-	    key: 'hashes',
-	    value: function hashes() {
-	      return this.props.link.hashes.map(function (hash, key) {
+	    key: 'tags',
+	    value: function tags() {
+	      return this.props.link.tags.map(function (tag, key) {
 	        return _react2.default.createElement(
 	          'i',
 	          { key: key, className: 'tag' },
 	          '#',
-	          hash,
+	          tag,
 	          ' '
 	        );
 	      });
@@ -20897,7 +20897,7 @@
 	            this.props.link.link
 	          ),
 	          ' | ',
-	          this.hashes()
+	          this.tags()
 	        )
 	      );
 	    }
