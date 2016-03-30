@@ -12,9 +12,13 @@ a, a:link, a:hover, a:visited {
 }
 
 .container{
-  max-width: 720px;
+  max-width: 990px;
   margin: 0 auto;
   padding-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .link {
@@ -25,8 +29,20 @@ a, a:link, a:hover, a:visited {
 }
 
 .linksContainer {
+  padding: 10px;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
+}
+
+.heading {
+  padding: 5px 10px;
+  background-color: ghostwhite;
+}
+
+.categoryBox {
+  max-width: 320px;
+  margin: 5px;
+  border: 1px solid gray;
 }

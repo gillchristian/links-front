@@ -4,15 +4,15 @@ import Link from './link.jsx';
 
 export default class LinksList extends React.Component {
 
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
     this.state = {
       links: []
     }
 	}
 
 	componentDidMount(){
-    axios.get('https://link-bot.herokuapp.com/api')
+    axios.get(this.props.src)
       .then(response => {
         this.setState({links: response.data});
       })
@@ -25,8 +25,13 @@ export default class LinksList extends React.Component {
 
   render(){
     return (
-      <div className={'linksContainer'}>
-        { this.linksList() }
+      <div className='categoryBox'>
+        <div className='heading'>
+          <p>{this.props.heading}</p>
+        </div>
+        <div className='linksContainer'>
+          { this.linksList() }
+        </div>
       </div>
     );
   }
