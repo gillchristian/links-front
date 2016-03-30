@@ -20881,7 +20881,7 @@
 	  }, {
 	    key: 'linkLabel',
 	    value: function linkLabel() {
-	      return this.props.link.link.replace(/^https?:\/\//ig).replace(/www\./);
+	      return this.props.link.link.replace(/^https?:\/\//ig, '').replace(/www\./, '');
 	    }
 	  }, {
 	    key: 'render',

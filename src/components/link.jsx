@@ -10,7 +10,7 @@ export default class Links extends React.Component {
   }
 
   linkLabel(){
-    return this.props.link.link.replace(/^https?:\/\//ig).replace(/www\./)
+    return this.props.link.link.replace(/^https?:\/\//ig, '').replace(/www\./, '')
   }
 
   render(){
