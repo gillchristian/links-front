@@ -1,0 +1,32 @@
+* {
+  font-family: 'Helvetica';
+}
+.tag {
+  color: #555;
+}
+li {
+  list-style-type: circle;
+}
+a, a:link, a:hover, a:visited {
+  color:#489cdf;
+}
+
+.container{
+  max-width: 720px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.link {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
+.linksContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}

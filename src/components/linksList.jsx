@@ -20,14 +20,14 @@ export default class LinksList extends React.Component {
 
   linksList(){
     return this.state.links
-      .map( (link, key) => <li key={key}><Link link={link}/></li> )
+      .map( (link, key) => {if (link.link) return <Link link={link} key={key}/>} )
   }
 
   render(){
     return (
-      <ul>
+      <div className={'linksContainer'}>
         { this.linksList() }
-      </ul>
+      </div>
     );
   }
 }

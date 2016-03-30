@@ -19722,19 +19722,15 @@
 	    key: 'linksList',
 	    value: function linksList() {
 	      return this.state.links.map(function (link, key) {
-	        return _react2.default.createElement(
-	          'li',
-	          { key: key },
-	          _react2.default.createElement(_link2.default, { link: link })
-	        );
+	        if (link.link) return _react2.default.createElement(_link2.default, { link: link, key: key });
 	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'ul',
-	        null,
+	        'div',
+	        { className: 'linksContainer' },
 	        this.linksList()
 	      );
 	    }
@@ -20883,21 +20879,20 @@
 	      });
 	    }
 	  }, {
+	    key: 'linkLabel',
+	    value: function linkLabel() {
+	      return this.props.link.link.replace(/^https?:\/\//ig).replace(/www\./);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'link' },
 	        _react2.default.createElement(
-	          'p',
-	          null,
-	          _react2.default.createElement(
-	            'a',
-	            { href: this.props.link.link, target: '_blank' },
-	            this.props.link.link
-	          ),
-	          ' | ',
-	          this.tags()
+	          'a',
+	          { href: this.props.link.link, target: '_blank' },
+	          this.linkLabel()
 	        )
 	      );
 	    }

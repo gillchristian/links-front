@@ -9,12 +9,14 @@ export default class Links extends React.Component {
       ))
   }
 
+  linkLabel(){
+    return this.props.link.link.replace(/^https?:\/\//ig).replace(/www\./)
+  }
+
   render(){
     return (
-      <div>
-        <p>
-          <a href={this.props.link.link} target='_blank'>{this.props.link.link}</a> | {this.tags()}
-        </p>
+      <div className={'link'}>
+        <a href={this.props.link.link} target='_blank'>{this.linkLabel()}</a>
       </div>
     );
   }
