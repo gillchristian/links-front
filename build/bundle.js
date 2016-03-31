@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/build/";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -19679,9 +19679,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _linksList = __webpack_require__(160);
+	var _content = __webpack_require__(160);
 
-	var _linksList2 = _interopRequireDefault(_linksList);
+	var _content2 = _interopRequireDefault(_content);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19703,12 +19703,7 @@
 	  _createClass(App, [{
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'container' },
-	        _react2.default.createElement(_linksList2.default, { src: 'https://link-bot.herokuapp.com/api', heading: 'random' }),
-	        _react2.default.createElement(_linksList2.default, { src: 'https://link-bot.herokuapp.com/api', heading: 'important' })
-	      );
+	      return _react2.default.createElement(_content2.default, { src: 'https://link-bot.herokuapp.com/api' });
 	    }
 	  }]);
 
@@ -19737,9 +19732,9 @@
 
 	var _axios2 = _interopRequireDefault(_axios);
 
-	var _link = __webpack_require__(178);
+	var _linksList = __webpack_require__(178);
 
-	var _link2 = _interopRequireDefault(_link);
+	var _linksList2 = _interopRequireDefault(_linksList);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19749,13 +19744,13 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var LinksList = function (_React$Component) {
-	  _inherits(LinksList, _React$Component);
+	var Content = function (_React$Component) {
+	  _inherits(Content, _React$Component);
 
-	  function LinksList(props) {
-	    _classCallCheck(this, LinksList);
+	  function Content(props) {
+	    _classCallCheck(this, Content);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(LinksList).call(this, props));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Content).call(this, props));
 
 	    _this.state = {
 	      links: []
@@ -19763,7 +19758,10 @@
 	    return _this;
 	  }
 
-	  _createClass(LinksList, [{
+	  // TODO: move state handling to redux
+
+
+	  _createClass(Content, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var _this2 = this;
@@ -19773,40 +19771,24 @@
 	      });
 	    }
 	  }, {
-	    key: 'linksList',
-	    value: function linksList() {
-	      return this.state.links.map(function (link, key) {
-	        if (link.link) return _react2.default.createElement(_link2.default, { link: link, key: key });
-	      });
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'categoryBox' },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'heading' },
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            this.props.heading
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'linksContainer' },
-	          this.linksList()
-	        )
+	        { className: 'container' },
+	        _react2.default.createElement(_linksList2.default, { links: this.state.links, heading: 'important' }),
+	        _react2.default.createElement(_linksList2.default, { links: this.state.links, heading: 'random', color: 'pink' }),
+	        _react2.default.createElement(_linksList2.default, { links: this.state.links, heading: 'js', color: '#fff200' }),
+	        _react2.default.createElement(_linksList2.default, { links: this.state.links, heading: 'react', color: '#00d8ff' }),
+	        _react2.default.createElement(_linksList2.default, { links: this.state.links, heading: 'angular', color: '#b52e31' })
 	      );
 	    }
 	  }]);
 
-	  return LinksList;
+	  return Content;
 	}(_react2.default.Component);
 
-	exports.default = LinksList;
+	exports.default = Content;
 
 /***/ },
 /* 161 */
@@ -20915,6 +20897,88 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _link = __webpack_require__(179);
+
+	var _link2 = _interopRequireDefault(_link);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LinksList = function (_React$Component) {
+	  _inherits(LinksList, _React$Component);
+
+	  function LinksList(props) {
+	    _classCallCheck(this, LinksList);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(LinksList).call(this, props));
+	  }
+
+	  /**
+	   * Lists all the links
+	   */
+
+
+	  _createClass(LinksList, [{
+	    key: 'links',
+	    value: function links() {
+	      return this.props.links.map(function (link, key) {
+	        if (link.link) return _react2.default.createElement(
+	          'li',
+	          { className: 'mdl-list__item' },
+	          _react2.default.createElement(_link2.default, { link: link, key: key })
+	        );
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'linkList mdl-card mdl-shadow--2dp' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'linkList__title mdl-card__title', style: { backgroundColor: this.props.color } },
+	          _react2.default.createElement(
+	            'h4',
+	            { className: 'mdl-card__title-text' },
+	            this.props.heading
+	          )
+	        ),
+	        !this.props.links.length ? _react2.default.createElement('div', { className: 'mdl-spinner mdl-js-spinner is-active' }) : _react2.default.createElement(
+	          'ul',
+	          { className: 'mdl-list' },
+	          this.links()
+	        )
+	      );
+	    }
+	  }]);
+
+	  return LinksList;
+	}(_react2.default.Component);
+
+	exports.default = LinksList;
+
+/***/ },
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -20955,7 +21019,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'link' },
+	        { className: 'mdl-list__item-primary-content' },
 	        _react2.default.createElement(
 	          'a',
 	          { href: this.props.link.link, target: '_blank' },
