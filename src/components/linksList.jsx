@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from './link.jsx';
+import {Card, CardTitle, CardText, List, ListItem} from 'react-mdl';
 
 export default class LinksList extends React.Component {
 
@@ -14,22 +15,25 @@ export default class LinksList extends React.Component {
     return this.props.links
         .map( (link, key) => {
           if (link.link)
-            return <li className='mdl-list__item'><Link link={link} key={key}/></li>
+            return <ListItem key={key}><Link link={link}/></ListItem>
           })
   }
 
   render(){
+    // TODO: add spinner (throws error now)
     return (
-      <div className='linkList mdl-card mdl-shadow--2dp'>
-        <div className="linkList__title mdl-card__title" style={{backgroundColor: this.props.color}}>
-          <h4 className="mdl-card__title-text">{this.props.heading}</h4>
-        </div>
-        {
-          !this.props.links.length ?
-            <div className="mdl-spinner mdl-js-spinner is-active"></div> :
-            <ul className='mdl-list'>{this.links()}</ul>
-        }
-      </div>
+      <Card shadow={2} style={{width: '32%', margin: '5px', minWidth: '270px'}}>
+        <CardTitle style={{backgroundColor: this.props.color || 'gray', padding: '5px 10px', color: 'white'}}>
+            <h4>{this.props.heading}</h4>
+        </CardTitle>
+        <CardText>
+          {
+            !this.props.links.length ?
+              <div style={{display: 'flex', justifyContent: 'center'}}><div className="mdl-spinner mdl-js-spinner is-active"></div></div> :
+              <List>{this.links()}</List>
+          }
+        </CardText>
+      </Card>
     );
   }
 }

@@ -15,9 +15,9 @@ export default class Links extends React.Component {
 
   render(){
     return (
-      <div className={'mdl-list__item-primary-content'}>
-        <a href={this.props.link.link} target='_blank'>{this.linkLabel()}</a>
-      </div>
+      <a href={this.props.link.link} target='_blank'>
+        {this.linkLabel()}
+      </a>
     );
   }
 }
