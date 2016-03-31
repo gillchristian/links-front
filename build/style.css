@@ -1,16 +1,6 @@
-* {
-  font-family: 'Helvetica';
+body {
+  background-color: #EEE;
 }
-.tag {
-  color: #555;
-}
-li {
-  list-style-type: circle;
-}
-a, a:link, a:hover, a:visited {
-  color:#489cdf;
-}
-
 .container{
   max-width: 990px;
   margin: 0 auto;
@@ -21,28 +11,17 @@ a, a:link, a:hover, a:visited {
   align-items: center;
 }
 
-.link {
+.linkList__title {
   padding: 10px;
-  margin: 5px;
-  border: 1px solid gray;
-  border-radius: 5px;
+  background-color: gray;
+  color: white;
 }
 
-.linksContainer {
-  padding: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.heading {
-  padding: 5px 10px;
-  background-color: ghostwhite;
-}
-
-.categoryBox {
+.linkList {
   max-width: 320px;
   margin: 5px;
-  border: 1px solid gray;
 }
+
+
+
+/*main color: rgb(96,125,139)*/
