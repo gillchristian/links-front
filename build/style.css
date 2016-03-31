@@ -4,24 +4,11 @@ body {
 .container{
   max-width: 990px;
   margin: 0 auto;
-  padding-top: 20px;
+  padding: 20px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
 }
-
-.linkList__title {
-  padding: 10px;
-  background-color: gray;
-  color: white;
-}
-
-.linkList {
-  max-width: 320px;
-  margin: 5px;
-}
-
-
 
 /*main color: rgb(96,125,139)*/
