@@ -23,7 +23,7 @@ export default class LinksList extends React.Component {
     // TODO: add spinner (throws error now)
     return (
       <Card shadow={2} style={{width: '32%', margin: '5px', minWidth: '270px'}}>
-        <CardTitle style={{backgroundColor: this.props.color || 'gray', padding: '5px 10px', color: 'white'}}>
+        <CardTitle style={{borderBottom: `3px solid ${this.props.color || 'gray'}`, padding: '5px 10px', color: `${this.props.color || 'gray'}`}}>
             <h4>{this.props.heading}</h4>
         </CardTitle>
         <CardText>
