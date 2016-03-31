@@ -19777,8 +19777,8 @@
 	        'div',
 	        { className: 'container' },
 	        _react2.default.createElement(_linksList2.default, { links: this.state.links, heading: 'important' }),
-	        _react2.default.createElement(_linksList2.default, { links: this.state.links, heading: 'random', color: 'pink' }),
-	        _react2.default.createElement(_linksList2.default, { links: this.state.links, heading: 'js', color: '#fff200' }),
+	        _react2.default.createElement(_linksList2.default, { links: this.state.links, heading: 'random', color: '#33b8b8' }),
+	        _react2.default.createElement(_linksList2.default, { links: this.state.links, heading: 'js', color: '#efe06f' }),
 	        _react2.default.createElement(_linksList2.default, { links: this.state.links, heading: 'react', color: '#00d8ff' }),
 	        _react2.default.createElement(_linksList2.default, { links: this.state.links, heading: 'angular', color: '#b52e31' })
 	      );
@@ -20945,7 +20945,7 @@
 	        { shadow: 2, style: { width: '32%', margin: '5px', minWidth: '270px' } },
 	        _react2.default.createElement(
 	          _reactMdl.CardTitle,
-	          { style: { backgroundColor: this.props.color || 'gray', padding: '5px 10px', color: 'white' } },
+	          { style: { borderBottom: '3px solid ' + (this.props.color || 'gray'), padding: '5px 10px', color: '' + (this.props.color || 'gray') } },
 	          _react2.default.createElement(
 	            'h4',
 	            null,
