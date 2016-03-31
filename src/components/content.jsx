@@ -23,8 +23,8 @@ export default class Content extends React.Component {
     return (
       <div className='container'>
         <LinksList links={this.state.links} heading='important'/>
-        <LinksList links={this.state.links} heading='random' color='pink'/>
-        <LinksList links={this.state.links} heading='js' color='#fff200'/>
+        <LinksList links={this.state.links} heading='random' color='#33b8b8'/>
+        <LinksList links={this.state.links} heading='js' color='#efe06f'/>
         <LinksList links={this.state.links} heading='react' color='#00d8ff'/>
         <LinksList links={this.state.links} heading='angular' color='#b52e31'/>
       </div>
