@@ -21389,7 +21389,7 @@
 	  var categoriesWithLinks = _ref.categoriesWithLinks;
 	  return _react2.default.createElement(
 	    'div',
-	    null,
+	    { className: 'container' },
 	    categoriesWithLinks.map(function (links, key) {
 	      return _react2.default.createElement(_linksList2.default, {
 	        key: key,
@@ -21505,6 +21505,8 @@
 	var Links = function Links(_ref) {
 	  var link = _ref.link;
 
+
+	  var tagsStyles = { color: 'gray' };
 	  var linkLabel = function linkLabel() {
 	    return link.link.replace(/^https?:\/\//ig, '').replace(/www\./, '');
 	  };
@@ -21535,7 +21537,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'p',
-	      null,
+	      { style: tagsStyles },
 	      tags()
 	    )
 	  );

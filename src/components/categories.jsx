@@ -3,7 +3,7 @@ import LinksList from './linksList.jsx';
 
 
 const Categories = ({categoriesWithLinks}) => (
-  <div>
+  <div className={'container'}>
     {categoriesWithLinks.map( (links, key) =>
       <LinksList
         key={key}

@@ -1,6 +1,8 @@
 import React from 'react';
 
 const Links = ({link}) => {
+
+  let tagsStyles = {color: 'gray'}
   let linkLabel = () => link.link.replace(/^https?:\/\//ig, '').replace(/www\./, '')
 
 
@@ -14,7 +16,7 @@ const Links = ({link}) => {
   return (
     <div>
       <p><a href={link.link} target='_blank'>{linkLabel()}</a></p>
-      <p>{tags()}</p>
+      <p style={tagsStyles}>{tags()}</p>
     </div>
   )
 }
