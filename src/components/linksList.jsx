@@ -2,38 +2,43 @@ import React from 'react';
 import Link from './link.jsx';
 import {Card, CardTitle, CardText, List, ListItem} from 'react-mdl';
 
-export default class LinksList extends React.Component {
+const LinksList = ({links, heading, color}) => {
 
-	constructor(props){
-		super(props);
-	}
+  let linksMap = () => links.map( (link, key) => {
+    if (link.link)
+      return <ListItem key={key}><Link link={link}/></ListItem>
+  })
 
-  /**
-   * Lists all the links
-   */
-  links(){
-    return this.props.links
-        .map( (link, key) => {
-          if (link.link)
-            return <ListItem key={key}><Link link={link}/></ListItem>
-          })
+  let styleCard   = {
+    width: '32%',
+    margin: '5px',
+    minWidth: '270px'
   }
-
-  render(){
-    // TODO: add spinner (throws error now)
-    return (
-      <Card shadow={2} style={{width: '32%', margin: '5px', minWidth: '270px'}}>
-        <CardTitle style={{borderBottom: `3px solid ${this.props.color || 'gray'}`, padding: '5px 10px', color: `${this.props.color || 'gray'}`}}>
-            <h4>{this.props.heading}</h4>
-        </CardTitle>
-        <CardText>
-          {
-            !this.props.links.length ?
-              <div style={{display: 'flex', justifyContent: 'center'}}><div className="mdl-spinner mdl-js-spinner is-active"></div></div> :
-              <List>{this.links()}</List>
-          }
-        </CardText>
-      </Card>
-    );
+  let styleTitle = {
+    borderBottom: `3px solid ${color || 'gray'}`,
+    padding: '5px 10px',
+    color: `${color || 'gray'}`
   }
+  let styleGrid = {
+    display: 'flex',
+    justifyContent: 'center'
+  }
+  // TODO: simplify/decouple this component
+  // TODO: add spinner (throws error now)
+  return (
+    <Card shadow={2} style={styleCard}>
+      <CardTitle style={styleTitle}>
+          <h4>{heading}</h4>
+      </CardTitle>
+      <CardText>
+        {
+          !links.length ?
+            <div style={styleGrid}><div className="mdl-spinner mdl-js-spinner is-active"></div></div> :
+            <List>{linksMap()}</List>
+        }
+      </CardText>
+    </Card>
+  )
 }
+
+export default LinksList

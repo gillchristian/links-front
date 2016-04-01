@@ -1,11 +1,6 @@
 import React from 'react';
 import Content from './content.jsx';
 
-export default class App extends React.Component {
+const App = () => <Content />
 
-  render(){
-    return (
-      <Content src='https://link-bot.herokuapp.com/api' />
-    )
-  }
-}
+export default App;

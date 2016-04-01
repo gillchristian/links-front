@@ -29,6 +29,8 @@
     "axios": "^0.9.1",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
-    "react-mdl": "^1.5.2"
+    "react-mdl": "^1.5.2",
+    "react-redux": "^4.4.1",
+    "redux": "^3.3.1"
   }
 }
