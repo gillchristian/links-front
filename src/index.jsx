@@ -2,10 +2,10 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import linksApp from './reducers/index.js';
+import rootReducer from './reducers';
 import App from './components/app.jsx';
 
-let store = createStore(linksApp)
+let store = createStore(rootReducer)
 
 render(
   <Provider store={store}>

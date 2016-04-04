@@ -1,6 +1,6 @@
 import React from 'react';
-import Content from './content.jsx';
+import LinksListContainer from '../containers/linksListContainer.jsx';
 
-const App = () => <Content />
+const App = () => <LinksListContainer />
 
 export default App;
