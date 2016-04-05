@@ -13,7 +13,8 @@ body {
 
 /*main color: rgb(96,125,139)*/
 
-/* con esto ya sale el Masonry agregale .masonry al contenedor padre e .item a a las cartas (sacale estos estilos en linea que el Masonry se encarga solo width:32%;margin:5px;min-width:270px;)
+/* con esto ya sale el Masonry agregale .masonry al contenedor padre e .item a a las cartas
+(sacale estos estilos en linea que el Masonry se encarga solo width:32%;margin:5px;min-width:270px;) */
 
 .masonry { /* Masonry container */
     column-count: 4;
