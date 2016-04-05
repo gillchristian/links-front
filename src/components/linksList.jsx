@@ -17,17 +17,12 @@ export default class LinksList extends React.Component {
 
   render() {
     const styles = {
-      card: {
-        width: '32%',
-        margin: '5px',
-        minWidth: '270px'
-      },
       title: {
         borderBottom: `3px solid ${this.props.color || 'gray'}`,
         padding: '5px 10px',
         color: this.props.color || 'gray'
       },
-      grid: {
+      centerItem: {
         display: 'flex',
         justifyContent: 'center'
       }
@@ -36,14 +31,14 @@ export default class LinksList extends React.Component {
     const {links, loading, error} = this.props.linksList
 
     return (
-      <Card shadow={2} style={styles.card}>
+      <Card shadow={2} className={'item'}>
         <CardTitle style={styles.title}>
             <h4>{this.props.heading}</h4>
         </CardTitle>
         <CardText>
           {
             loading ?
-              <div style={styles.grid}><div className="mdl-spinner mdl-js-spinner is-active"></div></div> :
+              <div style={styles.centerItem}><div className="mdl-spinner mdl-js-spinner is-active"></div></div> :
               error ?
                 <p>{error}</p> :
                 <List>{this.linksMap(links)}</List>
