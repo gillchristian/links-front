@@ -12,3 +12,18 @@ body {
 }
 
 /*main color: rgb(96,125,139)*/
+
+
+/* Masonry container */
+.masonry {
+  column-count: 4;
+  column-gap: 1em;
+}
+
+/* Masonry bricks or child elements */
+.item {
+  background-color: #eee;
+  display: inline-block;
+  margin: 0 0 1em;
+  width: 100%;
+}
