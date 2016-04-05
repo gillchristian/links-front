@@ -22464,10 +22464,25 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var App = function App() {
-	  return _react2.default.createElement(_linksListContainer2.default, null);
+	var styles = {
+	  columnCount: 3,
+	  columnGap: '3%',
+	  columnWidth: '30%'
 	};
 
+	var App = function App() {
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'wrapper' },
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'masonry', style: styles },
+	      _react2.default.createElement(_linksListContainer2.default, null),
+	      _react2.default.createElement(_linksListContainer2.default, null),
+	      _react2.default.createElement(_linksListContainer2.default, null)
+	    )
+	  );
+	};
 	exports.default = App;
 
 /***/ },
@@ -22577,17 +22592,12 @@
 	    key: 'render',
 	    value: function render() {
 	      var styles = {
-	        card: {
-	          width: '32%',
-	          margin: '5px',
-	          minWidth: '270px'
-	        },
 	        title: {
 	          borderBottom: '3px solid ' + (this.props.color || 'gray'),
 	          padding: '5px 10px',
 	          color: this.props.color || 'gray'
 	        },
-	        grid: {
+	        centerItem: {
 	          display: 'flex',
 	          justifyContent: 'center'
 	        }
@@ -22601,7 +22611,7 @@
 
 	      return _react2.default.createElement(
 	        _reactMdl.Card,
-	        { shadow: 2, style: styles.card },
+	        { shadow: 2, className: 'item' },
 	        _react2.default.createElement(
 	          _reactMdl.CardTitle,
 	          { style: styles.title },
@@ -22616,7 +22626,7 @@
 	          null,
 	          loading ? _react2.default.createElement(
 	            'div',
-	            { style: styles.grid },
+	            { style: styles.centerItem },
 	            _react2.default.createElement('div', { className: 'mdl-spinner mdl-js-spinner is-active' })
 	          ) : error ? _react2.default.createElement(
 	            'p',
