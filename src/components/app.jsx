@@ -1,11 +1,6 @@
 import React from 'react';
-import Content from './content.jsx';
+import LinksListContainer from '../containers/linksListContainer.jsx';
 
-export default class App extends React.Component {
+const App = () => <LinksListContainer />
 
-  render(){
-    return (
-      <Content src='https://link-bot.herokuapp.com/api' />
-    )
-  }
-}
+export default App;

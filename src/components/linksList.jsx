@@ -4,36 +4,53 @@ import {Card, CardTitle, CardText, List, ListItem} from 'react-mdl';
 
 export default class LinksList extends React.Component {
 
-	constructor(props){
-		super(props);
-	}
-
-  /**
-   * Lists all the links
-   */
-  links(){
-    return this.props.links
-        .map( (link, key) => {
-          if (link.link)
-            return <ListItem key={key}><Link link={link}/></ListItem>
-          })
+  componentWillMount() {
+    this.props.fetchLinks()
   }
 
-  render(){
-    // TODO: add spinner (throws error now)
+  /**
+   *
+   */
+  linksMap(links) {
+    return links.map( (link, key) => <ListItem key={key}><Link link={link}/></ListItem> )
+  }
+
+  render() {
+    const styles = {
+      card: {
+        width: '32%',
+        margin: '5px',
+        minWidth: '270px'
+      },
+      title: {
+        borderBottom: `3px solid ${this.props.color || 'gray'}`,
+        padding: '5px 10px',
+        color: this.props.color || 'gray'
+      },
+      grid: {
+        display: 'flex',
+        justifyContent: 'center'
+      }
+    }
+
+    const {links, loading, error} = this.props.linksList
+
     return (
-      <Card shadow={2} style={{width: '32%', margin: '5px', minWidth: '270px'}}>
-        <CardTitle style={{borderBottom: `3px solid ${this.props.color || 'gray'}`, padding: '5px 10px', color: `${this.props.color || 'gray'}`}}>
+      <Card shadow={2} style={styles.card}>
+        <CardTitle style={styles.title}>
             <h4>{this.props.heading}</h4>
         </CardTitle>
         <CardText>
           {
-            !this.props.links.length ?
-              <div style={{display: 'flex', justifyContent: 'center'}}><div className="mdl-spinner mdl-js-spinner is-active"></div></div> :
-              <List>{this.links()}</List>
+            loading ?
+              <div style={styles.grid}><div className="mdl-spinner mdl-js-spinner is-active"></div></div> :
+              error ?
+                <p>{error}</p> :
+                <List>{this.linksMap(links)}</List>
           }
         </CardText>
       </Card>
-    );
+    )
   }
 }
+

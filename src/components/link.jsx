@@ -1,23 +1,24 @@
 import React from 'react';
 
-export default class Links extends React.Component {
+const Links = ({link}) => {
 
-  tags(){
-    return this.props.link.tags
+  let tagsStyles = {color: 'gray'}
+  let linkLabel = () => link.link.replace(/^https?:\/\//ig, '').replace(/www\./, '')
+
+
+  let tags = () => {
+    return link.tags
       .map((tag, key) => (
         <i key={key} className='tag'>#{tag} </i>
       ))
   }
 
-  linkLabel(){
-    return this.props.link.link.replace(/^https?:\/\//ig, '').replace(/www\./, '')
-  }
-
-  render(){
-    return (
-      <a href={this.props.link.link} target='_blank'>
-        {this.linkLabel()}
-      </a>
-    );
-  }
+  return (
+    <div>
+      <p><a href={link.link} target='_blank'>{linkLabel()}</a></p>
+      <p style={tagsStyles}>{tags()}</p>
+    </div>
+  )
 }
+
+export default Links
