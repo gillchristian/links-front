@@ -1,9 +1,8 @@
-import axios from 'axios';
+import fetch from 'isomorphic-fetch'
 
-export const FETCH_CATEGORIES = 'FETCH_CATEGORIES'
-export const FETCH_CATEGORIES_SUCCESS = 'FETCH_CATEGORIES_SUCCESS'
-export const FETCH_CATEGORIES_ERROR = 'FETCH_CATEGORIES_ERROR'
-export const RESET_CATEGORIES = 'RESET_CATEGORIES'
+export const REQUEST_CATEGORIES = 'REQUEST_CATEGORIES'
+export const REQUEST_CATEGORIES_SUCCESS = 'REQUEST_CATEGORIES_SUCCESS'
+export const REQUEST_CATEGORIES_ERROR = 'REQUEST_CATEGORIES_ERROR'
 
 const ROOT_URL = 'http://link-bot.herokuapp.com/api'
 
@@ -12,15 +11,9 @@ const ROOT_URL = 'http://link-bot.herokuapp.com/api'
  *
  * @returns {object}  action object
  */
-export function fetchCategories(){
-  const request = axios({
-    method: 'get',
-    url: `${ROOT_URL}`
-  })
-
+export function requestCategories(){
   return {
-    type: FETCH_CATEGORIES,
-    payload: request
+    type: REQUEST_CATEGORIES
   }
 }
 
@@ -30,10 +23,10 @@ export function fetchCategories(){
  * @param {object[]}  posts
  * @returns {object}  action object
  */
-export function fetchCategoriesSuccess(posts){
+export function requestCategoriesSuccess(payload){
   return {
-    type: FETCH_CATEGORIES_SUCCESS,
-    payload: posts
+    type: REQUEST_CATEGORIES_SUCCESS,
+    payload
   }
 }
 
@@ -43,9 +36,34 @@ export function fetchCategoriesSuccess(posts){
  * @param {object[]}  error
  * @returns {object}  action object
  */
-export function fetchCategoriesError(error){
+export function requestCategoriesError(payload){
   return {
-    type: FETCH_CATEGORIES_ERROR,
-    payload: error
+    type: REQUEST_CATEGORIES_ERROR,
+    payload
+  }
+}
+
+/**
+ * fetch categories action
+ *
+ * @returns {object}  action object
+ */
+export function fetchCategories(){
+  return function (dispatch) {
+    dispatch(requestCategories())
+    return fetch(ROOT_URL)
+      .then(response => response.json())
+      .then(json => {
+        // TODO: add actual endpoint for categories
+        const categories = json
+          .map(link => link.categories[0])
+        const filteredCategories = categories
+          .filter((category, pos) => categories.indexOf(category) === pos)
+          .map( category => ({name: category}))
+        dispatch(requestCategoriesSuccess(filteredCategories))
+      })
+      .catch(error => {
+        dispatch(requestCategoriesError(error))
+      })
   }
 }

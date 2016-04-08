@@ -1,4 +1,4 @@
-import { REQUEST_LINKS, REQUEST_LINKS_SUCCESS, REQUEST_LINKS_ERROR } from '../actions/links'
+import { REQUEST_CATEGORIES, REQUEST_CATEGORIES_SUCCESS, REQUEST_CATEGORIES_ERROR } from '../actions/categories'
 
 const INITIAL_STATE = {
   list: [],
@@ -6,10 +6,9 @@ const INITIAL_STATE = {
   loading: false
 }
 
-export default function links(state = INITIAL_STATE, action){
-
+export default function categories(state = INITIAL_STATE, action){
   switch (action.type) {
-    case REQUEST_LINKS:
+    case REQUEST_CATEGORIES:
       return {
         ...state,
         list: [],
@@ -17,7 +16,7 @@ export default function links(state = INITIAL_STATE, action){
         loading: true
       }
       break
-    case REQUEST_LINKS_SUCCESS:
+    case REQUEST_CATEGORIES_SUCCESS:
       return {
         ...state,
         list: action.payload,
@@ -25,11 +24,11 @@ export default function links(state = INITIAL_STATE, action){
         loading: false
       }
       break
-    case REQUEST_LINKS_ERROR:
+    case REQUEST_CATEGORIES_ERROR:
       return {
         ...state,
         list: [],
-        error: action.payload.message,
+        error: action.payload,
         loading: false
       }
       break

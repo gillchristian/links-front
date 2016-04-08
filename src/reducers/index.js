@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux'
 import links from './links'
+import categories from './categories'
 
-const rootReducer = combineReducers({ links })
+const rootReducer = combineReducers({ links, categories })
 
 export default rootReducer
 
