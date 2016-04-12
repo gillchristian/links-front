@@ -48,10 +48,10 @@
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(269);
+	var content = __webpack_require__(267);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(271)(content, {});
+	var update = __webpack_require__(269)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -69,22 +69,22 @@
 
 /***/ },
 
-/***/ 269:
+/***/ 267:
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(270)();
+	exports = module.exports = __webpack_require__(268)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n/**\n *\n * Main file\n *\n * ---------------------\n * # Settings\n * # Tools\n * # Generic\n * # Base\n * # Objects\n * # Components\n * # Trumps\n * ---------------------\n */\n/* --- Settings ------- */\n/**\n * Variables file\n *\n * Preprocessor variables for latter use\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Tools ---------- */\n/**\n * Tools file\n *\n * Mixins and functions\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Generic -------- */\n/**\n * Generic file\n *\n * Third party CSS\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Base ----------- */\n/**\n * Base styles\n *\n * Element styles, no classes nor IDs.\n * Base typography & raw elements\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Objects -------- */\n/**\n * Objects styles\n *\n * Object Oriented CSS\n * Layout driven, structural objects.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Components ----- */\n/**\n * Components styles\n *\n * Cosmetic layer\n * Specific instructions.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Trumps --------- */\n/**\n * Trumps styles\n *\n * Override other styles, text alignment classes\n * Only place were !important is allowed.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- Some file --- */\nbody {\n  font: 1em/1.67 'Open Sans', Arial, Sans-serif;\n  background: #e9e9e9; }\n\n/*main color: rgb(96,125,139)*/\n/* Masonry bricks or child elements */\n.wrapper {\n  width: 95%;\n  margin: 3em auto; }\n\n​\n​\n.masonry {\n  display: none;\n  background-color: red;\n  -moz-column-count: 3;\n  -moz-column-gap: 3%;\n  -moz-column-width: 30%;\n  -webkit-column-count: 3;\n  -webkit-column-gap: 3%;\n  -webkit-column-width: 30%;\n  column-count: 3;\n  column-gap: 3%;\n  column-width: 30%; }\n  @media only screen and (min-width: 400px) {\n    ​\n​\n.masonry {\n      -moz-column-count: 2;\n      -moz-column-gap: 2%;\n      -moz-column-width: 48%;\n      -webkit-column-count: 2;\n      -webkit-column-gap: 2%;\n      -webkit-column-width: 48%;\n      column-count: 2;\n      column-gap: 2%;\n      column-width: 48%; } }\n  @media only screen and (min-width: 700px) {\n    ​\n​\n.masonry {\n      -moz-column-count: 3;\n      -moz-column-gap: 3%;\n      -moz-column-width: 30%;\n      -webkit-column-count: 3;\n      -webkit-column-gap: 3%;\n      -webkit-column-width: 30%;\n      column-count: 3;\n      column-gap: 3%;\n      column-width: 30%; } }\n  @media only screen and (min-width: 900px) {\n    ​\n​\n.masonry {\n      -moz-column-count: 4;\n      -moz-column-gap: 2%;\n      -moz-column-width: 23%;\n      -webkit-column-count: 4;\n      -webkit-column-gap: 2%;\n      -webkit-column-width: 23%;\n      column-count: 4;\n      column-gap: 2%;\n      column-width: 23%; } }\n  @media only screen and (min-width: 1100px) {\n    ​\n​\n.masonry {\n      -moz-column-count: 5;\n      -moz-column-gap: 2%;\n      -moz-column-width: 18%;\n      -webkit-column-count: 5;\n      -webkit-column-gap: 2%;\n      -webkit-column-width: 18%;\n      column-count: 5;\n      column-gap: 2%;\n      column-width: 18%; } }\n\n.item {\n  padding: 1em;\n  margin: 0 0 1.5em;\n  width: 100%;\n  border-radius: 3px;\n  -webkit-column-break-inside: avoid;\n  -o-column-break-inside: avoid;\n  -moz-column-break-inside: avoid;\n  break-inside: avoid; }\n\n.item:hover {\n  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }\n\n@media only screen and (min-width: 1280px) {\n  .wrapper {\n    width: 1260px; } }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n/**\n *\n * Main file\n *\n * ---------------------\n * # Settings\n * # Tools\n * # Generic\n * # Base\n * # Objects\n * # Components\n * # Trumps\n * ---------------------\n */\n/* --- Settings ------- */\n/**\n * Variables file\n *\n * Preprocessor variables for latter use\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Tools ---------- */\n/**\n * Tools file\n *\n * Mixins and functions\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Generic -------- */\n/**\n * Generic file\n *\n * Third party CSS\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Base ----------- */\n/**\n * Base styles\n *\n * Element styles, no classes nor IDs.\n * Base typography & raw elements\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Objects -------- */\n/**\n * Objects styles\n *\n * Object Oriented CSS\n * Layout driven, structural objects.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Components ----- */\n/**\n * Components styles\n *\n * Cosmetic layer\n * Specific instructions.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Trumps --------- */\n/**\n * Trumps styles\n *\n * Override other styles, text alignment classes\n * Only place were !important is allowed.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- Some file --- */\nbody {\n  font: 1em/1.67 'Open Sans', Arial, Sans-serif;\n  background: #e9e9e9; }\n\n/*main color: rgb(96,125,139)*/\n/* Masonry bricks or child elements */\n.wrapper {\n  width: 95%;\n  margin: 3em auto; }\n\n​\n​\n.masonry {\n  -moz-column-count: 3;\n  -moz-column-gap: 3%;\n  -moz-column-width: 30%;\n  -webkit-column-count: 3;\n  -webkit-column-gap: 3%;\n  -webkit-column-width: 30%;\n  column-count: 3;\n  column-gap: 3%;\n  column-width: 30%; }\n  @media only screen and (min-width: 400px) {\n    ​\n​\n.masonry {\n      -moz-column-count: 2;\n      -moz-column-gap: 2%;\n      -moz-column-width: 48%;\n      -webkit-column-count: 2;\n      -webkit-column-gap: 2%;\n      -webkit-column-width: 48%;\n      column-count: 2;\n      column-gap: 2%;\n      column-width: 48%; } }\n  @media only screen and (min-width: 700px) {\n    ​\n​\n.masonry {\n      -moz-column-count: 3;\n      -moz-column-gap: 3%;\n      -moz-column-width: 30%;\n      -webkit-column-count: 3;\n      -webkit-column-gap: 3%;\n      -webkit-column-width: 30%;\n      column-count: 3;\n      column-gap: 3%;\n      column-width: 30%; } }\n  @media only screen and (min-width: 900px) {\n    ​\n​\n.masonry {\n      -moz-column-count: 4;\n      -moz-column-gap: 2%;\n      -moz-column-width: 23%;\n      -webkit-column-count: 4;\n      -webkit-column-gap: 2%;\n      -webkit-column-width: 23%;\n      column-count: 4;\n      column-gap: 2%;\n      column-width: 23%; } }\n  @media only screen and (min-width: 1100px) {\n    ​\n​\n.masonry {\n      -moz-column-count: 5;\n      -moz-column-gap: 2%;\n      -moz-column-width: 18%;\n      -webkit-column-count: 5;\n      -webkit-column-gap: 2%;\n      -webkit-column-width: 18%;\n      column-count: 5;\n      column-gap: 2%;\n      column-width: 18%; } }\n\n.item {\n  padding: 1em;\n  margin: 0 0 1.5em;\n  width: 100%;\n  border-radius: 3px;\n  -webkit-column-break-inside: avoid;\n  -o-column-break-inside: avoid;\n  -moz-column-break-inside: avoid;\n  break-inside: avoid; }\n\n.item:hover {\n  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }\n\n@media only screen and (min-width: 1280px) {\n  .wrapper {\n    width: 1260px; } }\n", ""]);
 
 	// exports
 
 
 /***/ },
 
-/***/ 270:
+/***/ 268:
 /***/ function(module, exports) {
 
 	/*
@@ -141,7 +141,7 @@
 
 /***/ },
 
-/***/ 271:
+/***/ 269:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

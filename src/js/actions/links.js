@@ -1,11 +1,10 @@
 import fetch from 'isomorphic-fetch'
+import { ROOT_URL } from './urls'
 
 export const REQUEST_LINKS = 'REQUEST_LINKS'
 export const REQUEST_LINKS_SUCCESS = 'REQUEST_LINKS_SUCCESS'
 export const REQUEST_LINKS_ERROR = 'REQUEST_LINKS_ERROR'
 export const RESET_LINKS = 'RESET_LINKS'
-
-const ROOT_URL = 'http://link-bot.herokuapp.com/api'
 
 /**
  * request links action
@@ -53,7 +52,7 @@ export function requestLinksError(payload){
 export function fetchLinks(){
   return function (dispatch) {
     dispatch(requestLinks())
-    return fetch('http://link-bot.herokuapp.com/api')
+    return fetch(`${ROOT_URL}/assets`)
       .then(response => response.json())
       .then(json => {
         dispatch(requestLinksSuccess(json))

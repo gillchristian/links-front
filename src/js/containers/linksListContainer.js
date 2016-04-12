@@ -6,13 +6,13 @@ import LinksLinst from '../components/linksList.jsx'
 const mapStateToProps = (state, props) => {
 
   const links = state.links.list
-      .filter( link => link.categories.indexOf(props.category.name) > -1 )
+      .filter( link => link.categories.indexOf(props.category._id) > -1 )
 
   return {
-    links,
     loading: state.links.loading,
     error: state.links.error,
-    category: props.category
+    category: props.category,
+    links
   }
 }
 

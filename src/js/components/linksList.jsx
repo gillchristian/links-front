@@ -9,16 +9,13 @@ export default class LinksList extends React.Component {
   /**
    *
    */
-  linksMap(links, category) {
+  linksMap(links) {
     return links
       .map( (link, key) => <ListItem key={key}><Link link={link}/></ListItem> )
   }
 
   render() {
-    const links = this.props.links
-    const loading = this.props.loading
-    const error = this.props.error
-    const category = this.props.category
+    const { links, loading, error, category } = this.props
 
     const styles = {
       title: {
@@ -36,14 +33,14 @@ export default class LinksList extends React.Component {
     return (
       <Card shadow={2} className={'item'}>
         <CardTitle style={styles.title}>
-            <h4>{category.name}</h4>
+            <h4>{category.category}</h4>
         </CardTitle>
         <CardText>
           {
             loading ?
               <Spinner /> : error ?
                 <p>Sorry, there was an error, please try again!</p> :
-                <List>{this.linksMap(links, category)}</List>
+                <List>{this.linksMap(links)}</List>
           }
         </CardText>
       </Card>

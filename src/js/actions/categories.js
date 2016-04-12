@@ -1,10 +1,9 @@
 import fetch from 'isomorphic-fetch'
+import { ROOT_URL } from './urls'
 
 export const REQUEST_CATEGORIES = 'REQUEST_CATEGORIES'
 export const REQUEST_CATEGORIES_SUCCESS = 'REQUEST_CATEGORIES_SUCCESS'
 export const REQUEST_CATEGORIES_ERROR = 'REQUEST_CATEGORIES_ERROR'
-
-const ROOT_URL = 'http://link-bot.herokuapp.com/api'
 
 /**
  * fetch categories action
@@ -51,7 +50,7 @@ export function requestCategoriesError(payload){
 export function fetchCategories(){
   return function (dispatch) {
     dispatch(requestCategories())
-    return fetch(ROOT_URL)
+    return fetch(`${ROOT_URL}/categories`)
       .then(response => response.json())
       .then(json => {
         // TODO: add actual endpoint for categories
