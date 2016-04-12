@@ -25,7 +25,6 @@ export function requestLinks(){
  * @returns {Object}  action object
  */
 export function requestLinksSuccess(payload){
-  console.log(payload.length)
   return {
     type: REQUEST_LINKS_SUCCESS,
     payload

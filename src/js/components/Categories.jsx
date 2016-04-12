@@ -14,7 +14,9 @@ export default class Categories extends React.Component {
   render(){
     const categories = this.props.categories
     return (
-      <div>{this.mapLinksByCategory(categories)}</div>
+      <div className={'masonry'}>
+        {this.mapLinksByCategory(categories)}
+      </div>
     )
   }
 }
