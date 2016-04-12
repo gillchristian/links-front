@@ -1,9 +1,17 @@
-var path = require('path');
+'use strict';
+let path = require('path')
+let webpack = require('webpack')
+//let ExtractTextPlugin = require("extract-text-webpack-plugin");
+//let cssExtract = new ExtractTextPlugin("[name].css");
+
 module.exports = {
-  entry: './src/index.jsx',
+  entry: {
+    bundle: './src/js/index.jsx',
+    styles: './src/sass/index.scss'
+  },
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js',
+    filename: '[name].js',
     publicPath: '/build/'
   },
   devServer: {
@@ -13,6 +21,12 @@ module.exports = {
   module: {
     loaders: [
       {
+        test: /\.scss$/,
+        loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+        //loader: cssExtract.extract('style-loader', 'css-loader', 'postcss-loader', 'sass-loader')
+
+      },
+      {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'babel',
@@ -21,5 +35,8 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  plugins: [
+      //cssExtract
+  ]
 }

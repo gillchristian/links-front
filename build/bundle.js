@@ -21523,11 +21523,7 @@
 	  return _react2.default.createElement(
 	    'div',
 	    { className: 'wrapper' },
-	    _react2.default.createElement(
-	      'div',
-	      { className: 'masonry' },
-	      _react2.default.createElement(_CategoriesContainer2.default, null)
-	    )
+	    _react2.default.createElement(_CategoriesContainer2.default, null)
 	  );
 	};
 	exports.default = App;
@@ -21623,7 +21619,6 @@
 	 * @returns {Object}  action object
 	 */
 	function requestLinksSuccess(payload) {
-	  console.log(payload.length);
 	  return {
 	    type: REQUEST_LINKS_SUCCESS,
 	    payload: payload
@@ -27155,7 +27150,7 @@
 	      var categories = this.props.categories;
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'masonry' },
 	        this.mapLinksByCategory(categories)
 	      );
 	    }
