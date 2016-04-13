@@ -31,7 +31,7 @@ export default class LinksList extends React.Component {
     return (
       <Card shadow={2} className={'item'}>
         <CardTitle style={styles.title}>
-            <h4>{category.category}</h4>
+            <h4>{category.name}</h4>
         </CardTitle>
         <CardText>
           {
