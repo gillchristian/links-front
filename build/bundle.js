@@ -21559,6 +21559,8 @@
 
 	var _urls = __webpack_require__(191);
 
+	var _urls2 = _interopRequireDefault(_urls);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var REQUEST_LINKS = exports.REQUEST_LINKS = 'REQUEST_LINKS';
@@ -21611,7 +21613,7 @@
 	function fetchLinks() {
 	  return function (dispatch) {
 	    dispatch(requestLinks());
-	    return (0, _isomorphicFetch2.default)(_urls.ROOT_URL + '/assets').then(function (response) {
+	    return (0, _isomorphicFetch2.default)(_urls2.default.ROOT_URL + '/assets').then(function (response) {
 	      return response.json();
 	    }).then(function (json) {
 	      dispatch(requestLinksSuccess(json));
@@ -22037,9 +22039,10 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = {
+	var urls = {
 	  ROOT_URL: 'http://link-bot.herokuapp.com/api'
 	};
+	exports.default = urls;
 
 /***/ },
 /* 192 */
@@ -22092,10 +22095,10 @@
 	  }, {
 	    key: 'linksMap',
 	    value: function linksMap(links) {
-	      return links.map(function (link, key) {
+	      return links.map(function (link) {
 	        return _react2.default.createElement(
 	          _reactMdl.ListItem,
-	          { key: key },
+	          { key: link._id },
 	          _react2.default.createElement(_link2.default, { link: link })
 	        );
 	      });
@@ -27156,6 +27159,8 @@
 
 	var _urls = __webpack_require__(191);
 
+	var _urls2 = _interopRequireDefault(_urls);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var REQUEST_CATEGORIES = exports.REQUEST_CATEGORIES = 'REQUEST_CATEGORIES';
@@ -27207,19 +27212,10 @@
 	function fetchCategories() {
 	  return function (dispatch) {
 	    dispatch(requestCategories());
-	    return (0, _isomorphicFetch2.default)(_urls.ROOT_URL + '/categories').then(function (response) {
+	    return (0, _isomorphicFetch2.default)(_urls2.default.ROOT_URL + '/categories').then(function (response) {
 	      return response.json();
 	    }).then(function (json) {
-	      // TODO: add actual endpoint for categories
-	      var categories = json.map(function (link) {
-	        return link.categories[0];
-	      });
-	      var filteredCategories = categories.filter(function (category, pos) {
-	        return categories.indexOf(category) === pos;
-	      }).map(function (category) {
-	        return { name: category };
-	      });
-	      dispatch(requestCategoriesSuccess(filteredCategories));
+	      dispatch(requestCategoriesSuccess(json));
 	    }).catch(function (error) {
 	      dispatch(requestCategoriesError(error));
 	    });
@@ -27271,8 +27267,8 @@
 	  }, {
 	    key: 'mapLinksByCategory',
 	    value: function mapLinksByCategory(categories) {
-	      return categories.map(function (category, key) {
-	        return _react2.default.createElement(_linksListContainer2.default, { key: key, category: category });
+	      return categories.map(function (category) {
+	        return _react2.default.createElement(_linksListContainer2.default, { key: category._id, category: category });
 	      });
 	    }
 	  }, {

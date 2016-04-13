@@ -11,7 +11,7 @@ export default class LinksList extends React.Component {
    */
   linksMap(links) {
     return links
-      .map( (link, key) => <ListItem key={key}><Link link={link}/></ListItem> )
+      .map( link => <ListItem key={link._id}><Link link={link}/></ListItem> )
   }
 
   render() {

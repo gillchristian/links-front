@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch'
-import { ROOT_URL } from './urls'
+import urls from './urls'
 
 export const REQUEST_CATEGORIES = 'REQUEST_CATEGORIES'
 export const REQUEST_CATEGORIES_SUCCESS = 'REQUEST_CATEGORIES_SUCCESS'
@@ -50,16 +50,10 @@ export function requestCategoriesError(payload){
 export function fetchCategories(){
   return function (dispatch) {
     dispatch(requestCategories())
-    return fetch(`${ROOT_URL}/categories`)
+    return fetch(`${urls.ROOT_URL}/categories`)
       .then(response => response.json())
       .then(json => {
-        // TODO: add actual endpoint for categories
-        const categories = json
-          .map(link => link.categories[0])
-        const filteredCategories = categories
-          .filter((category, pos) => categories.indexOf(category) === pos)
-          .map( category => ({name: category}))
-        dispatch(requestCategoriesSuccess(filteredCategories))
+        dispatch(requestCategoriesSuccess(json))
       })
       .catch(error => {
         dispatch(requestCategoriesError(error))

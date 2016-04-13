@@ -8,7 +8,7 @@ export default class Categories extends React.Component {
 
   mapLinksByCategory(categories){
     return categories
-      .map( (category, key) => <LinksListContainer key={key} category={category}/>)
+      .map( category => <LinksListContainer key={category._id} category={category}/>)
   }
 
   render(){

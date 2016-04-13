@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch'
-import { ROOT_URL } from './urls'
+import urls from './urls'
 
 export const REQUEST_LINKS = 'REQUEST_LINKS'
 export const REQUEST_LINKS_SUCCESS = 'REQUEST_LINKS_SUCCESS'
@@ -52,7 +52,7 @@ export function requestLinksError(payload){
 export function fetchLinks(){
   return function (dispatch) {
     dispatch(requestLinks())
-    return fetch(`${ROOT_URL}/assets`)
+    return fetch(`${urls.ROOT_URL}/assets`)
       .then(response => response.json())
       .then(json => {
         dispatch(requestLinksSuccess(json))
