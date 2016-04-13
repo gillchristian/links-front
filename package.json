@@ -39,6 +39,7 @@
     "isomorphic-fetch": "^2.2.1",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
+    "react-masonry-component": "^4.0.0",
     "react-mdl": "^1.5.2",
     "react-redux": "^4.4.1",
     "redux": "^3.3.1",

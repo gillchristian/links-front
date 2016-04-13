@@ -6,9 +6,7 @@ export default class LinksList extends React.Component {
   componentWillMount() {
     this.props.fetchLinks()
   }
-  /**
-   *
-   */
+
   linksMap(links) {
     return links
       .map( link => <ListItem key={link._id}><Link link={link}/></ListItem> )
@@ -20,7 +18,7 @@ export default class LinksList extends React.Component {
     const styles = {
       title: {
         borderBottom: `3px solid ${category.color || 'gray'}`,
-        padding: '5px 10px',
+        padding: '5px 30px',
         color: category.color || 'gray'
       },
       centerItem: {
