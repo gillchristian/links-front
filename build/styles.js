@@ -48,10 +48,10 @@
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(281);
+	var content = __webpack_require__(277);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(283)(content, {});
+	var update = __webpack_require__(279)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -69,22 +69,22 @@
 
 /***/ },
 
-/***/ 281:
+/***/ 277:
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(282)();
+	exports = module.exports = __webpack_require__(278)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n/**\n *\n * Main file\n *\n * ---------------------\n * # Settings\n * # Tools\n * # Generic\n * # Base\n * # Objects\n * # Components\n * # Trumps\n * ---------------------\n */\n/* --- Settings ------- */\n/**\n * Variables file\n *\n * Preprocessor variables for latter use\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Tools ---------- */\n/**\n * Tools file\n *\n * Mixins and functions\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Generic -------- */\n/**\n * Generic file\n *\n * Third party CSS\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Base ----------- */\n/**\n * Base styles\n *\n * Element styles, no classes nor IDs.\n * Base typography & raw elements\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Objects -------- */\n/**\n * Objects styles\n *\n * Object Oriented CSS\n * Layout driven, structural objects.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Components ----- */\n/**\n * Components styles\n *\n * Cosmetic layer\n * Specific instructions.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Trumps --------- */\n/**\n * Trumps styles\n *\n * Override other styles, text alignment classes\n * Only place were !important is allowed.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- Some file --- */\nbody {\n  font: 1em/1.67 'Open Sans', Arial, Sans-serif;\n  background: #e9e9e9; }\n\n/*main color: rgb(96,125,139)*/\n/* Masonry bricks or child elements */\n.wrapper {\n  width: 95%;\n  margin: 3em auto; }\n\n​\n.grid {\n  width: 100%; }\n\n.item {\n  width: 100%;\n  margin: 10px;\n  border-radius: 3px; }\n  @media only screen and (min-width: 400px) {\n    .item {\n      width: 47%; } }\n  @media only screen and (min-width: 768px) {\n    .item {\n      width: 30%; } }\n  @media only screen and (min-width: 992px) {\n    .item {\n      width: 22%; } }\n\n.item:hover {\n  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }\n\n@media only screen and (min-width: 1280px) {\n  .wrapper {\n    width: 1260px; } }\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n/**\n *\n * Main file\n *\n * ---------------------\n * # Settings\n * # Tools\n * # Generic\n * # Base\n * # Objects\n * # Components\n * # Trumps\n * ---------------------\n */\n/* --- Settings ------- */\n/**\n * Variables file\n *\n * Preprocessor variables for latter use\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Tools ---------- */\n/**\n * Tools file\n *\n * Mixins and functions\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Generic -------- */\n/**\n * Generic file\n *\n * Third party CSS\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Base ----------- */\n/**\n * Base styles\n *\n * Element styles, no classes nor IDs.\n * Base typography & raw elements\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Objects -------- */\n/**\n * Objects styles\n *\n * Object Oriented CSS\n * Layout driven, structural objects.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Components ----- */\n/**\n * Components styles\n *\n * Cosmetic layer\n * Specific instructions.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Trumps --------- */\n/**\n * Trumps styles\n *\n * Override other styles, text alignment classes\n * Only place were !important is allowed.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- Some file --- */\nbody {\n  font: 1em/1.67 'Open Sans', Arial, Sans-serif;\n  background: #e9e9e9; }\n\n/*main color: rgb(96,125,139)*/\n/* Masonry bricks or child elements */\n.wrapper {\n  width: 95%;\n  margin: 3em auto; }\n\n​\n.grid {\n  width: 100%; }\n\n.item {\n  width: 100%;\n  margin: 10px;\n  border-radius: 3px; }\n  @media only screen and (min-width: 400px) {\n    .item {\n      width: 47%; } }\n  @media only screen and (min-width: 768px) {\n    .item {\n      width: 30%; } }\n  @media only screen and (min-width: 992px) {\n    .item {\n      width: 22%; } }\n\n.item:hover {\n  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }\n\n@media only screen and (min-width: 1280px) {\n  .wrapper {\n    width: 1260px; } }\n\n.centerItem {\n  width: 100%;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center; }\n\n.title {\n  padding: 0 30px; }\n", ""]);
 
 	// exports
 
 
 /***/ },
 
-/***/ 282:
+/***/ 278:
 /***/ function(module, exports) {
 
 	/*
@@ -141,7 +141,7 @@
 
 /***/ },
 
-/***/ 283:
+/***/ 279:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

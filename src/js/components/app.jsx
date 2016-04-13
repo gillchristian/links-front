@@ -1,10 +1,14 @@
-import React from 'react';
-import LinksListContainer from '../containers/linksListContainer';
-import CategoriesContainer from '../containers/CategoriesContainer';
+import React from 'react'
+import CategoriesContainer from '../containers/CategoriesContainer'
+import MainNav from './MainNav.jsx'
+import { Layout } from 'react-mdl'
 
 const App = () => (
-  <div className={'wrapper'}>
+  <Layout fixedHeader>
+    <MainNav/>
+    <div className={'wrapper'}>
       <CategoriesContainer />
-  </div>
+    </div>
+  </Layout>
 )
-export default App;
+export default App

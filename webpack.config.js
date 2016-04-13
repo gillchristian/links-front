@@ -28,7 +28,6 @@ module.exports = {
         test: /\.scss$/,
         loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
         //loader: cssExtract.extract('style-loader', 'css-loader', 'postcss-loader', 'sass-loader')
-
       },
       {
         test: /\.jsx?$/,

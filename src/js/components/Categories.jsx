@@ -1,12 +1,15 @@
 import React from 'react'
 import LinksListContainer from '../containers/linksListContainer'
 import Masonry from 'react-masonry-component'
+import { Spinner } from 'react-mdl'
 
 export default class Categories extends React.Component {
   componentWillMount() {
     this.props.fetchCategories()
-    // this.masonry('layout')
-    // console.log(this.masonry);
+  }
+
+  componentDidUpdate() {
+    this.masonry.layout()
   }
 
   mapLinksByCategory(categories){
@@ -15,16 +18,21 @@ export default class Categories extends React.Component {
   }
 
   render(){
-    const categories = this.props.categories
+    const { categories, loading } = this.props
     const masonryOptions = {
-      itemSelector: '.item'
+      itemSelector: '.item',
+      initLayout: true
     }
     return (
       <Masonry
+        ref={c => { if(c) this.masonry = c.masonry}}
         className={'grid'}
         elementType={'div'}
         disableImagesLoaded={false}>
-        {this.mapLinksByCategory(categories)}
+        { loading ?
+          <div className='centerItem'><Spinner /></div>:
+          this.mapLinksByCategory(categories)
+        }
       </Masonry>
     )
   }

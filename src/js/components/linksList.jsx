@@ -18,25 +18,20 @@ export default class LinksList extends React.Component {
     const styles = {
       title: {
         borderBottom: `3px solid ${category.color || 'gray'}`,
-        padding: '5px 30px',
         color: category.color || 'gray'
-      },
-      centerItem: {
-        display: 'flex',
-        justifyContent: 'center'
       }
     }
 
 
     return (
       <Card shadow={2} className={'item'}>
-        <CardTitle style={styles.title}>
+        <CardTitle style={styles.title} className='title'>
             <h4>{category.name}</h4>
         </CardTitle>
         <CardText>
           {
             loading ?
-              <Spinner /> : error ?
+              <div className='centerItem'><Spinner /></div> : error ?
                 <p>Sorry, there was an error, please try again!</p> :
                 <List>{this.linksMap(links)}</List>
           }
