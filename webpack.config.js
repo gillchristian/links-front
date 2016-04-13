@@ -1,6 +1,10 @@
 'use strict';
 let path = require('path')
 let webpack = require('webpack')
+var rucksack = require("rucksack-css")({
+  autoprefixer: true
+});
+
 //let ExtractTextPlugin = require("extract-text-webpack-plugin");
 //let cssExtract = new ExtractTextPlugin("[name].css");
 
@@ -36,6 +40,7 @@ module.exports = {
       }
     ]
   },
+  postcss: webpack => [ rucksack ],
   plugins: [
       //cssExtract
   ]
