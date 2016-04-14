@@ -1,14 +1,15 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import App from './components/App.jsx'
+
 import store from './store'
+
+import Routes from './components/Routes.jsx'
 
 import './assets/material'
 
 render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <Provider store={store}><Routes /></Provider>,
   document.getElementById('app')
   )
+

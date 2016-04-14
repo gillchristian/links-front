@@ -48,10 +48,10 @@
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(278);
+	var content = __webpack_require__(335);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(280)(content, {});
+	var update = __webpack_require__(337)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -69,22 +69,22 @@
 
 /***/ },
 
-/***/ 278:
+/***/ 335:
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(279)();
+	exports = module.exports = __webpack_require__(336)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\n/**\n *\n * Main file\n *\n * ---------------------\n * # Settings\n * # Tools\n * # Generic\n * # Base\n * # Objects\n * # Components\n * # Trumps\n * ---------------------\n */\n/* --- Settings ------- */\n/**\n * Variables file\n *\n * Preprocessor variables for latter use\n *\n * ---------------------\n * |--- Breakpoints\n * ---------------------\n */\n/* --- Breakpoints --- */\n/* --- Tools ---------- */\n/**\n * Tools file\n *\n * Mixins and functions\n *\n * ---------------------\n * |--- Media Queries\n * ---------------------\n */\n/* --- Media Queries --- */\n/* --- Generic -------- */\n/**\n * Generic file\n *\n * Third party CSS\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Base ----------- */\n/**\n * Base styles\n *\n * Element styles, no classes nor IDs.\n * Base typography & raw elements\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\nbody {\n  background: #e9e9e9; }\n\n/* --- Objects -------- */\n/**\n * Objects styles\n *\n * Object Oriented CSS\n * Layout driven, structural objects.\n *\n * ---------------------\n * |--- Layout\n * ---------------------\n */\n/* --- Layout --- */\n.wrapper {\n  width: 95%;\n  margin: 3em auto; }\n  @media only screen and (min-width: 1200px) {\n    .wrapper {\n      width: 1980px; } }\n  @media only screen and (min-width: 1600px) {\n    .wrapper {\n      width: 1500px; } }\n\n​\n.full-width {\n  width: 100%; }\n\n.centerItem {\n  width: 100%;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center; }\n\n/* --- Components ----- */\n/**\n * Components styles\n *\n * Cosmetic layer\n * Specific instructions.\n *\n * ---------------------\n * |--- LinkList\n * ---------------------\n */\n/* --- LinkList --- */\n.item {\n  width: 100%;\n  margin: 10px 1%;\n  border-radius: 3px; }\n  @media only screen and (min-width: 470px) {\n    .item {\n      width: 48%; } }\n  @media only screen and (min-width: 768px) {\n    .item {\n      width: 31%; } }\n  @media only screen and (min-width: 992px) {\n    .item {\n      width: 23%; } }\n  @media only screen and (min-width: 1366px) {\n    .item {\n      width: 18%; } }\n\n.item:hover {\n  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }\n\n.title {\n  padding: 0 30px; }\n\n/* --- Trumps --------- */\n/**\n * Trumps styles\n *\n * Override other styles, text alignment classes\n * Only place were !important is allowed.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- Some file --- */\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\n/**\n *\n * Main file\n *\n * ---------------------\n * # Settings\n * # Tools\n * # Generic\n * # Base\n * # Objects\n * # Components\n * # Trumps\n * ---------------------\n */\n/* --- Settings ------- */\n/**\n * Variables file\n *\n * Preprocessor variables for latter use\n *\n * ---------------------\n * |--- Breakpoints\n * ---------------------\n */\n/* --- Breakpoints --- */\n/* --- Tools ---------- */\n/**\n * Tools file\n *\n * Mixins and functions\n *\n * ---------------------\n * |--- Media Queries\n * ---------------------\n */\n/* --- Media Queries --- */\n/* --- Generic -------- */\n/**\n * Generic file\n *\n * Third party CSS\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\n/* --- Base ----------- */\n/**\n * Base styles\n *\n * Element styles, no classes nor IDs.\n * Base typography & raw elements\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- some file --- */\nbody {\n  background: #e9e9e9; }\n\n/* --- Objects -------- */\n/**\n * Objects styles\n *\n * Object Oriented CSS\n * Layout driven, structural objects.\n *\n * ---------------------\n * |--- Layout\n * ---------------------\n */\n/* --- Layout --- */\n.wrapper {\n  width: 95%;\n  margin: 3em auto; }\n  @media only screen and (min-width: 1200px) {\n    .wrapper {\n      width: 1980px; } }\n  @media only screen and (min-width: 1600px) {\n    .wrapper {\n      width: 1500px; } }\n\n​\n.full-width {\n  width: 100%; }\n\n.full-height {\n  height: 100vh; }\n\n.centerItem {\n  width: 100%;\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n  -webkit-justify-content: center;\n      -ms-flex-pack: center;\n          justify-content: center; }\n\n/* --- Components ----- */\n/**\n * Components styles\n *\n * Cosmetic layer\n * Specific instructions.\n *\n * ---------------------\n * |--- LinkList\n * |--- MDL Link\n * |--- FilterCategories\n * ---------------------\n */\n/* --- LinkList --- */\n.item {\n  width: 100%;\n  margin: 10px 1%;\n  border-radius: 3px; }\n  @media only screen and (min-width: 470px) {\n    .item {\n      width: 48%; } }\n  @media only screen and (min-width: 768px) {\n    .item {\n      width: 31%; } }\n  @media only screen and (min-width: 992px) {\n    .item {\n      width: 23%; } }\n  @media only screen and (min-width: 1366px) {\n    .item {\n      width: 18%; } }\n\n.item:hover {\n  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }\n\n.title {\n  padding: 0 30px; }\n\n/* --- MDL Link --- */\n.activeLink {\n  background-color: #e0e0e0; }\n\n/* --- FilterCategories --- */\n.filterCat-fix label {\n  bottom: 12px; }\n\n/* --- Trumps --------- */\n/**\n * Trumps styles\n *\n * Override other styles, text alignment classes\n * Only place were !important is allowed.\n *\n * ---------------------\n * |--- Some File\n * ---------------------\n */\n/* --- Some file --- */\n", ""]);
 
 	// exports
 
 
 /***/ },
 
-/***/ 279:
+/***/ 336:
 /***/ function(module, exports) {
 
 	/*
@@ -141,7 +141,7 @@
 
 /***/ },
 
-/***/ 280:
+/***/ 337:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
