@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 
 import { fetchLinks } from '../actions/links'
-import LinksLinst from '../components/linksList.jsx'
+import LinksLinst from '../components/LinksList.jsx'
 
 const mapStateToProps = (state, props) => {
 

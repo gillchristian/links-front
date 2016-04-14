@@ -3,12 +3,8 @@ import { Layout, Content, Header, Navigation, Drawer } from 'react-mdl'
 import CategoriesContainer from '../containers/CategoriesContainer'
 
 const App = () => (
-  <Layout fixedHeader>
-    <Header title='Wonderassets'>
-      <Navigation>
-        <a href='#'>Link</a>
-      </Navigation>
-    </Header>
+  <Layout>
+    <Header title='Wonderassets' />
     <Drawer title='Title'>
       <Navigation>
         <a href='#'>Link</a>

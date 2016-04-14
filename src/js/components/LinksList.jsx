@@ -1,5 +1,5 @@
 import React from 'react'
-import Link from './link.jsx'
+import Link from './Link.jsx'
 import { Card, CardTitle, CardText, List, ListItem, Spinner } from 'react-mdl'
 
 export default class LinksList extends React.Component {

@@ -40,6 +40,13 @@ body {
 .wrapper {
   width: 95%;
   margin: 3em auto;
+
+  @media only screen and (min-width: 1280px) {
+    width: 1260px;
+  }
+  @media only screen and (min-width: 1600px) {
+    width: 1500px;
+  }
 }
 ​
 .grid {
@@ -48,31 +55,32 @@ body {
 
 .item {
   width: 100%;
-  margin: 10px;
+  margin: 10px 0;
   border-radius: 3px;
-  @media only screen and (min-width: 400px) {
-    width: 47%;
+  @media only screen and (min-width: 470px) {
+    width: 48%;
+    margin: 10px 1%;
   }
 
   @media only screen and (min-width: 768px) {
-    width: 30%;
+    width: 31%;
+    margin: 10px 1%;
   }
 
   @media only screen and (min-width: 992px) {
-    width: 22%;
+    width: 23%;
+    margin: 10px 1%;
+  }
+
+  @media only screen and (min-width: 1366px) {
+    width: 18%;
+    margin: 10px 1%;
   }
 }
 
 .item:hover {
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
-
-@media only screen and (min-width: 1280px) {
-  .wrapper {
-    width: 1260px;
-  }
-}
-
 
 .centerItem {
   width: 100%;

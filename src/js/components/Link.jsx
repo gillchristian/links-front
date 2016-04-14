@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Links = ({link}) => {
+const Link = ({link}) => {
 
   let tagsStyles = {color: 'gray'}
   let linkLabel = () => link.link.replace(/^https?:\/\//ig, '').replace(/www\./, '')
@@ -21,4 +21,4 @@ const Links = ({link}) => {
   )
 }
 
-export default Links
+export default Link

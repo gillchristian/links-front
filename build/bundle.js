@@ -21487,20 +21487,8 @@
 	var App = function App() {
 	  return _react2.default.createElement(
 	    _reactMdl.Layout,
-	    { fixedHeader: true },
-	    _react2.default.createElement(
-	      _reactMdl.Header,
-	      { title: 'Wonderassets' },
-	      _react2.default.createElement(
-	        _reactMdl.Navigation,
-	        null,
-	        _react2.default.createElement(
-	          'a',
-	          { href: '#' },
-	          'Link'
-	        )
-	      )
-	    ),
+	    null,
+	    _react2.default.createElement(_reactMdl.Header, { title: 'Wonderassets' }),
 	    _react2.default.createElement(
 	      _reactMdl.Drawer,
 	      { title: 'Title' },
@@ -27066,9 +27054,9 @@
 
 	var _links = __webpack_require__(255);
 
-	var _linksList = __webpack_require__(256);
+	var _LinksList = __webpack_require__(256);
 
-	var _linksList2 = _interopRequireDefault(_linksList);
+	var _LinksList2 = _interopRequireDefault(_LinksList);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27093,7 +27081,7 @@
 	  return { fetchLinks: getLinks };
 	};
 
-	var LinksListContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_linksList2.default);
+	var LinksListContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_LinksList2.default);
 
 	exports.default = LinksListContainer;
 
@@ -27198,9 +27186,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _link = __webpack_require__(257);
+	var _Link = __webpack_require__(257);
 
-	var _link2 = _interopRequireDefault(_link);
+	var _Link2 = _interopRequireDefault(_Link);
 
 	var _reactMdl = __webpack_require__(187);
 
@@ -27233,7 +27221,7 @@
 	        return _react2.default.createElement(
 	          _reactMdl.ListItem,
 	          { key: link._id },
-	          _react2.default.createElement(_link2.default, { link: link })
+	          _react2.default.createElement(_Link2.default, { link: link })
 	        );
 	      });
 	    }
@@ -27308,7 +27296,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Links = function Links(_ref) {
+	var Link = function Link(_ref) {
 	  var link = _ref.link;
 
 
@@ -27349,7 +27337,7 @@
 	  );
 	};
 
-	exports.default = Links;
+	exports.default = Link;
 
 /***/ },
 /* 258 */
