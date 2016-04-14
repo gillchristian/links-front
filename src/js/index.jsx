@@ -1,9 +1,10 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import App from './components/app.jsx'
+import App from './components/App.jsx'
 import store from './store'
 
+import './assets/material'
 
 render(
   <Provider store={store}>
