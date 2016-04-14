@@ -22,18 +22,17 @@ export default class LinksList extends React.Component {
       }
     }
 
-
     return (
       <Card shadow={2} className={'item'}>
         <CardTitle style={styles.title} className='title'>
             <h4>{category.name}</h4>
         </CardTitle>
-        <CardText>
+        <CardText className={'content'}>
           {
             loading ?
               <div className='centerItem'><Spinner /></div> : error ?
                 <p>Sorry, there was an error, please try again!</p> :
-                <List>{this.linksMap(links)}</List>
+                <List className={'list'}>{this.linksMap(links)}</List>
           }
         </CardText>
       </Card>
