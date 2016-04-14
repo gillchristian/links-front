@@ -58,11 +58,11 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _store = __webpack_require__(267);
+	var _store = __webpack_require__(268);
 
 	var _store2 = _interopRequireDefault(_store);
 
-	__webpack_require__(276);
+	__webpack_require__(277);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21482,13 +21482,21 @@
 
 	var _CategoriesContainer2 = _interopRequireDefault(_CategoriesContainer);
 
+	var _FilterCategories = __webpack_require__(267);
+
+	var _FilterCategories2 = _interopRequireDefault(_FilterCategories);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var App = function App() {
 	  return _react2.default.createElement(
 	    _reactMdl.Layout,
 	    null,
-	    _react2.default.createElement(_reactMdl.Header, { title: 'Wonderassets' }),
+	    _react2.default.createElement(
+	      _reactMdl.Header,
+	      { title: 'Wonderassets' },
+	      _react2.default.createElement(_FilterCategories2.default, null)
+	    ),
 	    _react2.default.createElement(
 	      _reactMdl.Drawer,
 	      { title: 'Title' },
@@ -21513,6 +21521,7 @@
 	    )
 	  );
 	};
+
 	exports.default = App;
 
 /***/ },
@@ -26419,8 +26428,13 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var mapStateToProps = function mapStateToProps(state) {
+
+	  var filteredCategories = state.categories.list.filter(function (category) {
+	    return category.name.indexOf(state.categories.filterValue) > -1;
+	  });
+
 	  return {
-	    categories: state.categories.list,
+	    categories: filteredCategories,
 	    loading: state.categories.loading,
 	    // passing this so the componentDidUpdate gets triggered when
 	    // the links finished loading, to trigger masonry.layout
@@ -26448,11 +26462,12 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.REQUEST_CATEGORIES_ERROR = exports.REQUEST_CATEGORIES_SUCCESS = exports.REQUEST_CATEGORIES = undefined;
+	exports.FILTER_CATEGORIES = exports.REQUEST_CATEGORIES_ERROR = exports.REQUEST_CATEGORIES_SUCCESS = exports.REQUEST_CATEGORIES = undefined;
 	exports.requestCategories = requestCategories;
 	exports.requestCategoriesSuccess = requestCategoriesSuccess;
 	exports.requestCategoriesError = requestCategoriesError;
 	exports.fetchCategories = fetchCategories;
+	exports.filterCategories = filterCategories;
 
 	var _isomorphicFetch = __webpack_require__(250);
 
@@ -26467,6 +26482,7 @@
 	var REQUEST_CATEGORIES = exports.REQUEST_CATEGORIES = 'REQUEST_CATEGORIES';
 	var REQUEST_CATEGORIES_SUCCESS = exports.REQUEST_CATEGORIES_SUCCESS = 'REQUEST_CATEGORIES_SUCCESS';
 	var REQUEST_CATEGORIES_ERROR = exports.REQUEST_CATEGORIES_ERROR = 'REQUEST_CATEGORIES_ERROR';
+	var FILTER_CATEGORIES = exports.FILTER_CATEGORIES = 'FILTER_CATEGORIES';
 
 	/**
 	 * fetch categories action
@@ -26520,6 +26536,19 @@
 	    }).catch(function (error) {
 	      dispatch(requestCategoriesError(error));
 	    });
+	  };
+	}
+
+	/**
+	 * filter displayed categories by input
+	 *
+	 * @param {String}  filter value
+	 * @returns {object}  action object
+	 */
+	function filterCategories(payload) {
+	  return {
+	    type: FILTER_CATEGORIES,
+	    payload: payload
 	  };
 	}
 
@@ -26960,9 +26989,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _linksListContainer = __webpack_require__(254);
+	var _LinksListContainer = __webpack_require__(254);
 
-	var _linksListContainer2 = _interopRequireDefault(_linksListContainer);
+	var _LinksListContainer2 = _interopRequireDefault(_LinksListContainer);
 
 	var _reactMasonryComponent = __webpack_require__(258);
 
@@ -27001,7 +27030,7 @@
 	    key: 'mapLinksByCategory',
 	    value: function mapLinksByCategory(categories) {
 	      return categories.map(function (category) {
-	        return _react2.default.createElement(_linksListContainer2.default, { key: category._id, category: category });
+	        return _react2.default.createElement(_LinksListContainer2.default, { key: category._id, category: category });
 	      });
 	    }
 	  }, {
@@ -30211,15 +30240,52 @@
 	  value: true
 	});
 
-	__webpack_require__(268);
+	var _reactRedux = __webpack_require__(166);
+
+	var _categories = __webpack_require__(249);
+
+	var _reactMdl = __webpack_require__(187);
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    value: state.categories.filterValue,
+	    placeholder: 'type a category name',
+	    expandableIcon: 'search',
+	    expandable: true,
+	    label: 'Filter Categories Cards'
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  var onChange = function onChange(event) {
+	    dispatch((0, _categories.filterCategories)(event.target.value));
+	  };
+	  return { onChange: onChange };
+	};
+
+	var FilterCategories = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_reactMdl.Textfield);
+
+	exports.default = FilterCategories;
+
+/***/ },
+/* 268 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	__webpack_require__(269);
 
 	var _redux = __webpack_require__(173);
 
-	var _reduxThunk = __webpack_require__(272);
+	var _reduxThunk = __webpack_require__(273);
 
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
-	var _reducers = __webpack_require__(273);
+	var _reducers = __webpack_require__(274);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -30229,7 +30295,7 @@
 	exports.default = store;
 
 /***/ },
-/* 268 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(process, global, module) {/*!
@@ -30362,7 +30428,7 @@
 	    function lib$es6$promise$asap$$attemptVertx() {
 	      try {
 	        var r = require;
-	        var vertx = __webpack_require__(270);
+	        var vertx = __webpack_require__(271);
 	        lib$es6$promise$asap$$vertxNext = vertx.runOnLoop || vertx.runOnContext;
 	        return lib$es6$promise$asap$$useVertxTimer();
 	      } catch(e) {
@@ -31175,7 +31241,7 @@
 	    };
 
 	    /* global define:true module:true window: true */
-	    if ("function" === 'function' && __webpack_require__(271)['amd']) {
+	    if ("function" === 'function' && __webpack_require__(272)['amd']) {
 	      !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return lib$es6$promise$umd$$ES6Promise; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else if (typeof module !== 'undefined' && module['exports']) {
 	      module['exports'] = lib$es6$promise$umd$$ES6Promise;
@@ -31187,10 +31253,10 @@
 	}).call(this);
 
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), (function() { return this; }()), __webpack_require__(269)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), (function() { return this; }()), __webpack_require__(270)(module)))
 
 /***/ },
-/* 269 */
+/* 270 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -31206,20 +31272,20 @@
 
 
 /***/ },
-/* 270 */
+/* 271 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 271 */
+/* 272 */
 /***/ function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
 
 
 /***/ },
-/* 272 */
+/* 273 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -31242,7 +31308,7 @@
 	}
 
 /***/ },
-/* 273 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31253,11 +31319,11 @@
 
 	var _redux = __webpack_require__(173);
 
-	var _links = __webpack_require__(274);
+	var _links = __webpack_require__(275);
 
 	var _links2 = _interopRequireDefault(_links);
 
-	var _categories = __webpack_require__(275);
+	var _categories = __webpack_require__(276);
 
 	var _categories2 = _interopRequireDefault(_categories);
 
@@ -31289,7 +31355,7 @@
 	*/
 
 /***/ },
-/* 274 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31344,7 +31410,7 @@
 	}
 
 /***/ },
-/* 275 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31362,7 +31428,8 @@
 	var INITIAL_STATE = {
 	  list: [],
 	  error: null,
-	  loading: false
+	  loading: false,
+	  filterValue: ''
 	};
 
 	function categories() {
@@ -31391,6 +31458,11 @@
 	        loading: false
 	      });
 	      break;
+	    case _categories.FILTER_CATEGORIES:
+	      return _extends({}, state, {
+	        filterValue: action.payload
+	      });
+	      break;
 	    default:
 	      return state;
 	      break;
@@ -31398,7 +31470,7 @@
 	}
 
 /***/ },
-/* 276 */
+/* 277 */
 /***/ function(module, exports) {
 
 	'use strict';var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj;};;(function(){"use strict";if(typeof window==='undefined')return; /**

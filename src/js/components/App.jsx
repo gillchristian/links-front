@@ -1,10 +1,13 @@
 import React from 'react'
-import { Layout, Content, Header, Navigation, Drawer } from 'react-mdl'
+import { Layout, Content, Header, Navigation, Drawer, Textfield } from 'react-mdl'
 import CategoriesContainer from '../containers/CategoriesContainer'
+import FilterCategories from '../containers/FilterCategories'
 
 const App = () => (
   <Layout>
-    <Header title='Wonderassets' />
+    <Header title='Wonderassets'>
+      <FilterCategories />
+    </Header>
     <Drawer title='Title'>
       <Navigation>
         <a href='#'>Link</a>
@@ -17,4 +20,5 @@ const App = () => (
     </Content>
   </Layout>
 )
+
 export default App

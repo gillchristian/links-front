@@ -3,15 +3,19 @@ import { connect } from 'react-redux'
 import { fetchCategories } from '../actions/categories'
 import Categories from '../components/Categories.jsx'
 
-const mapStateToProps = state => (
-  {
-    categories: state.categories.list,
+const mapStateToProps = state => {
+
+  const filteredCategories = state.categories.list
+    .filter(category => category.name.indexOf(state.categories.filterValue) > -1)
+
+  return {
+    categories: filteredCategories,
     loading: state.categories.loading,
     // passing this so the componentDidUpdate gets triggered when
     // the links finished loading, to trigger masonry.layout
     loadingLinks: state.links.loading
   }
-)
+}
 
 const mapDispatchToProps = (dispatch) => {
   let getCategories = () => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import LinksListContainer from '../containers/linksListContainer'
+import LinksListContainer from '../containers/LinksListContainer'
 import Masonry from 'react-masonry-component'
 import { Spinner } from 'react-mdl'
 

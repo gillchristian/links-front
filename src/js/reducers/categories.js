@@ -1,9 +1,10 @@
-import { REQUEST_CATEGORIES, REQUEST_CATEGORIES_SUCCESS, REQUEST_CATEGORIES_ERROR } from '../actions/categories'
+import { REQUEST_CATEGORIES, REQUEST_CATEGORIES_SUCCESS, REQUEST_CATEGORIES_ERROR, FILTER_CATEGORIES } from '../actions/categories'
 
 const INITIAL_STATE = {
   list: [],
   error: null,
-  loading: false
+  loading: false,
+  filterValue: ''
 }
 
 export default function categories(state = INITIAL_STATE, action){
@@ -30,6 +31,12 @@ export default function categories(state = INITIAL_STATE, action){
         list: [],
         error: action.payload,
         loading: false
+      }
+      break
+    case FILTER_CATEGORIES:
+      return {
+        ...state,
+        filterValue: action.payload
       }
       break
     default:

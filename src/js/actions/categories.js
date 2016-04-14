@@ -4,6 +4,7 @@ import urls from './urls'
 export const REQUEST_CATEGORIES = 'REQUEST_CATEGORIES'
 export const REQUEST_CATEGORIES_SUCCESS = 'REQUEST_CATEGORIES_SUCCESS'
 export const REQUEST_CATEGORIES_ERROR = 'REQUEST_CATEGORIES_ERROR'
+export const FILTER_CATEGORIES = 'FILTER_CATEGORIES'
 
 /**
  * fetch categories action
@@ -58,5 +59,18 @@ export function fetchCategories(){
       .catch(error => {
         dispatch(requestCategoriesError(error))
       })
+  }
+}
+
+/**
+ * filter displayed categories by input
+ *
+ * @param {String}  filter value
+ * @returns {object}  action object
+ */
+export function filterCategories(payload){
+  return {
+    type: FILTER_CATEGORIES,
+    payload
   }
 }
