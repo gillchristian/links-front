@@ -1,0 +1,11 @@
+@mixin mediaUntil($size){
+  @media only screen and (max-width: $size){
+    @content;
+  }
+}
+
+@mixin mediaFrom($size){
+  @media only screen and (min-width: $size){
+    @content;
+  }
+}

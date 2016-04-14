@@ -1,0 +1,16 @@
+.wrapper {
+  width: 95%;
+  margin: 3em auto;
+  @include mediaFrom($desktop) { width: 1980px; }
+  @include mediaFrom($lg) { width: 1500px; }
+}
+​
+.full-width {
+  width: 100%;
+}
+
+.centerItem {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

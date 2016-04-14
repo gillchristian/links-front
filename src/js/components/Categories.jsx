@@ -26,7 +26,7 @@ export default class Categories extends React.Component {
     return (
       <Masonry
         ref={c => { if(c) this.masonry = c.masonry}}
-        className={'grid'}
+        className={'full-width'}
         elementType={'div'}
         disableImagesLoaded={false}>
         { loading ?

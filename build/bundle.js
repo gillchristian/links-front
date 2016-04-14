@@ -27052,7 +27052,7 @@
 	          ref: function ref(c) {
 	            if (c) _this2.masonry = c.masonry;
 	          },
-	          className: 'grid',
+	          className: 'full-width',
 	          elementType: 'div',
 	          disableImagesLoaded: false },
 	        loading ? _react2.default.createElement(
