@@ -16,7 +16,6 @@ export default function links(state = INITIAL_STATE, action){
         error: null,
         loading: true
       }
-      break
     case REQUEST_LINKS_SUCCESS:
       return {
         ...state,
@@ -24,7 +23,6 @@ export default function links(state = INITIAL_STATE, action){
         error: null,
         loading: false
       }
-      break
     case REQUEST_LINKS_ERROR:
       return {
         ...state,
@@ -32,9 +30,7 @@ export default function links(state = INITIAL_STATE, action){
         error: action.payload.message,
         loading: false
       }
-      break
     default:
       return state
-      break
   }
 }

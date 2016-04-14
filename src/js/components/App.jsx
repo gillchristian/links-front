@@ -3,14 +3,10 @@ import { Link } from 'react-router'
 
 import { Layout, Content, Header, Navigation, Drawer } from 'react-mdl'
 
-import FilterCategories from '../containers/FilterCategories'
-
 const App = ({children}) => (
   <div className='full-height'>
     <Layout>
-      <Header title='Wonderassets'>
-        <FilterCategories />
-      </Header>
+      <Header title='Wonderassets' />
       <Drawer title='Wonderassets'>
         <Navigation>
           <Link to={'/'} activeClassName="activeLink">Wonderassets</Link>

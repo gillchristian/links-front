@@ -16,7 +16,6 @@ export default function categories(state = INITIAL_STATE, action){
         error: null,
         loading: true
       }
-      break
     case REQUEST_CATEGORIES_SUCCESS:
       return {
         ...state,
@@ -24,7 +23,6 @@ export default function categories(state = INITIAL_STATE, action){
         error: null,
         loading: false
       }
-      break
     case REQUEST_CATEGORIES_ERROR:
       return {
         ...state,
@@ -32,15 +30,12 @@ export default function categories(state = INITIAL_STATE, action){
         error: action.payload,
         loading: false
       }
-      break
     case FILTER_CATEGORIES:
       return {
         ...state,
         filterValue: action.payload
       }
-      break
     default:
       return state
-      break
   }
 }
