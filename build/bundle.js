@@ -62,7 +62,7 @@
 
 	var _Routes2 = _interopRequireDefault(_Routes);
 
-	__webpack_require__(338);
+	__webpack_require__(340);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22578,6 +22578,13 @@
 	        error: action.payload.message,
 	        loading: false
 	      });
+	    case _links.REMOVE_LINK:
+	      var list = state.list.filter(function (item) {
+	        return item._id != action.payload;
+	      });
+	      return _extends({}, state, {
+	        list: list
+	      });
 	    default:
 	      return state;
 	  }
@@ -22592,10 +22599,11 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.RESET_LINKS = exports.REQUEST_LINKS_ERROR = exports.REQUEST_LINKS_SUCCESS = exports.REQUEST_LINKS = undefined;
+	exports.REMOVE_LINK = exports.RESET_LINKS = exports.REQUEST_LINKS_ERROR = exports.REQUEST_LINKS_SUCCESS = exports.REQUEST_LINKS = undefined;
 	exports.requestLinks = requestLinks;
 	exports.requestLinksSuccess = requestLinksSuccess;
 	exports.requestLinksError = requestLinksError;
+	exports.removeLink = removeLink;
 	exports.fetchLinks = fetchLinks;
 
 	var _isomorphicFetch = __webpack_require__(195);
@@ -22612,6 +22620,8 @@
 	var REQUEST_LINKS_SUCCESS = exports.REQUEST_LINKS_SUCCESS = 'REQUEST_LINKS_SUCCESS';
 	var REQUEST_LINKS_ERROR = exports.REQUEST_LINKS_ERROR = 'REQUEST_LINKS_ERROR';
 	var RESET_LINKS = exports.RESET_LINKS = 'RESET_LINKS';
+
+	var REMOVE_LINK = exports.REMOVE_LINK = 'REMOVE_LINK';
 
 	/**
 	 * request links action
@@ -22646,6 +22656,19 @@
 	function requestLinksError(payload) {
 	  return {
 	    type: REQUEST_LINKS_ERROR,
+	    payload: payload
+	  };
+	}
+
+	/**
+	 * removes a link
+	 *
+	 * @param {String}  link id
+	 * @returns {Object}  action object
+	 */
+	function removeLink(payload) {
+	  return {
+	    type: REMOVE_LINK,
 	    payload: payload
 	  };
 	}
@@ -23340,7 +23363,6 @@
 	 * @returns {Object}  action object
 	 */
 	function requestUserSuccess(payload) {
-	  console.log(payload);
 	  return {
 	    type: REQUEST_USER_SUCCESS,
 	    payload: payload
@@ -33604,7 +33626,7 @@
 
 	var _CategoriesContainer2 = _interopRequireDefault(_CategoriesContainer);
 
-	var _FilterCategories = __webpack_require__(337);
+	var _FilterCategories = __webpack_require__(339);
 
 	var _FilterCategories2 = _interopRequireDefault(_FilterCategories);
 
@@ -33692,10 +33714,7 @@
 
 	  return {
 	    categories: filteredCategories,
-	    loading: state.categories.loading,
-	    // passing this so the componentDidUpdate gets triggered when
-	    // the links finished loading, to trigger masonry.layout
-	    loadingLinks: state.links.loading
+	    loading: state.categories.loading
 	  };
 	};
 
@@ -33730,7 +33749,7 @@
 
 	var _LinksListContainer2 = _interopRequireDefault(_LinksListContainer);
 
-	var _reactMasonryComponent = __webpack_require__(328);
+	var _reactMasonryComponent = __webpack_require__(330);
 
 	var _reactMasonryComponent2 = _interopRequireDefault(_reactMasonryComponent);
 
@@ -33937,7 +33956,7 @@
 	        ),
 	        _react2.default.createElement(
 	          _reactMdl.CardText,
-	          null,
+	          { className: 'content' },
 	          loading ? _react2.default.createElement(
 	            'div',
 	            { className: 'centerItem' },
@@ -33948,7 +33967,7 @@
 	            'Sorry, there was an error, please try again!'
 	          ) : _react2.default.createElement(
 	            _reactMdl.List,
-	            null,
+	            { className: 'list' },
 	            this.linksMap(links)
 	          )
 	        )
@@ -33975,13 +33994,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactMdl = __webpack_require__(260);
+
+	var _LinkMenuContainer = __webpack_require__(328);
+
+	var _LinkMenuContainer2 = _interopRequireDefault(_LinkMenuContainer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Link = function Link(_ref) {
 	  var link = _ref.link;
 
-
-	  var tagsStyles = { color: 'gray' };
 	  var linkLabel = function linkLabel() {
 	    return link.link.replace(/^https?:\/\//ig, '').replace(/www\./, '');
 	  };
@@ -34000,21 +34023,26 @@
 
 	  return _react2.default.createElement(
 	    'div',
-	    null,
+	    { className: 'flxR c-center m-between linkRow' },
 	    _react2.default.createElement(
-	      'p',
+	      'div',
 	      null,
 	      _react2.default.createElement(
-	        'a',
-	        { href: link.link, target: '_blank' },
-	        linkLabel()
+	        'p',
+	        null,
+	        _react2.default.createElement(
+	          'a',
+	          { href: link.link, target: '_blank' },
+	          linkLabel()
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'p',
+	        { className: 'tag' },
+	        tags()
 	      )
 	    ),
-	    _react2.default.createElement(
-	      'p',
-	      { style: tagsStyles },
-	      tags()
-	    )
+	    _react2.default.createElement(_LinkMenuContainer2.default, { id: link._id })
 	  );
 	};
 
@@ -34024,9 +34052,98 @@
 /* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _reactRedux = __webpack_require__(166);
+
+	var _links = __webpack_require__(194);
+
+	var _LinkMenu = __webpack_require__(329);
+
+	var _LinkMenu2 = _interopRequireDefault(_LinkMenu);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state, props) {
+	  return { id: props.id };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  var deleteLink = function deleteLink(id) {
+	    dispatch((0, _links.removeLink)(id));
+	  };
+	  return { deleteLink: deleteLink };
+	};
+
+	var LinkMenuContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_LinkMenu2.default);
+
+	exports.default = LinkMenuContainer;
+
+/***/ },
+/* 329 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactMdl = __webpack_require__(260);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var LinkMenu = function LinkMenu(_ref) {
+	  var id = _ref.id;
+	  var deleteLink = _ref.deleteLink;
+
+	  var handleClick = function handleClick() {
+	    deleteLink(id);
+	  };
+
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(_reactMdl.IconButton, { name: 'more_vert', id: 'linkMenu' + id }),
+	    _react2.default.createElement(
+	      _reactMdl.Menu,
+	      { target: 'linkMenu' + id, valign: 'top', align: 'right' },
+	      _react2.default.createElement(
+	        _reactMdl.MenuItem,
+	        null,
+	        'Edit'
+	      ),
+	      _react2.default.createElement(
+	        _reactMdl.MenuItem,
+	        null,
+	        'Share'
+	      ),
+	      _react2.default.createElement(
+	        _reactMdl.MenuItem,
+	        { onClick: handleClick },
+	        'Remove'
+	      )
+	    )
+	  );
+	};
+
+	exports.default = LinkMenu;
+
+/***/ },
+/* 330 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var isBrowser = (typeof window !== 'undefined');
-	var Masonry = isBrowser ? window.Masonry || __webpack_require__(329) : null;
-	var imagesloaded = isBrowser ? __webpack_require__(336) : null;
+	var Masonry = isBrowser ? window.Masonry || __webpack_require__(331) : null;
+	var imagesloaded = isBrowser ? __webpack_require__(338) : null;
 	var React = __webpack_require__(1);
 	var refName = 'masonryContainer';
 
@@ -34222,7 +34339,7 @@
 
 
 /***/ },
-/* 329 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -34239,8 +34356,8 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	        __webpack_require__(330),
-	        __webpack_require__(332)
+	        __webpack_require__(332),
+	        __webpack_require__(334)
 	      ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ( typeof module == 'object' && module.exports ) {
 	    // CommonJS
@@ -34432,7 +34549,7 @@
 
 
 /***/ },
-/* 330 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -34448,10 +34565,10 @@
 	  if ( true ) {
 	    // AMD - RequireJS
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	        __webpack_require__(331),
-	        __webpack_require__(332),
 	        __webpack_require__(333),
-	        __webpack_require__(335)
+	        __webpack_require__(334),
+	        __webpack_require__(335),
+	        __webpack_require__(337)
 	      ], __WEBPACK_AMD_DEFINE_RESULT__ = function( EvEmitter, getSize, utils, Item ) {
 	        return factory( window, EvEmitter, getSize, utils, Item);
 	      }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -35333,7 +35450,7 @@
 
 
 /***/ },
-/* 331 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -35448,7 +35565,7 @@
 
 
 /***/ },
-/* 332 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -35663,7 +35780,7 @@
 
 
 /***/ },
-/* 333 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -35680,7 +35797,7 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	      __webpack_require__(334)
+	      __webpack_require__(336)
 	    ], __WEBPACK_AMD_DEFINE_RESULT__ = function( matchesSelector ) {
 	      return factory( window, matchesSelector );
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -35904,7 +36021,7 @@
 
 
 /***/ },
-/* 334 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -35963,7 +36080,7 @@
 
 
 /***/ },
-/* 335 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -35976,8 +36093,8 @@
 	  if ( true ) {
 	    // AMD - RequireJS
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	        __webpack_require__(331),
-	        __webpack_require__(332)
+	        __webpack_require__(333),
+	        __webpack_require__(334)
 	      ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ( typeof module == 'object' && module.exports ) {
 	    // CommonJS - Browserify, Webpack
@@ -36507,7 +36624,7 @@
 
 
 /***/ },
-/* 336 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -36524,7 +36641,7 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	      __webpack_require__(331)
+	      __webpack_require__(333)
 	    ], __WEBPACK_AMD_DEFINE_RESULT__ = function( EvEmitter ) {
 	      return factory( window, EvEmitter );
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -36883,7 +37000,7 @@
 
 
 /***/ },
-/* 337 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36920,7 +37037,7 @@
 	exports.default = FilterCategories;
 
 /***/ },
-/* 338 */
+/* 340 */
 /***/ function(module, exports) {
 
 	'use strict';var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj;};;(function(){"use strict";if(typeof window==='undefined')return; /**
