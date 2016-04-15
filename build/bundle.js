@@ -22514,9 +22514,9 @@
 
 	var _redux = __webpack_require__(173);
 
-	var _links = __webpack_require__(193);
+	var _assets = __webpack_require__(193);
 
-	var _links2 = _interopRequireDefault(_links);
+	var _assets2 = _interopRequireDefault(_assets);
 
 	var _categories = __webpack_require__(198);
 
@@ -22528,7 +22528,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var rootReducer = (0, _redux.combineReducers)({ links: _links2.default, categories: _categories2.default, user: _user2.default });
+	var rootReducer = (0, _redux.combineReducers)({ assets: _assets2.default, categories: _categories2.default, user: _user2.default });
 
 	exports.default = rootReducer;
 
@@ -22544,9 +22544,9 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	exports.default = links;
+	exports.default = assets;
 
-	var _links = __webpack_require__(194);
+	var _assets = __webpack_require__(194);
 
 	var INITIAL_STATE = {
 	  list: [],
@@ -22554,31 +22554,31 @@
 	  loading: false
 	};
 
-	function links() {
+	function assets() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
 	  var action = arguments[1];
 
 
 	  switch (action.type) {
-	    case _links.REQUEST_LINKS:
+	    case _assets.REQUEST_ASSETS:
 	      return _extends({}, state, {
 	        list: [],
 	        error: null,
 	        loading: true
 	      });
-	    case _links.REQUEST_LINKS_SUCCESS:
+	    case _assets.REQUEST_ASSETS_SUCCESS:
 	      return _extends({}, state, {
 	        list: action.payload,
 	        error: null,
 	        loading: false
 	      });
-	    case _links.REQUEST_LINKS_ERROR:
+	    case _assets.REQUEST_ASSETS_ERROR:
 	      return _extends({}, state, {
 	        list: [],
 	        error: action.payload.message,
 	        loading: false
 	      });
-	    case _links.REMOVE_LINK:
+	    case _assets.REMOVE_LINK:
 	      var list = state.list.filter(function (item) {
 	        return item._id != action.payload;
 	      });
@@ -22599,12 +22599,12 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.REMOVE_LINK = exports.RESET_LINKS = exports.REQUEST_LINKS_ERROR = exports.REQUEST_LINKS_SUCCESS = exports.REQUEST_LINKS = undefined;
-	exports.requestLinks = requestLinks;
-	exports.requestLinksSuccess = requestLinksSuccess;
-	exports.requestLinksError = requestLinksError;
-	exports.removeLink = removeLink;
-	exports.fetchLinks = fetchLinks;
+	exports.REMOVE_ASSET = exports.RESET_ASSETS = exports.REQUEST_ASSETS_ERROR = exports.REQUEST_ASSETS_SUCCESS = exports.REQUEST_ASSETS = undefined;
+	exports.requestAssets = requestAssets;
+	exports.requestAssetsSuccess = requestAssetsSuccess;
+	exports.requestAssetsError = requestAssetsError;
+	exports.removeAsset = removeAsset;
+	exports.fetchAssets = fetchAssets;
 
 	var _isomorphicFetch = __webpack_require__(195);
 
@@ -22616,59 +22616,59 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var REQUEST_LINKS = exports.REQUEST_LINKS = 'REQUEST_LINKS';
-	var REQUEST_LINKS_SUCCESS = exports.REQUEST_LINKS_SUCCESS = 'REQUEST_LINKS_SUCCESS';
-	var REQUEST_LINKS_ERROR = exports.REQUEST_LINKS_ERROR = 'REQUEST_LINKS_ERROR';
-	var RESET_LINKS = exports.RESET_LINKS = 'RESET_LINKS';
+	var REQUEST_ASSETS = exports.REQUEST_ASSETS = 'REQUEST_ASSETS';
+	var REQUEST_ASSETS_SUCCESS = exports.REQUEST_ASSETS_SUCCESS = 'REQUEST_ASSETS_SUCCESS';
+	var REQUEST_ASSETS_ERROR = exports.REQUEST_ASSETS_ERROR = 'REQUEST_ASSETS_ERROR';
+	var RESET_ASSETS = exports.RESET_ASSETS = 'RESET_ASSETS';
 
-	var REMOVE_LINK = exports.REMOVE_LINK = 'REMOVE_LINK';
+	var REMOVE_ASSET = exports.REMOVE_ASSET = 'REMOVE_ASSET';
 
 	/**
-	 * request links action
+	 * request Assets action
 	 *
 	 * @returns {Object}  action object
 	 */
-	function requestLinks() {
+	function requestAssets() {
 	  return {
-	    type: REQUEST_LINKS
+	    type: REQUEST_ASSETS
 	  };
 	}
 
 	/**
-	 * request links succes action
+	 * request Assets succes action
 	 *
-	 * @param {Object[]}  links
+	 * @param {Object[]}  Assets
 	 * @returns {Object}  action object
 	 */
-	function requestLinksSuccess(payload) {
+	function requestAssetsSuccess(payload) {
 	  return {
-	    type: REQUEST_LINKS_SUCCESS,
+	    type: REQUEST_ASSETS_SUCCESS,
 	    payload: payload
 	  };
 	}
 
 	/**
-	 * request links error action
+	 * request Assets error action
 	 *
 	 * @param {Object[]}  error
 	 * @returns {Object}  action object
 	 */
-	function requestLinksError(payload) {
+	function requestAssetsError(payload) {
 	  return {
-	    type: REQUEST_LINKS_ERROR,
+	    type: REQUEST_ASSETS_ERROR,
 	    payload: payload
 	  };
 	}
 
 	/**
-	 * removes a link
+	 * removes a asset
 	 *
-	 * @param {String}  link id
+	 * @param {String}  asset id
 	 * @returns {Object}  action object
 	 */
-	function removeLink(payload) {
+	function removeAsset(payload) {
 	  return {
-	    type: REMOVE_LINK,
+	    type: REMOVE_ASSET,
 	    payload: payload
 	  };
 	}
@@ -22678,15 +22678,15 @@
 	 *
 	 * @returns {object}  action object
 	 */
-	function fetchLinks() {
+	function fetchAssets() {
 	  return function (dispatch) {
-	    dispatch(requestLinks());
+	    dispatch(requestAssets());
 	    return (0, _isomorphicFetch2.default)(_urls2.default.ROOT_URL + '/assets').then(function (response) {
 	      return response.json();
 	    }).then(function (json) {
-	      dispatch(requestLinksSuccess(json));
+	      dispatch(requestAssetsSuccess(json));
 	    }).catch(function (error) {
-	      dispatch(requestLinksError(error));
+	      dispatch(requestAssetsError(error));
 	    });
 	  };
 	}
@@ -28657,7 +28657,7 @@
 	          _reactMdl.Navigation,
 	          null,
 	          _react2.default.createElement(
-	            _reactRouter.Link,
+	            _reactRouter.IndexLink,
 	            { to: '/', activeClassName: 'activeLink' },
 	            'Wonderassets'
 	          ),
@@ -33708,12 +33708,14 @@
 
 	var mapStateToProps = function mapStateToProps(state) {
 
-	  var filteredCategories = state.categories.list.filter(function (category) {
-	    return category.name.indexOf(state.categories.filterValue) > -1;
+	  var filterValue = state.categories.filterValue.toLowerCase();
+
+	  var categories = state.categories.list.filter(function (category) {
+	    return category.name.toLowerCase().indexOf(filterValue) > -1;
 	  });
 
 	  return {
-	    categories: filteredCategories,
+	    categories: categories,
 	    loading: state.categories.loading
 	  };
 	};
@@ -33745,9 +33747,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _LinksListContainer = __webpack_require__(325);
+	var _AssetsListContainer = __webpack_require__(325);
 
-	var _LinksListContainer2 = _interopRequireDefault(_LinksListContainer);
+	var _AssetsListContainer2 = _interopRequireDefault(_AssetsListContainer);
 
 	var _reactMasonryComponent = __webpack_require__(330);
 
@@ -33783,10 +33785,10 @@
 	      this.masonry.layout();
 	    }
 	  }, {
-	    key: 'mapLinksByCategory',
-	    value: function mapLinksByCategory(categories) {
+	    key: 'mapAssetsByCategory',
+	    value: function mapAssetsByCategory(categories) {
 	      return categories.map(function (category) {
-	        return _react2.default.createElement(_LinksListContainer2.default, { key: category._id, category: category });
+	        return _react2.default.createElement(_AssetsListContainer2.default, { key: category._id, category: category });
 	      });
 	    }
 	  }, {
@@ -33815,7 +33817,7 @@
 	          'div',
 	          { className: 'centerItem' },
 	          _react2.default.createElement(_reactMdl.Spinner, null)
-	        ) : this.mapLinksByCategory(categories)
+	        ) : this.mapAssetsByCategory(categories)
 	      );
 	    }
 	  }]);
@@ -33837,38 +33839,38 @@
 
 	var _reactRedux = __webpack_require__(166);
 
-	var _links = __webpack_require__(194);
+	var _assets = __webpack_require__(194);
 
-	var _LinksList = __webpack_require__(326);
+	var _AssetsList = __webpack_require__(326);
 
-	var _LinksList2 = _interopRequireDefault(_LinksList);
+	var _AssetsList2 = _interopRequireDefault(_AssetsList);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var mapStateToProps = function mapStateToProps(state, props) {
 
-	  var links = state.links.list.filter(function (link) {
-	    return link.categories.indexOf(props.category._id) > -1;
+	  var assets = state.assets.list.filter(function (asset) {
+	    return asset.categories.indexOf(props.category._id) > -1;
 	  });
 
 	  return {
-	    loading: state.links.loading,
-	    error: state.links.error,
+	    loading: state.assets.loading,
+	    error: state.assets.error,
 	    category: props.category,
-	    links: links
+	    assets: assets
 	  };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  var getLinks = function getLinks() {
-	    dispatch((0, _links.fetchLinks)());
+	  var getAssets = function getAssets() {
+	    dispatch((0, _assets.fetchAssets)());
 	  };
-	  return { fetchLinks: getLinks };
+	  return { fetchAssets: getAssets };
 	};
 
-	var LinksListContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_LinksList2.default);
+	var AssetsListContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AssetsList2.default);
 
-	exports.default = LinksListContainer;
+	exports.default = AssetsListContainer;
 
 /***/ },
 /* 326 */
@@ -33886,9 +33888,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Link = __webpack_require__(327);
+	var _Asset = __webpack_require__(327);
 
-	var _Link2 = _interopRequireDefault(_Link);
+	var _Asset2 = _interopRequireDefault(_Asset);
 
 	var _reactMdl = __webpack_require__(260);
 
@@ -33900,28 +33902,28 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var LinksList = function (_React$Component) {
-	  _inherits(LinksList, _React$Component);
+	var AssetsList = function (_React$Component) {
+	  _inherits(AssetsList, _React$Component);
 
-	  function LinksList() {
-	    _classCallCheck(this, LinksList);
+	  function AssetsList() {
+	    _classCallCheck(this, AssetsList);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(LinksList).apply(this, arguments));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(AssetsList).apply(this, arguments));
 	  }
 
-	  _createClass(LinksList, [{
+	  _createClass(AssetsList, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
-	      this.props.fetchLinks();
+	      this.props.fetchAssets();
 	    }
 	  }, {
-	    key: 'linksMap',
-	    value: function linksMap(links) {
-	      return links.map(function (link) {
+	    key: 'assetsMap',
+	    value: function assetsMap(assets) {
+	      return assets.map(function (asset) {
 	        return _react2.default.createElement(
 	          _reactMdl.ListItem,
-	          { key: link._id },
-	          _react2.default.createElement(_Link2.default, { link: link })
+	          { key: asset._id },
+	          _react2.default.createElement(_Asset2.default, { asset: asset })
 	        );
 	      });
 	    }
@@ -33929,7 +33931,7 @@
 	    key: 'render',
 	    value: function render() {
 	      var _props = this.props;
-	      var links = _props.links;
+	      var assets = _props.assets;
 	      var loading = _props.loading;
 	      var error = _props.error;
 	      var category = _props.category;
@@ -33968,17 +33970,17 @@
 	          ) : _react2.default.createElement(
 	            _reactMdl.List,
 	            { className: 'list' },
-	            this.linksMap(links)
+	            this.assetsMap(assets)
 	          )
 	        )
 	      );
 	    }
 	  }]);
 
-	  return LinksList;
+	  return AssetsList;
 	}(_react2.default.Component);
 
-	exports.default = LinksList;
+	exports.default = AssetsList;
 
 /***/ },
 /* 327 */
@@ -33996,21 +33998,18 @@
 
 	var _reactMdl = __webpack_require__(260);
 
-	var _LinkMenuContainer = __webpack_require__(328);
+	var _AssetMenuContainer = __webpack_require__(328);
 
-	var _LinkMenuContainer2 = _interopRequireDefault(_LinkMenuContainer);
+	var _AssetMenuContainer2 = _interopRequireDefault(_AssetMenuContainer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Link = function Link(_ref) {
-	  var link = _ref.link;
+	  var asset = _ref.asset;
 
-	  var linkLabel = function linkLabel() {
-	    return link.link.replace(/^https?:\/\//ig, '').replace(/www\./, '');
-	  };
 
 	  var tags = function tags() {
-	    return link.tags.map(function (tag, key) {
+	    return asset.tags.map(function (tag, key) {
 	      return _react2.default.createElement(
 	        'i',
 	        { key: key, className: 'tag' },
@@ -34032,8 +34031,8 @@
 	        null,
 	        _react2.default.createElement(
 	          'a',
-	          { href: link.link, target: '_blank' },
-	          linkLabel()
+	          { href: asset.link, target: '_blank' },
+	          asset.text || asset.link
 	        )
 	      ),
 	      _react2.default.createElement(
@@ -34042,7 +34041,7 @@
 	        tags()
 	      )
 	    ),
-	    _react2.default.createElement(_LinkMenuContainer2.default, { id: link._id })
+	    _react2.default.createElement(_AssetMenuContainer2.default, { id: asset._id })
 	  );
 	};
 
@@ -34060,11 +34059,11 @@
 
 	var _reactRedux = __webpack_require__(166);
 
-	var _links = __webpack_require__(194);
+	var _assets = __webpack_require__(194);
 
-	var _LinkMenu = __webpack_require__(329);
+	var _AssetMenu = __webpack_require__(329);
 
-	var _LinkMenu2 = _interopRequireDefault(_LinkMenu);
+	var _AssetMenu2 = _interopRequireDefault(_AssetMenu);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34073,15 +34072,15 @@
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  var deleteLink = function deleteLink(id) {
-	    dispatch((0, _links.removeLink)(id));
+	  var deleteAsset = function deleteAsset(id) {
+	    dispatch((0, _assets.removeAsset)(id));
 	  };
-	  return { deleteLink: deleteLink };
+	  return { removeAsset: deleteAsset };
 	};
 
-	var LinkMenuContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_LinkMenu2.default);
+	var AssetMenuContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AssetMenu2.default);
 
-	exports.default = LinkMenuContainer;
+	exports.default = AssetMenuContainer;
 
 /***/ },
 /* 329 */
@@ -34101,21 +34100,22 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var LinkMenu = function LinkMenu(_ref) {
+	var assetMenu = function assetMenu(_ref) {
 	  var id = _ref.id;
-	  var deleteLink = _ref.deleteLink;
+	  var removeAsset = _ref.removeAsset;
+
 
 	  var handleClick = function handleClick() {
-	    deleteLink(id);
+	    removeAsset(id);
 	  };
 
 	  return _react2.default.createElement(
 	    'div',
 	    null,
-	    _react2.default.createElement(_reactMdl.IconButton, { name: 'more_vert', id: 'linkMenu' + id }),
+	    _react2.default.createElement(_reactMdl.IconButton, { name: 'more_vert', id: 'assetMenu-' + id }),
 	    _react2.default.createElement(
 	      _reactMdl.Menu,
-	      { target: 'linkMenu' + id, valign: 'top', align: 'right' },
+	      { target: 'assetMenu-' + id, valign: 'top', align: 'right' },
 	      _react2.default.createElement(
 	        _reactMdl.MenuItem,
 	        null,
@@ -34135,7 +34135,7 @@
 	  );
 	};
 
-	exports.default = LinkMenu;
+	exports.default = assetMenu;
 
 /***/ },
 /* 330 */
