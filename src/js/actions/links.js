@@ -6,6 +6,8 @@ export const REQUEST_LINKS_SUCCESS = 'REQUEST_LINKS_SUCCESS'
 export const REQUEST_LINKS_ERROR = 'REQUEST_LINKS_ERROR'
 export const RESET_LINKS = 'RESET_LINKS'
 
+export const REMOVE_LINK = 'REMOVE_LINK'
+
 /**
  * request links action
  *
@@ -43,6 +45,18 @@ export function requestLinksError(payload){
   }
 }
 
+/**
+ * removes a link
+ *
+ * @param {String}  link id
+ * @returns {Object}  action object
+ */
+export function removeLink(payload){
+  return {
+    type: REMOVE_LINK,
+    payload
+  }
+}
 
 /**
  * fetch categories action

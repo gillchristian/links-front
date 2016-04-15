@@ -1,4 +1,4 @@
-import { REQUEST_LINKS, REQUEST_LINKS_SUCCESS, REQUEST_LINKS_ERROR } from '../actions/links'
+import { REQUEST_LINKS, REQUEST_LINKS_SUCCESS, REQUEST_LINKS_ERROR, REMOVE_LINK } from '../actions/links'
 
 const INITIAL_STATE = {
   list: [],
@@ -29,6 +29,13 @@ export default function links(state = INITIAL_STATE, action){
         list: [],
         error: action.payload.message,
         loading: false
+      }
+    case REMOVE_LINK:
+      const list = state.list
+        .filter(item => item._id != action.payload)
+      return {
+        ...state,
+        list
       }
     default:
       return state

@@ -24,7 +24,6 @@ export function requestUser(){
  * @returns {Object}  action object
  */
 export function requestUserSuccess(payload){
-  console.log(payload)
   return {
     type: REQUEST_USER_SUCCESS,
     payload

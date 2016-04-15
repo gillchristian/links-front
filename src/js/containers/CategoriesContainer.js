@@ -11,9 +11,6 @@ const mapStateToProps = state => {
   return {
     categories: filteredCategories,
     loading: state.categories.loading,
-    // passing this so the componentDidUpdate gets triggered when
-    // the links finished loading, to trigger masonry.layout
-    loadingLinks: state.links.loading
   }
 }
 
