@@ -1,5 +1,5 @@
 import React from 'react'
-import LinksListContainer from '../containers/LinksListContainer'
+import AssetsListContainer from '../containers/AssetsListContainer'
 import Masonry from 'react-masonry-component'
 import { Spinner } from 'react-mdl'
 
@@ -12,9 +12,9 @@ export default class Categories extends React.Component {
     this.masonry.layout()
   }
 
-  mapLinksByCategory(categories){
+  mapAssetsByCategory(categories){
     return categories
-      .map( category => <LinksListContainer key={category._id} category={category}/>)
+      .map( category => <AssetsListContainer key={category._id} category={category}/>)
   }
 
   render(){
@@ -31,7 +31,7 @@ export default class Categories extends React.Component {
         disableImagesLoaded={false}>
         { loading ?
           <div className='centerItem'><Spinner /></div>:
-          this.mapLinksByCategory(categories)
+          this.mapAssetsByCategory(categories)
         }
       </Masonry>
     )

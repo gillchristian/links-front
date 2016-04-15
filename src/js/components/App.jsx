@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link, IndexLink } from 'react-router'
 
 import { Layout, Content, Header, Navigation, Drawer } from 'react-mdl'
 
@@ -9,7 +9,7 @@ const App = ({children}) => (
       <Header title='Wonderassets' />
       <Drawer title='Wonderassets'>
         <Navigation>
-          <Link to={'/'} activeClassName="activeLink">Wonderassets</Link>
+          <IndexLink to={'/'} activeClassName="activeLink">Wonderassets</IndexLink>
           <Link to={'/me'} activeClassName="activeLink">Profile</Link>
           <Link to={`/settings`} activeClassName="activeLink">Settings</Link>
         </Navigation>

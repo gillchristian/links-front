@@ -1,12 +1,11 @@
 import React from 'react';
 import { IconButton, Menu, MenuItem } from 'react-mdl'
-import LinkMenuContainer from '../containers/LinkMenuContainer'
+import AssetMenuContainer from '../containers/AssetMenuContainer'
 
-const Link = ({link}) => {
-  let linkLabel = () => link.link.replace(/^https?:\/\//ig, '').replace(/www\./, '')
+const Link = ({asset}) => {
 
   let tags = () => {
-    return link.tags
+    return asset.tags
       .map((tag, key) => (
         <i key={key} className='tag'>#{tag} </i>
       ))
@@ -15,10 +14,10 @@ const Link = ({link}) => {
   return (
     <div className='flxR c-center m-between linkRow'>
       <div>
-        <p><a href={link.link} target='_blank'>{linkLabel()}</a></p>
+        <p><a href={asset.link} target='_blank'>{asset.text || asset.link}</a></p>
         <p className='tag'>{tags()}</p>
       </div>
-      <LinkMenuContainer id={link._id}/>
+      <AssetMenuContainer id={asset._id}/>
     </div>
   )
 }

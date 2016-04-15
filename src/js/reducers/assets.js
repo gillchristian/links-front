@@ -1,4 +1,4 @@
-import { REQUEST_LINKS, REQUEST_LINKS_SUCCESS, REQUEST_LINKS_ERROR, REMOVE_LINK } from '../actions/links'
+import { REQUEST_ASSETS, REQUEST_ASSETS_SUCCESS, REQUEST_ASSETS_ERROR, REMOVE_LINK } from '../actions/assets'
 
 const INITIAL_STATE = {
   list: [],
@@ -6,24 +6,24 @@ const INITIAL_STATE = {
   loading: false
 }
 
-export default function links(state = INITIAL_STATE, action){
+export default function assets(state = INITIAL_STATE, action){
 
   switch (action.type) {
-    case REQUEST_LINKS:
+    case REQUEST_ASSETS:
       return {
         ...state,
         list: [],
         error: null,
         loading: true
       }
-    case REQUEST_LINKS_SUCCESS:
+    case REQUEST_ASSETS_SUCCESS:
       return {
         ...state,
         list: action.payload,
         error: null,
         loading: false
       }
-    case REQUEST_LINKS_ERROR:
+    case REQUEST_ASSETS_ERROR:
       return {
         ...state,
         list: [],

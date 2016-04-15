@@ -1,19 +1,19 @@
 import React from 'react'
-import Link from './Link.jsx'
+import Asset from './Asset.jsx'
 import { Card, CardTitle, CardText, List, ListItem, Spinner } from 'react-mdl'
 
-export default class LinksList extends React.Component {
+export default class AssetsList extends React.Component {
   componentWillMount() {
-    this.props.fetchLinks()
+    this.props.fetchAssets()
   }
 
-  linksMap(links) {
-    return links
-      .map( link => <ListItem key={link._id}><Link link={link}/></ListItem> )
+  assetsMap(assets) {
+    return assets
+      .map( asset => <ListItem key={asset._id}><Asset asset={asset}/></ListItem> )
   }
 
   render() {
-    const { links, loading, error, category } = this.props
+    const { assets, loading, error, category } = this.props
 
     const styles = {
       title: {
@@ -32,7 +32,7 @@ export default class LinksList extends React.Component {
             loading ?
               <div className='centerItem'><Spinner /></div> : error ?
                 <p>Sorry, there was an error, please try again!</p> :
-                <List className={'list'}>{this.linksMap(links)}</List>
+                <List className={'list'}>{this.assetsMap(assets)}</List>
           }
         </CardText>
       </Card>

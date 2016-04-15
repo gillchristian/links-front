@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import links from './links'
+import assets from './assets'
 import categories from './categories'
 import user from './user'
 
-const rootReducer = combineReducers({ links, categories, user })
+const rootReducer = combineReducers({ assets, categories, user })
 
 export default rootReducer

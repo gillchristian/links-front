@@ -5,11 +5,13 @@ import Categories from '../components/Categories.jsx'
 
 const mapStateToProps = state => {
 
-  const filteredCategories = state.categories.list
-    .filter(category => category.name.indexOf(state.categories.filterValue) > -1)
+  const filterValue = state.categories.filterValue.toLowerCase()
+
+  const categories = state.categories.list
+    .filter(category => category.name.toLowerCase().indexOf(filterValue) > -1)
 
   return {
-    categories: filteredCategories,
+    categories,
     loading: state.categories.loading,
   }
 }
