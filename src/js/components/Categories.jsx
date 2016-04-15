@@ -5,6 +5,7 @@ import { Spinner } from 'react-mdl'
 
 export default class Categories extends React.Component {
   componentWillMount() {
+    this.props.fetchAssets()
     this.props.fetchCategories()
   }
 
@@ -19,10 +20,6 @@ export default class Categories extends React.Component {
 
   render(){
     const { categories, loading } = this.props
-    const masonryOptions = {
-      itemSelector: '.item',
-      initLayout: true
-    }
     return (
       <Masonry
         ref={c => { if(c) this.masonry = c.masonry}}

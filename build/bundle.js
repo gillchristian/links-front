@@ -33714,6 +33714,8 @@
 
 	var _categories = __webpack_require__(199);
 
+	var _assets = __webpack_require__(194);
+
 	var _Categories = __webpack_require__(324);
 
 	var _Categories2 = _interopRequireDefault(_Categories);
@@ -33724,7 +33726,16 @@
 
 	  var filterValue = state.categories.filterValue.toLowerCase();
 
-	  var categories = state.categories.list.filter(function (category) {
+	  var categories = state.categories.list
+	  // filtering categories that dont have assets
+	  .filter(function (category) {
+	    var hasAssets = state.assets.list.filter(function (asset) {
+	      return asset.categories.indexOf(category._id) > -1;
+	    });
+	    return hasAssets.length;
+	  })
+	  // filtering categories by filterValue
+	  .filter(function (category) {
 	    return category.name.toLowerCase().indexOf(filterValue) > -1;
 	  });
 
@@ -33735,10 +33746,16 @@
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  var getAssets = function getAssets() {
+	    dispatch((0, _assets.fetchAssets)());
+	  };
 	  var getCategories = function getCategories() {
 	    dispatch((0, _categories.fetchCategories)());
 	  };
-	  return { fetchCategories: getCategories };
+	  return {
+	    fetchCategories: getCategories,
+	    fetchAssets: getAssets
+	  };
 	};
 
 	var CategoriesContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Categories2.default);
@@ -33791,6 +33808,7 @@
 	  _createClass(Categories, [{
 	    key: 'componentWillMount',
 	    value: function componentWillMount() {
+	      this.props.fetchAssets();
 	      this.props.fetchCategories();
 	    }
 	  }, {
@@ -33814,10 +33832,6 @@
 	      var categories = _props.categories;
 	      var loading = _props.loading;
 
-	      var masonryOptions = {
-	        itemSelector: '.item',
-	        initLayout: true
-	      };
 	      return _react2.default.createElement(
 	        _reactMasonryComponent2.default,
 	        {
@@ -33853,8 +33867,6 @@
 
 	var _reactRedux = __webpack_require__(166);
 
-	var _assets = __webpack_require__(194);
-
 	var _AssetsList = __webpack_require__(326);
 
 	var _AssetsList2 = _interopRequireDefault(_AssetsList);
@@ -33875,14 +33887,7 @@
 	  };
 	};
 
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  var getAssets = function getAssets() {
-	    dispatch((0, _assets.fetchAssets)());
-	  };
-	  return { fetchAssets: getAssets };
-	};
-
-	var AssetsListContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AssetsList2.default);
+	var AssetsListContainer = (0, _reactRedux.connect)(mapStateToProps)(_AssetsList2.default);
 
 	exports.default = AssetsListContainer;
 
@@ -33896,8 +33901,6 @@
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -33910,89 +33913,59 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var AssetsList = function (_React$Component) {
-	  _inherits(AssetsList, _React$Component);
-
-	  function AssetsList() {
-	    _classCallCheck(this, AssetsList);
-
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(AssetsList).apply(this, arguments));
-	  }
-
-	  _createClass(AssetsList, [{
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      this.props.fetchAssets();
-	    }
-	  }, {
-	    key: 'assetsMap',
-	    value: function assetsMap(assets) {
-	      return assets.map(function (asset) {
-	        return _react2.default.createElement(
-	          _reactMdl.ListItem,
-	          { key: asset._id },
-	          _react2.default.createElement(_Asset2.default, { asset: asset })
-	        );
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props;
-	      var assets = _props.assets;
-	      var loading = _props.loading;
-	      var error = _props.error;
-	      var category = _props.category;
+	var AssetsList = function AssetsList(_ref) {
+	  var assets = _ref.assets;
+	  var loading = _ref.loading;
+	  var error = _ref.error;
+	  var category = _ref.category;
 
 
-	      var styles = {
-	        title: {
-	          borderBottom: '3px solid ' + (category.color || 'gray'),
-	          color: category.color || 'gray'
-	        }
-	      };
-
+	  var assetsMap = function assetsMap(assets) {
+	    return assets.map(function (asset) {
 	      return _react2.default.createElement(
-	        _reactMdl.Card,
-	        { shadow: 2, className: 'item' },
-	        _react2.default.createElement(
-	          _reactMdl.CardTitle,
-	          { style: styles.title, className: 'title' },
-	          _react2.default.createElement(
-	            'h4',
-	            null,
-	            category.name
-	          )
-	        ),
-	        _react2.default.createElement(
-	          _reactMdl.CardText,
-	          { className: 'content' },
-	          loading ? _react2.default.createElement(
-	            'div',
-	            { className: 'centerItem' },
-	            _react2.default.createElement(_reactMdl.Spinner, null)
-	          ) : error ? _react2.default.createElement(
-	            'p',
-	            null,
-	            'Sorry, there was an error, please try again!'
-	          ) : _react2.default.createElement(
-	            _reactMdl.List,
-	            { className: 'list' },
-	            this.assetsMap(assets)
-	          )
-	        )
+	        _reactMdl.ListItem,
+	        { key: asset._id },
+	        _react2.default.createElement(_Asset2.default, { asset: asset })
 	      );
-	    }
-	  }]);
+	    });
+	  };
 
-	  return AssetsList;
-	}(_react2.default.Component);
+	  var titleStyles = {
+	    borderBottom: '3px solid ' + (category.color || 'gray'),
+	    color: category.color || 'gray'
+	  };
+
+	  return _react2.default.createElement(
+	    _reactMdl.Card,
+	    { shadow: 2, className: 'item' },
+	    _react2.default.createElement(
+	      _reactMdl.CardTitle,
+	      { style: titleStyles, className: 'title' },
+	      _react2.default.createElement(
+	        'h4',
+	        null,
+	        category.name
+	      )
+	    ),
+	    _react2.default.createElement(
+	      _reactMdl.CardText,
+	      { className: 'content' },
+	      loading ? _react2.default.createElement(
+	        'div',
+	        { className: 'centerItem' },
+	        _react2.default.createElement(_reactMdl.Spinner, null)
+	      ) : error ? _react2.default.createElement(
+	        'p',
+	        null,
+	        'Sorry, there was an error, please try again!'
+	      ) : _react2.default.createElement(
+	        _reactMdl.List,
+	        { className: 'list' },
+	        assetsMap(assets)
+	      )
+	    )
+	  );
+	};
 
 	exports.default = AssetsList;
 

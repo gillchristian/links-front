@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 
 import { fetchCategories } from '../actions/categories'
+import { fetchAssets } from '../actions/assets'
 import Categories from '../components/Categories.jsx'
 
 const mapStateToProps = state => {
@@ -8,6 +9,13 @@ const mapStateToProps = state => {
   const filterValue = state.categories.filterValue.toLowerCase()
 
   const categories = state.categories.list
+    // filtering categories that dont have assets
+    .filter(category => {
+      const hasAssets = state.assets.list
+        .filter(asset => asset.categories.indexOf(category._id) > - 1)
+      return hasAssets.length
+    })
+    // filtering categories by filterValue
     .filter(category => category.name.toLowerCase().indexOf(filterValue) > -1)
 
   return {
@@ -17,10 +25,16 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = (dispatch) => {
+  let getAssets = () => {
+    dispatch(fetchAssets())
+  }
   let getCategories = () => {
     dispatch(fetchCategories())
   }
-  return { fetchCategories: getCategories }
+  return {
+    fetchCategories: getCategories,
+    fetchAssets: getAssets
+  }
 }
 
 const CategoriesContainer = connect(
