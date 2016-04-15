@@ -1,4 +1,4 @@
-import { REQUEST_ASSETS, REQUEST_ASSETS_SUCCESS, REQUEST_ASSETS_ERROR, REMOVE_LINK } from '../actions/assets'
+import { REQUEST_ASSETS, REQUEST_ASSETS_SUCCESS, REQUEST_ASSETS_ERROR, REMOVE_ASSET } from '../actions/assets'
 
 const INITIAL_STATE = {
   list: [],
@@ -30,7 +30,7 @@ export default function assets(state = INITIAL_STATE, action){
         error: action.payload.message,
         loading: false
       }
-    case REMOVE_LINK:
+    case REMOVE_ASSET:
       const list = state.list
         .filter(item => item._id != action.payload)
       return {

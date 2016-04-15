@@ -46,7 +46,7 @@ export function requestAssetsError(payload){
 }
 
 /**
- * removes a asset
+ * removes an asset
  *
  * @param {String}  asset id
  * @returns {Object}  action object
@@ -55,6 +55,19 @@ export function removeAsset(payload){
   return {
     type: REMOVE_ASSET,
     payload
+  }
+}
+
+/**
+ * request the asset removal to the API
+ *
+ * @param {String}  asset id
+ * @returns {object}  action object
+ */
+export function requestRemoveAsset(payload){
+  return function (dispatch) {
+    dispatch(removeAsset(payload))
+    return fetch(`${urls.ROOT_URL}/assets/${payload}`, { method: 'DELETE' })
   }
 }
 

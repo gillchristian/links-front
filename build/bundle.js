@@ -22578,7 +22578,7 @@
 	        error: action.payload.message,
 	        loading: false
 	      });
-	    case _assets.REMOVE_LINK:
+	    case _assets.REMOVE_ASSET:
 	      var list = state.list.filter(function (item) {
 	        return item._id != action.payload;
 	      });
@@ -22604,6 +22604,7 @@
 	exports.requestAssetsSuccess = requestAssetsSuccess;
 	exports.requestAssetsError = requestAssetsError;
 	exports.removeAsset = removeAsset;
+	exports.requestRemoveAsset = requestRemoveAsset;
 	exports.fetchAssets = fetchAssets;
 
 	var _isomorphicFetch = __webpack_require__(195);
@@ -22661,7 +22662,7 @@
 	}
 
 	/**
-	 * removes a asset
+	 * removes an asset
 	 *
 	 * @param {String}  asset id
 	 * @returns {Object}  action object
@@ -22670,6 +22671,19 @@
 	  return {
 	    type: REMOVE_ASSET,
 	    payload: payload
+	  };
+	}
+
+	/**
+	 * request the asset removal to the API
+	 *
+	 * @param {String}  asset id
+	 * @returns {object}  action object
+	 */
+	function requestRemoveAsset(payload) {
+	  return function (dispatch) {
+	    dispatch(removeAsset(payload));
+	    return (0, _isomorphicFetch2.default)(_urls2.default.ROOT_URL + '/assets/' + payload, { method: 'DELETE' });
 	  };
 	}
 
@@ -34072,10 +34086,10 @@
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  var deleteAsset = function deleteAsset(id) {
-	    dispatch((0, _assets.removeAsset)(id));
+	  var removeAsset = function removeAsset(id) {
+	    dispatch((0, _assets.requestRemoveAsset)(id));
 	  };
-	  return { removeAsset: deleteAsset };
+	  return { removeAsset: removeAsset };
 	};
 
 	var AssetMenuContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AssetMenu2.default);

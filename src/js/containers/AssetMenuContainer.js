@@ -1,15 +1,15 @@
 import { connect } from 'react-redux'
 
-import { removeAsset } from '../actions/assets'
+import { requestRemoveAsset } from '../actions/assets'
 import AssetMenu from '../components/AssetMenu.jsx'
 
 const mapStateToProps = (state, props) => ({ id: props.id })
 
 const mapDispatchToProps = (dispatch) => {
-  let deleteAsset = (id) => {
-    dispatch(removeAsset(id))
+  let removeAsset = (id) => {
+    dispatch(requestRemoveAsset(id))
   }
-  return { removeAsset: deleteAsset }
+  return { removeAsset }
 }
 
 const AssetMenuContainer = connect(
