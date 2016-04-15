@@ -62,7 +62,7 @@
 
 	var _Routes2 = _interopRequireDefault(_Routes);
 
-	__webpack_require__(340);
+	__webpack_require__(342);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -22551,7 +22551,14 @@
 	var INITIAL_STATE = {
 	  list: [],
 	  error: null,
-	  loading: false
+	  loading: false,
+	  editting: {
+	    openModal: false,
+	    asset: {
+	      link: '',
+	      text: ''
+	    }
+	  }
 	};
 
 	function assets() {
@@ -22579,11 +22586,62 @@
 	        loading: false
 	      });
 	    case _assets.REMOVE_ASSET:
-	      var list = state.list.filter(function (item) {
-	        return item._id != action.payload;
+	      return _extends({}, state, {
+	        list: state.list.filter(function (item) {
+	          return item._id !== action.payload;
+	        })
+	      });
+	    case _assets.EDIT_ASSET:
+	      var toEdit = state.list.find(function (asset) {
+	        return asset._id === action.payload;
 	      });
 	      return _extends({}, state, {
-	        list: list
+	        editting: {
+	          openModal: true,
+	          asset: toEdit
+	        }
+	      });
+	    case _assets.EDITTING_ASSET_UPDATE:
+	      return _extends({}, state, {
+	        editting: _extends({}, state.editting, {
+	          asset: _extends({}, state.editting.asset, {
+	            text: action.payload.text,
+	            link: action.payload.link
+	          })
+	        })
+	      });
+	    case _assets.EDITTING_ASSET_CANCEL:
+	      return _extends({}, state, {
+	        editting: {
+	          openModal: false,
+	          asset: {
+	            link: '',
+	            text: ''
+	          }
+	        }
+	      });
+	    case _assets.EDITTING_ASSET_SAVE:
+	      // do the asset update here
+	      var edittedAsset = state.editting.asset;
+	      var updatedList = state.list.map(function (asset) {
+	        if (asset._id === edittedAsset._id) {
+	          return _extends({}, asset, {
+	            link: edittedAsset.link,
+	            text: edittedAsset.text
+	          });
+	        } else {
+	          return asset;
+	        }
+	      });
+	      return _extends({}, state, {
+	        list: updatedList,
+	        editting: {
+	          openModal: false,
+	          asset: {
+	            text: '',
+	            link: ''
+	          }
+	        }
 	      });
 	    default:
 	      return state;
@@ -22599,12 +22657,16 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.REMOVE_ASSET = exports.RESET_ASSETS = exports.REQUEST_ASSETS_ERROR = exports.REQUEST_ASSETS_SUCCESS = exports.REQUEST_ASSETS = undefined;
+	exports.EDITTING_ASSET_CANCEL = exports.EDITTING_ASSET_SAVE = exports.EDITTING_ASSET_UPDATE = exports.EDIT_ASSET = exports.REMOVE_ASSET = exports.RESET_ASSETS = exports.REQUEST_ASSETS_ERROR = exports.REQUEST_ASSETS_SUCCESS = exports.REQUEST_ASSETS = undefined;
 	exports.requestAssets = requestAssets;
 	exports.requestAssetsSuccess = requestAssetsSuccess;
 	exports.requestAssetsError = requestAssetsError;
 	exports.removeAsset = removeAsset;
 	exports.requestRemoveAsset = requestRemoveAsset;
+	exports.editAsset = editAsset;
+	exports.updateEdittingAsset = updateEdittingAsset;
+	exports.saveEdittingAsset = saveEdittingAsset;
+	exports.cancelEdittingAsset = cancelEdittingAsset;
 	exports.fetchAssets = fetchAssets;
 
 	var _isomorphicFetch = __webpack_require__(195);
@@ -22623,6 +22685,11 @@
 	var RESET_ASSETS = exports.RESET_ASSETS = 'RESET_ASSETS';
 
 	var REMOVE_ASSET = exports.REMOVE_ASSET = 'REMOVE_ASSET';
+
+	var EDIT_ASSET = exports.EDIT_ASSET = 'EDIT_ASSET';
+	var EDITTING_ASSET_UPDATE = exports.EDITTING_ASSET_UPDATE = 'EDITTING_ASSET_UPDATE';
+	var EDITTING_ASSET_SAVE = exports.EDITTING_ASSET_SAVE = 'EDITTING_ASSET_SAVE';
+	var EDITTING_ASSET_CANCEL = exports.EDITTING_ASSET_CANCEL = 'EDITTING_ASSET_CANCEL';
 
 	/**
 	 * request Assets action
@@ -22684,6 +22751,55 @@
 	  return function (dispatch) {
 	    dispatch(removeAsset(payload));
 	    return (0, _isomorphicFetch2.default)(_urls2.default.ROOT_URL + '/assets/' + payload, { method: 'DELETE' });
+	  };
+	}
+
+	/**
+	 * open the modal to edit the asset
+	 *
+	 * @param {String}  asset's to edit id
+	 * @returns {object}  action object
+	 */
+	function editAsset(payload) {
+	  return {
+	    type: EDIT_ASSET,
+	    payload: payload
+	  };
+	}
+
+	/**
+	 * update the values of the asset being editted
+	 *
+	 * @param {Object}  updated input values
+	 * @returns {object}  action object
+	 */
+	function updateEdittingAsset(payload) {
+	  return {
+	    type: EDITTING_ASSET_UPDATE,
+	    payload: payload
+	  };
+	}
+
+	/**
+	 * save the asset being editted
+	 *
+	 * @returns {object}  action object
+	 */
+	function saveEdittingAsset() {
+	  return {
+	    type: EDITTING_ASSET_SAVE
+	  };
+	}
+
+	/**
+	 * cancel the asset edition and close the modal
+	 *
+	 * @param {Object}  updated input values
+	 * @returns {object}  action object
+	 */
+	function cancelEdittingAsset() {
+	  return {
+	    type: EDITTING_ASSET_CANCEL
 	  };
 	}
 
@@ -33644,6 +33760,10 @@
 
 	var _FilterCategories2 = _interopRequireDefault(_FilterCategories);
 
+	var _AssetEditModalContainer = __webpack_require__(340);
+
+	var _AssetEditModalContainer2 = _interopRequireDefault(_AssetEditModalContainer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33678,11 +33798,15 @@
 	          'div',
 	          { className: 'flxR c-center m-between' },
 	          _react2.default.createElement(
-	            'h3',
+	            'div',
 	            null,
-	            user.name,
-	            ' - ',
-	            user.teams[0]
+	            _react2.default.createElement(
+	              'h3',
+	              null,
+	              user.name,
+	              ' - ',
+	              user.teams[0]
+	            )
 	          ),
 	          _react2.default.createElement(
 	            'div',
@@ -33690,7 +33814,8 @@
 	            _react2.default.createElement(_FilterCategories2.default, null)
 	          )
 	        ),
-	        _react2.default.createElement(_CategoriesContainer2.default, null)
+	        _react2.default.createElement(_CategoriesContainer2.default, null),
+	        _react2.default.createElement(_AssetEditModalContainer2.default, null)
 	      );
 	    }
 	  }]);
@@ -34062,7 +34187,10 @@
 	  var removeAsset = function removeAsset(id) {
 	    dispatch((0, _assets.requestRemoveAsset)(id));
 	  };
-	  return { removeAsset: removeAsset };
+	  var openEditModal = function openEditModal(id) {
+	    dispatch((0, _assets.editAsset)(id));
+	  };
+	  return { removeAsset: removeAsset, openEditModal: openEditModal };
 	};
 
 	var AssetMenuContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AssetMenu2.default);
@@ -34090,9 +34218,13 @@
 	var assetMenu = function assetMenu(_ref) {
 	  var id = _ref.id;
 	  var removeAsset = _ref.removeAsset;
+	  var openEditModal = _ref.openEditModal;
 
 
-	  var handleClick = function handleClick() {
+	  var edit = function edit() {
+	    openEditModal(id);
+	  };
+	  var remove = function remove() {
 	    removeAsset(id);
 	  };
 
@@ -34105,7 +34237,7 @@
 	      { target: 'assetMenu-' + id, valign: 'top', align: 'right' },
 	      _react2.default.createElement(
 	        _reactMdl.MenuItem,
-	        null,
+	        { onClick: edit },
 	        'Edit'
 	      ),
 	      _react2.default.createElement(
@@ -34115,7 +34247,7 @@
 	      ),
 	      _react2.default.createElement(
 	        _reactMdl.MenuItem,
-	        { onClick: handleClick },
+	        { onClick: remove },
 	        'Remove'
 	      )
 	    )
@@ -37025,6 +37157,147 @@
 
 /***/ },
 /* 340 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _reactRedux = __webpack_require__(166);
+
+	var _assets = __webpack_require__(194);
+
+	var _AssetEditModal = __webpack_require__(341);
+
+	var _AssetEditModal2 = _interopRequireDefault(_AssetEditModal);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    openModal: state.assets.editting.openModal,
+	    asset: state.assets.editting.asset
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  var update = function update(asset) {
+	    dispatch((0, _assets.updateEdittingAsset)(asset));
+	  };
+	  var saveAsset = function saveAsset() {
+	    dispatch((0, _assets.saveEdittingAsset)());
+	  };
+	  var closeModal = function closeModal() {
+	    dispatch((0, _assets.cancelEdittingAsset)());
+	  };
+	  return {
+	    saveAsset: saveAsset,
+	    closeModal: closeModal,
+	    update: update
+	  };
+	};
+
+	var AssetEditModalContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AssetEditModal2.default);
+
+	exports.default = AssetEditModalContainer;
+
+/***/ },
+/* 341 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactMdl = __webpack_require__(260);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var AssetEditModal = function AssetEditModal(props) {
+	  var _props$asset = props.asset;
+	  var id = _props$asset.id;
+	  var text = _props$asset.text;
+	  var link = _props$asset.link;
+	  var openModal = props.openModal;
+	  var saveAsset = props.saveAsset;
+	  var closeModal = props.closeModal;
+	  var update = props.update;
+
+
+	  var save = function save() {
+	    saveAsset(id);
+	  };
+	  var cancel = function cancel() {
+	    closeModal();
+	  };
+	  var updateText = function updateText(event) {
+	    update({
+	      text: event.target.value,
+	      link: link
+	    });
+	  };
+	  var updateLink = function updateLink(event) {
+	    update({
+	      link: event.target.value,
+	      text: text
+	    });
+	  };
+
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(
+	      _reactMdl.Dialog,
+	      { open: openModal },
+	      _react2.default.createElement(
+	        _reactMdl.DialogTitle,
+	        null,
+	        'Edit Asset'
+	      ),
+	      _react2.default.createElement(
+	        _reactMdl.DialogContent,
+	        null,
+	        _react2.default.createElement(_reactMdl.Textfield, {
+	          onChange: updateText,
+	          label: 'Text...',
+	          value: text
+	        }),
+	        _react2.default.createElement(_reactMdl.Textfield, {
+	          onChange: updateLink,
+	          label: 'URL...',
+	          value: link
+	        })
+	      ),
+	      _react2.default.createElement(
+	        _reactMdl.DialogActions,
+	        null,
+	        _react2.default.createElement(
+	          _reactMdl.Button,
+	          { type: 'button', onClick: save },
+	          'Save'
+	        ),
+	        _react2.default.createElement(
+	          _reactMdl.Button,
+	          { type: 'button', onClick: cancel },
+	          'Cancel'
+	        )
+	      )
+	    )
+	  );
+	};
+
+	exports.default = AssetEditModal;
+
+/***/ },
+/* 342 */
 /***/ function(module, exports) {
 
 	'use strict';var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj;};;(function(){"use strict";if(typeof window==='undefined')return; /**

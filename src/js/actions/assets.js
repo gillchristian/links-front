@@ -8,6 +8,11 @@ export const RESET_ASSETS = 'RESET_ASSETS'
 
 export const REMOVE_ASSET = 'REMOVE_ASSET'
 
+export const EDIT_ASSET= 'EDIT_ASSET'
+export const EDITTING_ASSET_UPDATE = 'EDITTING_ASSET_UPDATE'
+export const EDITTING_ASSET_SAVE = 'EDITTING_ASSET_SAVE'
+export const EDITTING_ASSET_CANCEL = 'EDITTING_ASSET_CANCEL'
+
 /**
  * request Assets action
  *
@@ -68,6 +73,55 @@ export function requestRemoveAsset(payload){
   return function (dispatch) {
     dispatch(removeAsset(payload))
     return fetch(`${urls.ROOT_URL}/assets/${payload}`, { method: 'DELETE' })
+  }
+}
+
+/**
+ * open the modal to edit the asset
+ *
+ * @param {String}  asset's to edit id
+ * @returns {object}  action object
+ */
+export function editAsset(payload){
+  return {
+    type: EDIT_ASSET,
+    payload
+  }
+}
+
+/**
+ * update the values of the asset being editted
+ *
+ * @param {Object}  updated input values
+ * @returns {object}  action object
+ */
+export function updateEdittingAsset(payload){
+  return {
+    type: EDITTING_ASSET_UPDATE,
+    payload
+  }
+}
+
+/**
+ * save the asset being editted
+ *
+ * @returns {object}  action object
+ */
+export function saveEdittingAsset(){
+  return {
+    type: EDITTING_ASSET_SAVE
+  }
+}
+
+/**
+ * cancel the asset edition and close the modal
+ *
+ * @param {Object}  updated input values
+ * @returns {object}  action object
+ */
+export function cancelEdittingAsset(){
+  return {
+    type: EDITTING_ASSET_CANCEL
   }
 }
 
