@@ -13,6 +13,10 @@ export default class Categories extends React.Component {
     this.masonry.layout()
   }
 
+  shouldComponentUpdate() {
+    return this.props.shouldUpdate
+  }
+
   mapAssetsByCategory(categories){
     return categories
       .map( category => <AssetsListContainer key={category._id} category={category}/>)

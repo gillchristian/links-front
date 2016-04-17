@@ -21,6 +21,7 @@ const mapStateToProps = state => {
   return {
     categories,
     loading: state.categories.loading,
+    shouldUpdate: !state.assets.editting.openModal
   }
 }
 
