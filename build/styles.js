@@ -48,10 +48,10 @@
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(343);
+	var content = __webpack_require__(344);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(345)(content, {});
+	var update = __webpack_require__(346)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -69,10 +69,10 @@
 
 /***/ },
 
-/***/ 343:
+/***/ 344:
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(344)();
+	exports = module.exports = __webpack_require__(345)();
 	// imports
 
 
@@ -84,7 +84,7 @@
 
 /***/ },
 
-/***/ 344:
+/***/ 345:
 /***/ function(module, exports) {
 
 	/*
@@ -141,7 +141,7 @@
 
 /***/ },
 
-/***/ 345:
+/***/ 346:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

@@ -62,7 +62,7 @@
 
 	var _Routes2 = _interopRequireDefault(_Routes);
 
-	__webpack_require__(342);
+	__webpack_require__(343);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20083,11 +20083,7 @@
 	  }
 	  didWarnAboutReceivingStore = true;
 
-	  /* eslint-disable no-console */
-	  if (typeof console !== 'undefined' && typeof console.error === 'function') {
-	    (0, _warning2["default"])('<Provider> does not support changing `store` on the fly. ' + 'It is most likely that you see this error because you updated to ' + 'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' + 'automatically. See https://github.com/reactjs/react-redux/releases/' + 'tag/v2.0.0 for the migration instructions.');
-	  }
-	  /* eslint-disable no-console */
+	  (0, _warning2["default"])('<Provider> does not support changing `store` on the fly. ' + 'It is most likely that you see this error because you updated to ' + 'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' + 'automatically. See https://github.com/reactjs/react-redux/releases/' + 'tag/v2.0.0 for the migration instructions.');
 	}
 
 	var Provider = function (_Component) {
@@ -20243,6 +20239,16 @@
 
 	function getDisplayName(WrappedComponent) {
 	  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+	}
+
+	var errorObject = { value: null };
+	function tryCatch(fn, ctx) {
+	  try {
+	    return fn.apply(ctx);
+	  } catch (e) {
+	    errorObject.value = e;
+	    return errorObject;
+	  }
 	}
 
 	// Helps track hot reloading.
@@ -20447,6 +20453,7 @@
 	        this.haveOwnPropsChanged = true;
 	        this.hasStoreStateChanged = true;
 	        this.haveStatePropsBeenPrecalculated = false;
+	        this.statePropsPrecalculationError = null;
 	        this.renderedElement = null;
 	        this.finalMapDispatchToProps = null;
 	        this.finalMapStateToProps = null;
@@ -20464,8 +20471,12 @@
 	        }
 
 	        if (pure && !this.doStatePropsDependOnOwnProps) {
-	          if (!this.updateStatePropsIfNeeded()) {
+	          var haveStatePropsChanged = tryCatch(this.updateStatePropsIfNeeded, this);
+	          if (!haveStatePropsChanged) {
 	            return;
+	          }
+	          if (haveStatePropsChanged === errorObject) {
+	            this.statePropsPrecalculationError = errorObject.value;
 	          }
 	          this.haveStatePropsBeenPrecalculated = true;
 	        }
@@ -20484,11 +20495,17 @@
 	        var haveOwnPropsChanged = this.haveOwnPropsChanged;
 	        var hasStoreStateChanged = this.hasStoreStateChanged;
 	        var haveStatePropsBeenPrecalculated = this.haveStatePropsBeenPrecalculated;
+	        var statePropsPrecalculationError = this.statePropsPrecalculationError;
 	        var renderedElement = this.renderedElement;
 
 	        this.haveOwnPropsChanged = false;
 	        this.hasStoreStateChanged = false;
 	        this.haveStatePropsBeenPrecalculated = false;
+	        this.statePropsPrecalculationError = null;
+
+	        if (statePropsPrecalculationError) {
+	          throw statePropsPrecalculationError;
+	        }
 
 	        var shouldUpdateStateProps = true;
 	        var shouldUpdateDispatchProps = true;
@@ -22783,7 +22800,7 @@
 	/**
 	 * save the asset being editted
 	 *
-	 * @returns {object}  action object
+	 * @returns {Object}  action object
 	 */
 	function saveEdittingAsset() {
 	  return {
@@ -22795,7 +22812,7 @@
 	 * cancel the asset edition and close the modal
 	 *
 	 * @param {Object}  updated input values
-	 * @returns {object}  action object
+	 * @returns {Object}  action object
 	 */
 	function cancelEdittingAsset() {
 	  return {
@@ -25201,7 +25218,7 @@
 
 	function isNestedObject(object) {
 	  for (var p in object) {
-	    if (object.hasOwnProperty(p) && typeof object[p] === 'object' && !Array.isArray(object[p]) && object[p] !== null) return true;
+	    if (Object.prototype.hasOwnProperty.call(object, p) && typeof object[p] === 'object' && !Array.isArray(object[p]) && object[p] !== null) return true;
 	  }return false;
 	}
 
@@ -26361,20 +26378,42 @@
 	  return String(a) === String(b);
 	}
 
-	function paramsAreActive(paramNames, paramValues, activeParams) {
-	  // FIXME: This doesn't work on repeated params in activeParams.
-	  return paramNames.every(function (paramName, index) {
-	    return String(paramValues[index]) === String(activeParams[paramName]);
-	  });
+	/**
+	 * Returns true if the current pathname matches the supplied one, net of
+	 * leading and trailing slash normalization. This is sufficient for an
+	 * indexOnly route match.
+	 */
+	function pathIsActive(pathname, currentPathname) {
+	  // Normalize leading slash for consistency. Leading slash on pathname has
+	  // already been normalized in isActive. See caveat there.
+	  if (currentPathname.charAt(0) !== '/') {
+	    currentPathname = '/' + currentPathname;
+	  }
+
+	  // Normalize the end of both path names too. Maybe `/foo/` shouldn't show
+	  // `/foo` as active, but in this case, we would already have failed the
+	  // match.
+	  if (pathname.charAt(pathname.length - 1) !== '/') {
+	    pathname += '/';
+	  }
+	  if (currentPathname.charAt(currentPathname.length - 1) !== '/') {
+	    currentPathname += '/';
+	  }
+
+	  return currentPathname === pathname;
 	}
 
-	function getMatchingRouteIndex(pathname, activeRoutes, activeParams) {
+	/**
+	 * Returns true if the given pathname matches the active routes and params.
+	 */
+	function routeIsActive(pathname, routes, params) {
 	  var remainingPathname = pathname,
 	      paramNames = [],
 	      paramValues = [];
 
-	  for (var i = 0, len = activeRoutes.length; i < len; ++i) {
-	    var route = activeRoutes[i];
+	  // for...of would work here but it's probably slower post-transpilation.
+	  for (var i = 0, len = routes.length; i < len; ++i) {
+	    var route = routes[i];
 	    var pattern = route.path || '';
 
 	    if (pattern.charAt(0) === '/') {
@@ -26383,46 +26422,24 @@
 	      paramValues = [];
 	    }
 
-	    if (remainingPathname !== null) {
+	    if (remainingPathname !== null && pattern) {
 	      var matched = _PatternUtils.matchPattern(pattern, remainingPathname);
 	      remainingPathname = matched.remainingPathname;
 	      paramNames = [].concat(paramNames, matched.paramNames);
 	      paramValues = [].concat(paramValues, matched.paramValues);
+
+	      if (remainingPathname === '') {
+	        // We have an exact match on the route. Just check that all the params
+	        // match.
+	        // FIXME: This doesn't work on repeated params.
+	        return paramNames.every(function (paramName, index) {
+	          return String(paramValues[index]) === String(params[paramName]);
+	        });
+	      }
 	    }
-
-	    if (remainingPathname === '' && route.path && paramsAreActive(paramNames, paramValues, activeParams)) return i;
 	  }
 
-	  return null;
-	}
-
-	/**
-	 * Returns true if the given pathname matches the active routes
-	 * and params.
-	 */
-	function routeIsActive(pathname, routes, params, indexOnly) {
-	  // TODO: This is a bit ugly. It keeps around support for treating pathnames
-	  // without preceding slashes as absolute paths, but possibly also works
-	  // around the same quirks with basenames as in matchRoutes.
-	  if (pathname.charAt(0) !== '/') {
-	    pathname = '/' + pathname;
-	  }
-
-	  var i = getMatchingRouteIndex(pathname, routes, params);
-
-	  if (i === null) {
-	    // No match.
-	    return false;
-	  } else if (!indexOnly) {
-	    // Any match is good enough.
-	    return true;
-	  }
-
-	  // If any remaining routes past the match index have paths, then we can't
-	  // be on the index route.
-	  return routes.slice(i + 1).every(function (route) {
-	    return !route.path;
-	  });
+	  return false;
 	}
 
 	/**
@@ -26448,7 +26465,20 @@
 
 	  if (currentLocation == null) return false;
 
-	  if (!routeIsActive(pathname, routes, params, indexOnly)) return false;
+	  // TODO: This is a bit ugly. It keeps around support for treating pathnames
+	  // without preceding slashes as absolute paths, but possibly also works
+	  // around the same quirks with basenames as in matchRoutes.
+	  if (pathname.charAt(0) !== '/') {
+	    pathname = '/' + pathname;
+	  }
+
+	  if (!pathIsActive(pathname, currentLocation.pathname)) {
+	    // The path check is necessary and sufficient for indexOnly, but otherwise
+	    // we still need to check the routes.
+	    if (indexOnly || !routeIsActive(pathname, routes, params)) {
+	      return false;
+	    }
+	  }
 
 	  return queryIsActive(query, currentLocation.query);
 	}
@@ -26482,47 +26512,45 @@
 	  }
 
 	  var getComponent = route.getComponent || route.getComponents;
-	  if (getComponent) {
-	    var _ret = (function () {
-	      var nextStateWithLocation = _extends({}, nextState);
-	      var location = nextState.location;
-
-	      if (process.env.NODE_ENV !== 'production' && _deprecateObjectProperties.canUseMembrane) {
-	        var _loop = function (prop) {
-	          if (!Object.prototype.hasOwnProperty.call(location, prop)) {
-	            return 'continue';
-	          }
-
-	          Object.defineProperty(nextStateWithLocation, prop, {
-	            get: function get() {
-	              process.env.NODE_ENV !== 'production' ? _routerWarning2['default'](false, 'Accessing location properties from the first argument to `getComponent` and `getComponents` is deprecated. That argument is now the router state (`nextState`) rather than the location. To access the location, use `nextState.location`.') : undefined;
-	              return location[prop];
-	            }
-	          });
-	        };
-
-	        // I don't use deprecateObjectProperties here because I want to keep the
-	        // same code path between development and production, in that we just
-	        // assign extra properties to the copy of the state object in both cases.
-	        for (var prop in location) {
-	          var _ret2 = _loop(prop);
-
-	          if (_ret2 === 'continue') continue;
-	        }
-	      } else {
-	        Object.assign(nextStateWithLocation, location);
-	      }
-
-	      getComponent.call(route, nextStateWithLocation, callback);
-	      return {
-	        v: undefined
-	      };
-	    })();
-
-	    if (typeof _ret === 'object') return _ret.v;
+	  if (!getComponent) {
+	    callback();
+	    return;
 	  }
 
-	  callback();
+	  var location = nextState.location;
+
+	  var nextStateWithLocation = undefined;
+
+	  if (process.env.NODE_ENV !== 'production' && _deprecateObjectProperties.canUseMembrane) {
+	    nextStateWithLocation = _extends({}, nextState);
+
+	    // I don't use deprecateObjectProperties here because I want to keep the
+	    // same code path between development and production, in that we just
+	    // assign extra properties to the copy of the state object in both cases.
+
+	    var _loop = function (prop) {
+	      if (!Object.prototype.hasOwnProperty.call(location, prop)) {
+	        return 'continue';
+	      }
+
+	      Object.defineProperty(nextStateWithLocation, prop, {
+	        get: function get() {
+	          process.env.NODE_ENV !== 'production' ? _routerWarning2['default'](false, 'Accessing location properties from the first argument to `getComponent` and `getComponents` is deprecated. That argument is now the router state (`nextState`) rather than the location. To access the location, use `nextState.location`.') : undefined;
+	          return location[prop];
+	        }
+	      });
+	    };
+
+	    for (var prop in location) {
+	      var _ret = _loop(prop);
+
+	      if (_ret === 'continue') continue;
+	    }
+	  } else {
+	    nextStateWithLocation = _extends({}, nextState, location);
+	  }
+
+	  getComponent.call(route, nextStateWithLocation, callback);
 	}
 
 	/**
@@ -28211,7 +28239,7 @@
 	    if (basename == null && _ExecutionEnvironment.canUseDOM) {
 	      var base = document.getElementsByTagName('base')[0];
 
-	      if (base) basename = _PathUtils.extractPath(base.href);
+	      if (base) basename = base.getAttribute('href');
 	    }
 
 	    function addBasename(location) {
@@ -28587,7 +28615,7 @@
 	      state = null;
 	      key = history.createKey();
 
-	      if (isSupported) window.history.replaceState(_extends({}, historyState, { key: key }), null, path);
+	      if (isSupported) window.history.replaceState(_extends({}, historyState, { key: key }), null);
 	    }
 
 	    var location = _PathUtils.parsePath(path);
@@ -33866,7 +33894,8 @@
 
 	  return {
 	    categories: categories,
-	    loading: state.categories.loading
+	    loading: state.categories.loading,
+	    shouldUpdate: !state.assets.editting.openModal
 	  };
 	};
 
@@ -33940,6 +33969,11 @@
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
 	      this.masonry.layout();
+	    }
+	  }, {
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate() {
+	      return this.props.shouldUpdate;
 	    }
 	  }, {
 	    key: 'mapAssetsByCategory',
@@ -37219,6 +37253,10 @@
 
 	var _reactMdl = __webpack_require__(260);
 
+	var _ModalContent = __webpack_require__(342);
+
+	var _ModalContent2 = _interopRequireDefault(_ModalContent);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var AssetEditModal = function AssetEditModal(props) {
@@ -37233,22 +37271,10 @@
 
 
 	  var save = function save() {
-	    saveAsset(id);
+	    saveAsset();
 	  };
 	  var cancel = function cancel() {
 	    closeModal();
-	  };
-	  var updateText = function updateText(event) {
-	    update({
-	      text: event.target.value,
-	      link: link
-	    });
-	  };
-	  var updateLink = function updateLink(event) {
-	    update({
-	      link: event.target.value,
-	      text: text
-	    });
 	  };
 
 	  return _react2.default.createElement(
@@ -37262,20 +37288,7 @@
 	        null,
 	        'Edit Asset'
 	      ),
-	      _react2.default.createElement(
-	        _reactMdl.DialogContent,
-	        null,
-	        _react2.default.createElement(_reactMdl.Textfield, {
-	          onChange: updateText,
-	          label: 'Text...',
-	          value: text
-	        }),
-	        _react2.default.createElement(_reactMdl.Textfield, {
-	          onChange: updateLink,
-	          label: 'URL...',
-	          value: link
-	        })
-	      ),
+	      _react2.default.createElement(_ModalContent2.default, { link: link, text: text, update: update }),
 	      _react2.default.createElement(
 	        _reactMdl.DialogActions,
 	        null,
@@ -37298,6 +37311,61 @@
 
 /***/ },
 /* 342 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactMdl = __webpack_require__(260);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ModalContent = function ModalContent(_ref) {
+	  var text = _ref.text;
+	  var link = _ref.link;
+	  var update = _ref.update;
+
+
+	  var updateText = function updateText(event) {
+	    update({
+	      text: event.target.value,
+	      link: link
+	    });
+	  };
+	  var updateLink = function updateLink(event) {
+	    update({
+	      link: event.target.value,
+	      text: text
+	    });
+	  };
+
+	  return _react2.default.createElement(
+	    _reactMdl.DialogContent,
+	    null,
+	    _react2.default.createElement(_reactMdl.Textfield, {
+	      onChange: updateText,
+	      label: 'Text...',
+	      value: text
+	    }),
+	    _react2.default.createElement(_reactMdl.Textfield, {
+	      onChange: updateLink,
+	      label: 'URL...',
+	      value: link
+	    })
+	  );
+	};
+
+	exports.default = ModalContent;
+
+/***/ },
+/* 343 */
 /***/ function(module, exports) {
 
 	'use strict';var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj;};;(function(){"use strict";if(typeof window==='undefined')return; /**
