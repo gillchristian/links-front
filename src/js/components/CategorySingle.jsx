@@ -3,12 +3,12 @@ import { Link } from 'react-router'
 
 import { Card, CardTitle, CardText, IconButton, List, ListItem, Spinner } from 'react-mdl'
 
-import AssetRow from './AssetRow.jsx'
+import AssetContainer from '../containers/AssetContainer'
 
-const CategorySingle = ({assets, loading, error, category}) => {
+const CategorySingle = ({assets, category}) => {
 
   const assetsMap = (assets) => assets
-    .map( asset => <ListItem key={asset._id}><AssetRow asset={asset}/></ListItem> )
+    .map( asset => <ListItem key={asset._id}><AssetContainer asset={asset}/></ListItem> )
 
   const styles = {
     border: {
@@ -18,17 +18,12 @@ const CategorySingle = ({assets, loading, error, category}) => {
   }
 
   return (
-    <Card shadow={2} className={'item'}>
+    <Card shadow={2} className={'singleCateogyr'}>
       <CardTitle style={styles.border} className='title flxR c-center m-between'>
           <h4 style={styles.title}>{category.name}</h4>
       </CardTitle>
       <CardText className={'content'}>
-        {
-          loading ?
-            <div className='centerItem'><Spinner /></div> : error ?
-              <p>Sorry, there was an error, please try again!</p> :
-              <List className={'list'}>{assetsMap(assets)}</List>
-        }
+        <List className={'list'}>{assetsMap(assets)}</List>
       </CardText>
     </Card>
   )

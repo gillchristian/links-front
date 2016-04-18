@@ -62,7 +62,7 @@
 
 	var _Routes2 = _interopRequireDefault(_Routes);
 
-	__webpack_require__(343);
+	__webpack_require__(342);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23572,7 +23572,7 @@
 
 	var _CategoriesContainer2 = _interopRequireDefault(_CategoriesContainer);
 
-	var _CategorySingleContainer = __webpack_require__(341);
+	var _CategorySingleContainer = __webpack_require__(338);
 
 	var _CategorySingleContainer2 = _interopRequireDefault(_CategorySingleContainer);
 
@@ -33797,10 +33797,6 @@
 
 	var _FilterCategories2 = _interopRequireDefault(_FilterCategories);
 
-	var _AssetEditModalContainer = __webpack_require__(338);
-
-	var _AssetEditModalContainer2 = _interopRequireDefault(_AssetEditModalContainer);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33851,8 +33847,7 @@
 	            _react2.default.createElement(_FilterCategories2.default, null)
 	          )
 	        ),
-	        _react2.default.createElement(_CategoriesContainer2.default, null),
-	        _react2.default.createElement(_AssetEditModalContainer2.default, null)
+	        _react2.default.createElement(_CategoriesContainer2.default, null)
 	      );
 	    }
 	  }]);
@@ -34159,8 +34154,6 @@
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
-
-	var _reactMdl = __webpack_require__(260);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37109,182 +37102,7 @@
 
 	var _reactRedux = __webpack_require__(166);
 
-	var _assets = __webpack_require__(194);
-
-	var _AssetEditModal = __webpack_require__(339);
-
-	var _AssetEditModal2 = _interopRequireDefault(_AssetEditModal);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var mapStateToProps = function mapStateToProps(state) {
-	  return {
-	    openModal: state.assets.editting.openModal,
-	    asset: state.assets.editting.asset
-	  };
-	};
-
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  var update = function update(asset) {
-	    dispatch((0, _assets.updateEdittingAsset)(asset));
-	  };
-	  var saveAsset = function saveAsset() {
-	    dispatch((0, _assets.saveEdittingAsset)());
-	  };
-	  var closeModal = function closeModal() {
-	    dispatch((0, _assets.cancelEdittingAsset)());
-	  };
-	  return {
-	    saveAsset: saveAsset,
-	    closeModal: closeModal,
-	    update: update
-	  };
-	};
-
-	var AssetEditModalContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AssetEditModal2.default);
-
-	exports.default = AssetEditModalContainer;
-
-/***/ },
-/* 339 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactMdl = __webpack_require__(260);
-
-	var _ModalContent = __webpack_require__(340);
-
-	var _ModalContent2 = _interopRequireDefault(_ModalContent);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var AssetEditModal = function AssetEditModal(props) {
-	  var _props$asset = props.asset;
-	  var id = _props$asset.id;
-	  var text = _props$asset.text;
-	  var link = _props$asset.link;
-	  var openModal = props.openModal;
-	  var saveAsset = props.saveAsset;
-	  var closeModal = props.closeModal;
-	  var update = props.update;
-
-
-	  var save = function save() {
-	    saveAsset();
-	  };
-	  var cancel = function cancel() {
-	    closeModal();
-	  };
-
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    _react2.default.createElement(
-	      _reactMdl.Dialog,
-	      { open: openModal },
-	      _react2.default.createElement(
-	        _reactMdl.DialogTitle,
-	        null,
-	        'Edit Asset'
-	      ),
-	      _react2.default.createElement(_ModalContent2.default, { link: link, text: text, update: update }),
-	      _react2.default.createElement(
-	        _reactMdl.DialogActions,
-	        null,
-	        _react2.default.createElement(
-	          _reactMdl.Button,
-	          { type: 'button', onClick: save },
-	          'Save'
-	        ),
-	        _react2.default.createElement(
-	          _reactMdl.Button,
-	          { type: 'button', onClick: cancel },
-	          'Cancel'
-	        )
-	      )
-	    )
-	  );
-	};
-
-	exports.default = AssetEditModal;
-
-/***/ },
-/* 340 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactMdl = __webpack_require__(260);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var ModalContent = function ModalContent(_ref) {
-	  var text = _ref.text;
-	  var link = _ref.link;
-	  var update = _ref.update;
-
-
-	  var updateText = function updateText(event) {
-	    update({
-	      text: event.target.value,
-	      link: link
-	    });
-	  };
-	  var updateLink = function updateLink(event) {
-	    update({
-	      link: event.target.value,
-	      text: text
-	    });
-	  };
-
-	  return _react2.default.createElement(
-	    _reactMdl.DialogContent,
-	    null,
-	    _react2.default.createElement(_reactMdl.Textfield, {
-	      onChange: updateText,
-	      label: 'Text...',
-	      value: text
-	    }),
-	    _react2.default.createElement(_reactMdl.Textfield, {
-	      onChange: updateLink,
-	      label: 'URL...',
-	      value: link
-	    })
-	  );
-	};
-
-	exports.default = ModalContent;
-
-/***/ },
-/* 341 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _reactRedux = __webpack_require__(166);
-
-	var _CategorySingle = __webpack_require__(342);
+	var _CategorySingle = __webpack_require__(339);
 
 	var _CategorySingle2 = _interopRequireDefault(_CategorySingle);
 
@@ -37307,7 +37125,7 @@
 	exports.default = CategorySingleContainer;
 
 /***/ },
-/* 342 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37324,16 +37142,14 @@
 
 	var _reactMdl = __webpack_require__(260);
 
-	var _AssetRow = __webpack_require__(327);
+	var _AssetContainer = __webpack_require__(340);
 
-	var _AssetRow2 = _interopRequireDefault(_AssetRow);
+	var _AssetContainer2 = _interopRequireDefault(_AssetContainer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var CategorySingle = function CategorySingle(_ref) {
 	  var assets = _ref.assets;
-	  var loading = _ref.loading;
-	  var error = _ref.error;
 	  var category = _ref.category;
 
 
@@ -37342,7 +37158,7 @@
 	      return _react2.default.createElement(
 	        _reactMdl.ListItem,
 	        { key: asset._id },
-	        _react2.default.createElement(_AssetRow2.default, { asset: asset })
+	        _react2.default.createElement(_AssetContainer2.default, { asset: asset })
 	      );
 	    });
 	  };
@@ -37356,7 +37172,7 @@
 
 	  return _react2.default.createElement(
 	    _reactMdl.Card,
-	    { shadow: 2, className: 'item' },
+	    { shadow: 2, className: 'singleCateogyr' },
 	    _react2.default.createElement(
 	      _reactMdl.CardTitle,
 	      { style: styles.border, className: 'title flxR c-center m-between' },
@@ -37369,15 +37185,7 @@
 	    _react2.default.createElement(
 	      _reactMdl.CardText,
 	      { className: 'content' },
-	      loading ? _react2.default.createElement(
-	        'div',
-	        { className: 'centerItem' },
-	        _react2.default.createElement(_reactMdl.Spinner, null)
-	      ) : error ? _react2.default.createElement(
-	        'p',
-	        null,
-	        'Sorry, there was an error, please try again!'
-	      ) : _react2.default.createElement(
+	      _react2.default.createElement(
 	        _reactMdl.List,
 	        { className: 'list' },
 	        assetsMap(assets)
@@ -37389,7 +37197,114 @@
 	exports.default = CategorySingle;
 
 /***/ },
-/* 343 */
+/* 340 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _reactRedux = __webpack_require__(166);
+
+	var _assets = __webpack_require__(194);
+
+	var _Asset = __webpack_require__(341);
+
+	var _Asset2 = _interopRequireDefault(_Asset);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state, props) {
+	  return { asset: props.asset };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  var remove = function remove(id) {
+	    dispatch((0, _assets.requestRemoveAsset)(id));
+	  };
+	  return { remove: remove };
+	};
+
+	var AssetContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Asset2.default);
+
+	exports.default = AssetContainer;
+
+/***/ },
+/* 341 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactMdl = __webpack_require__(260);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Asset = function Asset(_ref) {
+	  var asset = _ref.asset;
+	  var remove = _ref.remove;
+
+
+	  var tags = function tags() {
+	    return asset.tags.map(function (tag, key) {
+	      return _react2.default.createElement(
+	        'i',
+	        { key: key, className: 'tag' },
+	        '#',
+	        tag,
+	        ' '
+	      );
+	    });
+	  };
+
+	  var handleClick = function handleClick() {
+	    remove(asset._id);
+	  };
+
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'flxR c-center m-between linkRow' },
+	    _react2.default.createElement(
+	      'div',
+	      null,
+	      _react2.default.createElement(
+	        'p',
+	        null,
+	        _react2.default.createElement(
+	          'a',
+	          { href: asset.link, target: '_blank' },
+	          asset.text || asset.link
+	        )
+	      ),
+	      _react2.default.createElement(
+	        'p',
+	        { className: 'tag' },
+	        tags()
+	      )
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'flxR c-center m-around' },
+	      _react2.default.createElement(_reactMdl.IconButton, { name: 'edit' }),
+	      _react2.default.createElement(_reactMdl.IconButton, { name: 'share' }),
+	      _react2.default.createElement(_reactMdl.IconButton, { onClick: handleClick, name: 'delete' })
+	    )
+	  );
+	};
+
+	exports.default = Asset;
+
+/***/ },
+/* 342 */
 /***/ function(module, exports) {
 
 	'use strict';var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol?"symbol":typeof obj;};;(function(){"use strict";if(typeof window==='undefined')return; /**

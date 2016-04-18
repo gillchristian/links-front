@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon, Menu, MenuItem } from 'react-mdl'
 
 const AssetRow = ({asset}) => {
 

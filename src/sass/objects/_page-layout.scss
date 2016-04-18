@@ -1,7 +1,7 @@
 .wrapper {
   width: 95%;
   margin: 0 auto;
-  @include mediaFrom($desktop) { width: 1980px; }
+  @include mediaFrom($desktop) { width: 95%; }
   @include mediaFrom($lg) { width: 1500px; }
 }
 ​
