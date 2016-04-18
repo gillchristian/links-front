@@ -5,7 +5,7 @@ import { Card, CardTitle, CardText, IconButton, List, ListItem, Spinner } from '
 
 import AssetRow from './AssetRow.jsx'
 
-const AssetsList = ({assets, loading, error, category}) => {
+const CategorySingle = ({assets, loading, error, category}) => {
 
   const assetsMap = (assets) => assets
     .map( asset => <ListItem key={asset._id}><AssetRow asset={asset}/></ListItem> )
@@ -21,7 +21,6 @@ const AssetsList = ({assets, loading, error, category}) => {
     <Card shadow={2} className={'item'}>
       <CardTitle style={styles.border} className='title flxR c-center m-between'>
           <h4 style={styles.title}>{category.name}</h4>
-          <Link to={`/categories/${category._id}`}><IconButton name="launch"/></Link>
       </CardTitle>
       <CardText className={'content'}>
         {
@@ -35,4 +34,4 @@ const AssetsList = ({assets, loading, error, category}) => {
   )
 }
 
-export default AssetsList
+export default CategorySingle

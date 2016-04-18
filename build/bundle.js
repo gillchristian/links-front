@@ -23572,6 +23572,10 @@
 
 	var _CategoriesContainer2 = _interopRequireDefault(_CategoriesContainer);
 
+	var _CategorySingleContainer = __webpack_require__(341);
+
+	var _CategorySingleContainer2 = _interopRequireDefault(_CategorySingleContainer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Routes = function Routes() {
@@ -23582,6 +23586,11 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _App2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _MainContainer2.default }),
+	      _react2.default.createElement(
+	        _reactRouter.Route,
+	        { path: 'categories' },
+	        _react2.default.createElement(_reactRouter.Route, { path: ':category', component: _CategorySingleContainer2.default })
+	      ),
 	      _react2.default.createElement(_reactRouter.Route, { path: 'me', component: _CategoriesContainer2.default }),
 	      _react2.default.createElement(_reactRouter.Route, { path: 'settings', component: _CategoriesContainer2.default })
 	    )
@@ -28817,7 +28826,7 @@
 	          _react2.default.createElement(
 	            _reactRouter.IndexLink,
 	            { to: '/', activeClassName: 'activeLink' },
-	            'Wonderassets'
+	            'Home'
 	          ),
 	          _react2.default.createElement(
 	            _reactRouter.Link,
@@ -33784,11 +33793,11 @@
 
 	var _CategoriesContainer2 = _interopRequireDefault(_CategoriesContainer);
 
-	var _FilterCategories = __webpack_require__(339);
+	var _FilterCategories = __webpack_require__(337);
 
 	var _FilterCategories2 = _interopRequireDefault(_FilterCategories);
 
-	var _AssetEditModalContainer = __webpack_require__(340);
+	var _AssetEditModalContainer = __webpack_require__(338);
 
 	var _AssetEditModalContainer2 = _interopRequireDefault(_AssetEditModalContainer);
 
@@ -33936,7 +33945,7 @@
 
 	var _AssetsListContainer2 = _interopRequireDefault(_AssetsListContainer);
 
-	var _reactMasonryComponent = __webpack_require__(330);
+	var _reactMasonryComponent = __webpack_require__(328);
 
 	var _reactMasonryComponent2 = _interopRequireDefault(_reactMasonryComponent);
 
@@ -34064,11 +34073,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Asset = __webpack_require__(327);
-
-	var _Asset2 = _interopRequireDefault(_Asset);
+	var _reactRouter = __webpack_require__(203);
 
 	var _reactMdl = __webpack_require__(260);
+
+	var _AssetRow = __webpack_require__(327);
+
+	var _AssetRow2 = _interopRequireDefault(_AssetRow);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34084,14 +34095,16 @@
 	      return _react2.default.createElement(
 	        _reactMdl.ListItem,
 	        { key: asset._id },
-	        _react2.default.createElement(_Asset2.default, { asset: asset })
+	        _react2.default.createElement(_AssetRow2.default, { asset: asset })
 	      );
 	    });
 	  };
 
-	  var titleStyles = {
-	    borderBottom: '3px solid ' + (category.color || 'gray'),
-	    color: category.color || 'gray'
+	  var styles = {
+	    border: {
+	      borderBottom: '3px solid ' + (category.color || 'gray')
+	    },
+	    title: { color: category.color || 'gray' }
 	  };
 
 	  return _react2.default.createElement(
@@ -34099,11 +34112,16 @@
 	    { shadow: 2, className: 'item' },
 	    _react2.default.createElement(
 	      _reactMdl.CardTitle,
-	      { style: titleStyles, className: 'title' },
+	      { style: styles.border, className: 'title flxR c-center m-between' },
 	      _react2.default.createElement(
 	        'h4',
-	        null,
+	        { style: styles.title },
 	        category.name
+	      ),
+	      _react2.default.createElement(
+	        _reactRouter.Link,
+	        { to: '/categories/' + category._id },
+	        _react2.default.createElement(_reactMdl.IconButton, { name: 'launch' })
 	      )
 	    ),
 	    _react2.default.createElement(
@@ -34144,13 +34162,9 @@
 
 	var _reactMdl = __webpack_require__(260);
 
-	var _AssetMenuContainer = __webpack_require__(328);
-
-	var _AssetMenuContainer2 = _interopRequireDefault(_AssetMenuContainer);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Link = function Link(_ref) {
+	var AssetRow = function AssetRow(_ref) {
 	  var asset = _ref.asset;
 
 
@@ -34167,136 +34181,30 @@
 	  };
 
 	  return _react2.default.createElement(
-	    'div',
-	    { className: 'flxR c-center m-between linkRow' },
+	    'a',
+	    { href: asset.link, target: '_blank', className: 'linkRow' },
 	    _react2.default.createElement(
-	      'div',
+	      'p',
 	      null,
-	      _react2.default.createElement(
-	        'p',
-	        null,
-	        _react2.default.createElement(
-	          'a',
-	          { href: asset.link, target: '_blank' },
-	          asset.text || asset.link
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'p',
-	        { className: 'tag' },
-	        tags()
-	      )
+	      asset.text || asset.link
 	    ),
-	    _react2.default.createElement(_AssetMenuContainer2.default, { id: asset._id })
+	    _react2.default.createElement(
+	      'p',
+	      { className: 'tag' },
+	      tags()
+	    )
 	  );
 	};
 
-	exports.default = Link;
+	exports.default = AssetRow;
 
 /***/ },
 /* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _reactRedux = __webpack_require__(166);
-
-	var _assets = __webpack_require__(194);
-
-	var _AssetMenu = __webpack_require__(329);
-
-	var _AssetMenu2 = _interopRequireDefault(_AssetMenu);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var mapStateToProps = function mapStateToProps(state, props) {
-	  return { id: props.id };
-	};
-
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  var removeAsset = function removeAsset(id) {
-	    dispatch((0, _assets.requestRemoveAsset)(id));
-	  };
-	  var openEditModal = function openEditModal(id) {
-	    dispatch((0, _assets.editAsset)(id));
-	  };
-	  return { removeAsset: removeAsset, openEditModal: openEditModal };
-	};
-
-	var AssetMenuContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AssetMenu2.default);
-
-	exports.default = AssetMenuContainer;
-
-/***/ },
-/* 329 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactMdl = __webpack_require__(260);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var assetMenu = function assetMenu(_ref) {
-	  var id = _ref.id;
-	  var removeAsset = _ref.removeAsset;
-	  var openEditModal = _ref.openEditModal;
-
-
-	  var edit = function edit() {
-	    openEditModal(id);
-	  };
-	  var remove = function remove() {
-	    removeAsset(id);
-	  };
-
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    _react2.default.createElement(_reactMdl.IconButton, { name: 'more_vert', id: 'assetMenu-' + id }),
-	    _react2.default.createElement(
-	      _reactMdl.Menu,
-	      { target: 'assetMenu-' + id, valign: 'top', align: 'right' },
-	      _react2.default.createElement(
-	        _reactMdl.MenuItem,
-	        { onClick: edit },
-	        'Edit'
-	      ),
-	      _react2.default.createElement(
-	        _reactMdl.MenuItem,
-	        null,
-	        'Share'
-	      ),
-	      _react2.default.createElement(
-	        _reactMdl.MenuItem,
-	        { onClick: remove },
-	        'Remove'
-	      )
-	    )
-	  );
-	};
-
-	exports.default = assetMenu;
-
-/***/ },
-/* 330 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var isBrowser = (typeof window !== 'undefined');
-	var Masonry = isBrowser ? window.Masonry || __webpack_require__(331) : null;
-	var imagesloaded = isBrowser ? __webpack_require__(338) : null;
+	var Masonry = isBrowser ? window.Masonry || __webpack_require__(329) : null;
+	var imagesloaded = isBrowser ? __webpack_require__(336) : null;
 	var React = __webpack_require__(1);
 	var refName = 'masonryContainer';
 
@@ -34492,7 +34400,7 @@
 
 
 /***/ },
-/* 331 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -34509,8 +34417,8 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	        __webpack_require__(332),
-	        __webpack_require__(334)
+	        __webpack_require__(330),
+	        __webpack_require__(332)
 	      ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ( typeof module == 'object' && module.exports ) {
 	    // CommonJS
@@ -34702,7 +34610,7 @@
 
 
 /***/ },
-/* 332 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -34718,10 +34626,10 @@
 	  if ( true ) {
 	    // AMD - RequireJS
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+	        __webpack_require__(331),
+	        __webpack_require__(332),
 	        __webpack_require__(333),
-	        __webpack_require__(334),
-	        __webpack_require__(335),
-	        __webpack_require__(337)
+	        __webpack_require__(335)
 	      ], __WEBPACK_AMD_DEFINE_RESULT__ = function( EvEmitter, getSize, utils, Item ) {
 	        return factory( window, EvEmitter, getSize, utils, Item);
 	      }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -35603,7 +35511,7 @@
 
 
 /***/ },
-/* 333 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -35718,7 +35626,7 @@
 
 
 /***/ },
-/* 334 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -35933,7 +35841,7 @@
 
 
 /***/ },
-/* 335 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -35950,7 +35858,7 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	      __webpack_require__(336)
+	      __webpack_require__(334)
 	    ], __WEBPACK_AMD_DEFINE_RESULT__ = function( matchesSelector ) {
 	      return factory( window, matchesSelector );
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -36174,7 +36082,7 @@
 
 
 /***/ },
-/* 336 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -36233,7 +36141,7 @@
 
 
 /***/ },
-/* 337 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -36246,8 +36154,8 @@
 	  if ( true ) {
 	    // AMD - RequireJS
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	        __webpack_require__(333),
-	        __webpack_require__(334)
+	        __webpack_require__(331),
+	        __webpack_require__(332)
 	      ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ( typeof module == 'object' && module.exports ) {
 	    // CommonJS - Browserify, Webpack
@@ -36777,7 +36685,7 @@
 
 
 /***/ },
-/* 338 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -36794,7 +36702,7 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	      __webpack_require__(333)
+	      __webpack_require__(331)
 	    ], __WEBPACK_AMD_DEFINE_RESULT__ = function( EvEmitter ) {
 	      return factory( window, EvEmitter );
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -37153,7 +37061,7 @@
 
 
 /***/ },
-/* 339 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37190,7 +37098,7 @@
 	exports.default = FilterCategories;
 
 /***/ },
-/* 340 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37203,7 +37111,7 @@
 
 	var _assets = __webpack_require__(194);
 
-	var _AssetEditModal = __webpack_require__(341);
+	var _AssetEditModal = __webpack_require__(339);
 
 	var _AssetEditModal2 = _interopRequireDefault(_AssetEditModal);
 
@@ -37238,7 +37146,7 @@
 	exports.default = AssetEditModalContainer;
 
 /***/ },
-/* 341 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37253,7 +37161,7 @@
 
 	var _reactMdl = __webpack_require__(260);
 
-	var _ModalContent = __webpack_require__(342);
+	var _ModalContent = __webpack_require__(340);
 
 	var _ModalContent2 = _interopRequireDefault(_ModalContent);
 
@@ -37310,7 +37218,7 @@
 	exports.default = AssetEditModal;
 
 /***/ },
-/* 342 */
+/* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37363,6 +37271,122 @@
 	};
 
 	exports.default = ModalContent;
+
+/***/ },
+/* 341 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _reactRedux = __webpack_require__(166);
+
+	var _CategorySingle = __webpack_require__(342);
+
+	var _CategorySingle2 = _interopRequireDefault(_CategorySingle);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state, props) {
+
+	  var assets = state.assets.list.filter(function (asset) {
+	    return asset.categories.indexOf(props.params.category) > -1;
+	  });
+	  var category = state.categories.list.find(function (category) {
+	    return category._id === props.params.category;
+	  });
+
+	  return { category: category, assets: assets };
+	};
+
+	var CategorySingleContainer = (0, _reactRedux.connect)(mapStateToProps)(_CategorySingle2.default);
+
+	exports.default = CategorySingleContainer;
+
+/***/ },
+/* 342 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(203);
+
+	var _reactMdl = __webpack_require__(260);
+
+	var _AssetRow = __webpack_require__(327);
+
+	var _AssetRow2 = _interopRequireDefault(_AssetRow);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var CategorySingle = function CategorySingle(_ref) {
+	  var assets = _ref.assets;
+	  var loading = _ref.loading;
+	  var error = _ref.error;
+	  var category = _ref.category;
+
+
+	  var assetsMap = function assetsMap(assets) {
+	    return assets.map(function (asset) {
+	      return _react2.default.createElement(
+	        _reactMdl.ListItem,
+	        { key: asset._id },
+	        _react2.default.createElement(_AssetRow2.default, { asset: asset })
+	      );
+	    });
+	  };
+
+	  var styles = {
+	    border: {
+	      borderBottom: '3px solid ' + (category.color || 'gray')
+	    },
+	    title: { color: category.color || 'gray' }
+	  };
+
+	  return _react2.default.createElement(
+	    _reactMdl.Card,
+	    { shadow: 2, className: 'item' },
+	    _react2.default.createElement(
+	      _reactMdl.CardTitle,
+	      { style: styles.border, className: 'title flxR c-center m-between' },
+	      _react2.default.createElement(
+	        'h4',
+	        { style: styles.title },
+	        category.name
+	      )
+	    ),
+	    _react2.default.createElement(
+	      _reactMdl.CardText,
+	      { className: 'content' },
+	      loading ? _react2.default.createElement(
+	        'div',
+	        { className: 'centerItem' },
+	        _react2.default.createElement(_reactMdl.Spinner, null)
+	      ) : error ? _react2.default.createElement(
+	        'p',
+	        null,
+	        'Sorry, there was an error, please try again!'
+	      ) : _react2.default.createElement(
+	        _reactMdl.List,
+	        { className: 'list' },
+	        assetsMap(assets)
+	      )
+	    )
+	  );
+	};
+
+	exports.default = CategorySingle;
 
 /***/ },
 /* 343 */

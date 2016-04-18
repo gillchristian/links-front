@@ -27,12 +27,18 @@
         background-color: $focus-soft;
       }
       p { margin: 0; }
-      .linkRow { width: 100%; }
-      .tag { color: gray; }
+      .linkRow {
+        width: 100%;
+        cursor: pointer;
+      }
+      .tag {
+        color: gray;
+        text-decoration: none;
+      }
     }
   }
 }
 
 .title {
-  padding: 0 30px;
+  padding: 0 10px 0 20px;
 }
