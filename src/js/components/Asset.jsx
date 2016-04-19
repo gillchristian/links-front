@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { IconButton } from 'react-mdl'
 
 const Asset = ({asset, remove}) => {
@@ -10,7 +10,7 @@ const Asset = ({asset, remove}) => {
       ))
   }
 
-  const handleClick = () => {remove(asset._id)}
+  const handleClick = () => { remove(asset._id) }
 
   return (
     <div className='flxR c-center m-between linkRow'>
