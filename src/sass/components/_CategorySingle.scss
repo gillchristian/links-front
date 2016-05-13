@@ -1,13 +1,9 @@
-.item {
+.singleCateogyr {
   width: 100%;
   min-height: 100px;
-  margin: 10px 1%;
+  margin: 20px 0 10px;
   border-radius: 3px;
   overflow: visible;
-  @include mediaFrom($mobile-lg) { width: 48%; }
-  @include mediaFrom($tablet) { width: 31%; }
-  @include mediaFrom($desktop-sm) { width: 23%; }
-  @include mediaFrom($lg) { width: 18%; }
   &:hover {
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
   }

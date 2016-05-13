@@ -9,7 +9,7 @@ const App = ({children}) => (
       <Header title='Wonderassets' />
       <Drawer title='Wonderassets'>
         <Navigation>
-          <IndexLink to={'/'} activeClassName="activeLink">Wonderassets</IndexLink>
+          <IndexLink to={'/'} activeClassName="activeLink">Home</IndexLink>
           <Link to={'/me'} activeClassName="activeLink">Profile</Link>
           <Link to={`/settings`} activeClassName="activeLink">Settings</Link>
         </Navigation>

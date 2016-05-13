@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 
 import CategoriesContainer from '../containers/CategoriesContainer'
 import FilterCategories from '../containers/FilterCategories'
-import AssetEditModalContainer from '../containers/AssetEditModalContainer'
 
 export default class Main extends Component {
   componentWillMount () {
@@ -22,7 +21,6 @@ export default class Main extends Component {
           </div>
         </div>
         <CategoriesContainer />
-        <AssetEditModalContainer />
       </div>
     )
   }

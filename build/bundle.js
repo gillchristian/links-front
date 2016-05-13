@@ -20083,11 +20083,7 @@
 	  }
 	  didWarnAboutReceivingStore = true;
 
-	  /* eslint-disable no-console */
-	  if (typeof console !== 'undefined' && typeof console.error === 'function') {
-	    (0, _warning2["default"])('<Provider> does not support changing `store` on the fly. ' + 'It is most likely that you see this error because you updated to ' + 'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' + 'automatically. See https://github.com/reactjs/react-redux/releases/' + 'tag/v2.0.0 for the migration instructions.');
-	  }
-	  /* eslint-disable no-console */
+	  (0, _warning2["default"])('<Provider> does not support changing `store` on the fly. ' + 'It is most likely that you see this error because you updated to ' + 'Redux 2.x and React Redux 2.x which no longer hot reload reducers ' + 'automatically. See https://github.com/reactjs/react-redux/releases/' + 'tag/v2.0.0 for the migration instructions.');
 	}
 
 	var Provider = function (_Component) {
@@ -20243,6 +20239,16 @@
 
 	function getDisplayName(WrappedComponent) {
 	  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+	}
+
+	var errorObject = { value: null };
+	function tryCatch(fn, ctx) {
+	  try {
+	    return fn.apply(ctx);
+	  } catch (e) {
+	    errorObject.value = e;
+	    return errorObject;
+	  }
 	}
 
 	// Helps track hot reloading.
@@ -20447,6 +20453,7 @@
 	        this.haveOwnPropsChanged = true;
 	        this.hasStoreStateChanged = true;
 	        this.haveStatePropsBeenPrecalculated = false;
+	        this.statePropsPrecalculationError = null;
 	        this.renderedElement = null;
 	        this.finalMapDispatchToProps = null;
 	        this.finalMapStateToProps = null;
@@ -20464,8 +20471,12 @@
 	        }
 
 	        if (pure && !this.doStatePropsDependOnOwnProps) {
-	          if (!this.updateStatePropsIfNeeded()) {
+	          var haveStatePropsChanged = tryCatch(this.updateStatePropsIfNeeded, this);
+	          if (!haveStatePropsChanged) {
 	            return;
+	          }
+	          if (haveStatePropsChanged === errorObject) {
+	            this.statePropsPrecalculationError = errorObject.value;
 	          }
 	          this.haveStatePropsBeenPrecalculated = true;
 	        }
@@ -20484,11 +20495,17 @@
 	        var haveOwnPropsChanged = this.haveOwnPropsChanged;
 	        var hasStoreStateChanged = this.hasStoreStateChanged;
 	        var haveStatePropsBeenPrecalculated = this.haveStatePropsBeenPrecalculated;
+	        var statePropsPrecalculationError = this.statePropsPrecalculationError;
 	        var renderedElement = this.renderedElement;
 
 	        this.haveOwnPropsChanged = false;
 	        this.hasStoreStateChanged = false;
 	        this.haveStatePropsBeenPrecalculated = false;
+	        this.statePropsPrecalculationError = null;
+
+	        if (statePropsPrecalculationError) {
+	          throw statePropsPrecalculationError;
+	        }
 
 	        var shouldUpdateStateProps = true;
 	        var shouldUpdateDispatchProps = true;
@@ -22783,7 +22800,7 @@
 	/**
 	 * save the asset being editted
 	 *
-	 * @returns {object}  action object
+	 * @returns {Object}  action object
 	 */
 	function saveEdittingAsset() {
 	  return {
@@ -22795,7 +22812,7 @@
 	 * cancel the asset edition and close the modal
 	 *
 	 * @param {Object}  updated input values
-	 * @returns {object}  action object
+	 * @returns {Object}  action object
 	 */
 	function cancelEdittingAsset() {
 	  return {
@@ -23555,6 +23572,10 @@
 
 	var _CategoriesContainer2 = _interopRequireDefault(_CategoriesContainer);
 
+	var _CategorySingleContainer = __webpack_require__(338);
+
+	var _CategorySingleContainer2 = _interopRequireDefault(_CategorySingleContainer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var Routes = function Routes() {
@@ -23565,6 +23586,11 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _App2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _MainContainer2.default }),
+	      _react2.default.createElement(
+	        _reactRouter.Route,
+	        { path: 'categories' },
+	        _react2.default.createElement(_reactRouter.Route, { path: ':category', component: _CategorySingleContainer2.default })
+	      ),
 	      _react2.default.createElement(_reactRouter.Route, { path: 'me', component: _CategoriesContainer2.default }),
 	      _react2.default.createElement(_reactRouter.Route, { path: 'settings', component: _CategoriesContainer2.default })
 	    )
@@ -25201,7 +25227,7 @@
 
 	function isNestedObject(object) {
 	  for (var p in object) {
-	    if (object.hasOwnProperty(p) && typeof object[p] === 'object' && !Array.isArray(object[p]) && object[p] !== null) return true;
+	    if (Object.prototype.hasOwnProperty.call(object, p) && typeof object[p] === 'object' && !Array.isArray(object[p]) && object[p] !== null) return true;
 	  }return false;
 	}
 
@@ -26361,20 +26387,42 @@
 	  return String(a) === String(b);
 	}
 
-	function paramsAreActive(paramNames, paramValues, activeParams) {
-	  // FIXME: This doesn't work on repeated params in activeParams.
-	  return paramNames.every(function (paramName, index) {
-	    return String(paramValues[index]) === String(activeParams[paramName]);
-	  });
+	/**
+	 * Returns true if the current pathname matches the supplied one, net of
+	 * leading and trailing slash normalization. This is sufficient for an
+	 * indexOnly route match.
+	 */
+	function pathIsActive(pathname, currentPathname) {
+	  // Normalize leading slash for consistency. Leading slash on pathname has
+	  // already been normalized in isActive. See caveat there.
+	  if (currentPathname.charAt(0) !== '/') {
+	    currentPathname = '/' + currentPathname;
+	  }
+
+	  // Normalize the end of both path names too. Maybe `/foo/` shouldn't show
+	  // `/foo` as active, but in this case, we would already have failed the
+	  // match.
+	  if (pathname.charAt(pathname.length - 1) !== '/') {
+	    pathname += '/';
+	  }
+	  if (currentPathname.charAt(currentPathname.length - 1) !== '/') {
+	    currentPathname += '/';
+	  }
+
+	  return currentPathname === pathname;
 	}
 
-	function getMatchingRouteIndex(pathname, activeRoutes, activeParams) {
+	/**
+	 * Returns true if the given pathname matches the active routes and params.
+	 */
+	function routeIsActive(pathname, routes, params) {
 	  var remainingPathname = pathname,
 	      paramNames = [],
 	      paramValues = [];
 
-	  for (var i = 0, len = activeRoutes.length; i < len; ++i) {
-	    var route = activeRoutes[i];
+	  // for...of would work here but it's probably slower post-transpilation.
+	  for (var i = 0, len = routes.length; i < len; ++i) {
+	    var route = routes[i];
 	    var pattern = route.path || '';
 
 	    if (pattern.charAt(0) === '/') {
@@ -26383,46 +26431,24 @@
 	      paramValues = [];
 	    }
 
-	    if (remainingPathname !== null) {
+	    if (remainingPathname !== null && pattern) {
 	      var matched = _PatternUtils.matchPattern(pattern, remainingPathname);
 	      remainingPathname = matched.remainingPathname;
 	      paramNames = [].concat(paramNames, matched.paramNames);
 	      paramValues = [].concat(paramValues, matched.paramValues);
+
+	      if (remainingPathname === '') {
+	        // We have an exact match on the route. Just check that all the params
+	        // match.
+	        // FIXME: This doesn't work on repeated params.
+	        return paramNames.every(function (paramName, index) {
+	          return String(paramValues[index]) === String(params[paramName]);
+	        });
+	      }
 	    }
-
-	    if (remainingPathname === '' && route.path && paramsAreActive(paramNames, paramValues, activeParams)) return i;
 	  }
 
-	  return null;
-	}
-
-	/**
-	 * Returns true if the given pathname matches the active routes
-	 * and params.
-	 */
-	function routeIsActive(pathname, routes, params, indexOnly) {
-	  // TODO: This is a bit ugly. It keeps around support for treating pathnames
-	  // without preceding slashes as absolute paths, but possibly also works
-	  // around the same quirks with basenames as in matchRoutes.
-	  if (pathname.charAt(0) !== '/') {
-	    pathname = '/' + pathname;
-	  }
-
-	  var i = getMatchingRouteIndex(pathname, routes, params);
-
-	  if (i === null) {
-	    // No match.
-	    return false;
-	  } else if (!indexOnly) {
-	    // Any match is good enough.
-	    return true;
-	  }
-
-	  // If any remaining routes past the match index have paths, then we can't
-	  // be on the index route.
-	  return routes.slice(i + 1).every(function (route) {
-	    return !route.path;
-	  });
+	  return false;
 	}
 
 	/**
@@ -26448,7 +26474,20 @@
 
 	  if (currentLocation == null) return false;
 
-	  if (!routeIsActive(pathname, routes, params, indexOnly)) return false;
+	  // TODO: This is a bit ugly. It keeps around support for treating pathnames
+	  // without preceding slashes as absolute paths, but possibly also works
+	  // around the same quirks with basenames as in matchRoutes.
+	  if (pathname.charAt(0) !== '/') {
+	    pathname = '/' + pathname;
+	  }
+
+	  if (!pathIsActive(pathname, currentLocation.pathname)) {
+	    // The path check is necessary and sufficient for indexOnly, but otherwise
+	    // we still need to check the routes.
+	    if (indexOnly || !routeIsActive(pathname, routes, params)) {
+	      return false;
+	    }
+	  }
 
 	  return queryIsActive(query, currentLocation.query);
 	}
@@ -26482,47 +26521,45 @@
 	  }
 
 	  var getComponent = route.getComponent || route.getComponents;
-	  if (getComponent) {
-	    var _ret = (function () {
-	      var nextStateWithLocation = _extends({}, nextState);
-	      var location = nextState.location;
-
-	      if (process.env.NODE_ENV !== 'production' && _deprecateObjectProperties.canUseMembrane) {
-	        var _loop = function (prop) {
-	          if (!Object.prototype.hasOwnProperty.call(location, prop)) {
-	            return 'continue';
-	          }
-
-	          Object.defineProperty(nextStateWithLocation, prop, {
-	            get: function get() {
-	              process.env.NODE_ENV !== 'production' ? _routerWarning2['default'](false, 'Accessing location properties from the first argument to `getComponent` and `getComponents` is deprecated. That argument is now the router state (`nextState`) rather than the location. To access the location, use `nextState.location`.') : undefined;
-	              return location[prop];
-	            }
-	          });
-	        };
-
-	        // I don't use deprecateObjectProperties here because I want to keep the
-	        // same code path between development and production, in that we just
-	        // assign extra properties to the copy of the state object in both cases.
-	        for (var prop in location) {
-	          var _ret2 = _loop(prop);
-
-	          if (_ret2 === 'continue') continue;
-	        }
-	      } else {
-	        Object.assign(nextStateWithLocation, location);
-	      }
-
-	      getComponent.call(route, nextStateWithLocation, callback);
-	      return {
-	        v: undefined
-	      };
-	    })();
-
-	    if (typeof _ret === 'object') return _ret.v;
+	  if (!getComponent) {
+	    callback();
+	    return;
 	  }
 
-	  callback();
+	  var location = nextState.location;
+
+	  var nextStateWithLocation = undefined;
+
+	  if (process.env.NODE_ENV !== 'production' && _deprecateObjectProperties.canUseMembrane) {
+	    nextStateWithLocation = _extends({}, nextState);
+
+	    // I don't use deprecateObjectProperties here because I want to keep the
+	    // same code path between development and production, in that we just
+	    // assign extra properties to the copy of the state object in both cases.
+
+	    var _loop = function (prop) {
+	      if (!Object.prototype.hasOwnProperty.call(location, prop)) {
+	        return 'continue';
+	      }
+
+	      Object.defineProperty(nextStateWithLocation, prop, {
+	        get: function get() {
+	          process.env.NODE_ENV !== 'production' ? _routerWarning2['default'](false, 'Accessing location properties from the first argument to `getComponent` and `getComponents` is deprecated. That argument is now the router state (`nextState`) rather than the location. To access the location, use `nextState.location`.') : undefined;
+	          return location[prop];
+	        }
+	      });
+	    };
+
+	    for (var prop in location) {
+	      var _ret = _loop(prop);
+
+	      if (_ret === 'continue') continue;
+	    }
+	  } else {
+	    nextStateWithLocation = _extends({}, nextState, location);
+	  }
+
+	  getComponent.call(route, nextStateWithLocation, callback);
 	}
 
 	/**
@@ -28211,7 +28248,7 @@
 	    if (basename == null && _ExecutionEnvironment.canUseDOM) {
 	      var base = document.getElementsByTagName('base')[0];
 
-	      if (base) basename = _PathUtils.extractPath(base.href);
+	      if (base) basename = base.getAttribute('href');
 	    }
 
 	    function addBasename(location) {
@@ -28587,7 +28624,7 @@
 	      state = null;
 	      key = history.createKey();
 
-	      if (isSupported) window.history.replaceState(_extends({}, historyState, { key: key }), null, path);
+	      if (isSupported) window.history.replaceState(_extends({}, historyState, { key: key }), null);
 	    }
 
 	    var location = _PathUtils.parsePath(path);
@@ -28789,7 +28826,7 @@
 	          _react2.default.createElement(
 	            _reactRouter.IndexLink,
 	            { to: '/', activeClassName: 'activeLink' },
-	            'Wonderassets'
+	            'Home'
 	          ),
 	          _react2.default.createElement(
 	            _reactRouter.Link,
@@ -33756,13 +33793,9 @@
 
 	var _CategoriesContainer2 = _interopRequireDefault(_CategoriesContainer);
 
-	var _FilterCategories = __webpack_require__(339);
+	var _FilterCategories = __webpack_require__(337);
 
 	var _FilterCategories2 = _interopRequireDefault(_FilterCategories);
-
-	var _AssetEditModalContainer = __webpack_require__(340);
-
-	var _AssetEditModalContainer2 = _interopRequireDefault(_AssetEditModalContainer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33814,8 +33847,7 @@
 	            _react2.default.createElement(_FilterCategories2.default, null)
 	          )
 	        ),
-	        _react2.default.createElement(_CategoriesContainer2.default, null),
-	        _react2.default.createElement(_AssetEditModalContainer2.default, null)
+	        _react2.default.createElement(_CategoriesContainer2.default, null)
 	      );
 	    }
 	  }]);
@@ -33866,7 +33898,8 @@
 
 	  return {
 	    categories: categories,
-	    loading: state.categories.loading
+	    loading: state.categories.loading,
+	    shouldUpdate: !state.assets.editting.openModal
 	  };
 	};
 
@@ -33907,7 +33940,7 @@
 
 	var _AssetsListContainer2 = _interopRequireDefault(_AssetsListContainer);
 
-	var _reactMasonryComponent = __webpack_require__(330);
+	var _reactMasonryComponent = __webpack_require__(328);
 
 	var _reactMasonryComponent2 = _interopRequireDefault(_reactMasonryComponent);
 
@@ -33940,6 +33973,11 @@
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
 	      this.masonry.layout();
+	    }
+	  }, {
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate() {
+	      return this.props.shouldUpdate;
 	    }
 	  }, {
 	    key: 'mapAssetsByCategory',
@@ -34030,11 +34068,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Asset = __webpack_require__(327);
-
-	var _Asset2 = _interopRequireDefault(_Asset);
+	var _reactRouter = __webpack_require__(203);
 
 	var _reactMdl = __webpack_require__(260);
+
+	var _AssetRow = __webpack_require__(327);
+
+	var _AssetRow2 = _interopRequireDefault(_AssetRow);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34050,14 +34090,16 @@
 	      return _react2.default.createElement(
 	        _reactMdl.ListItem,
 	        { key: asset._id },
-	        _react2.default.createElement(_Asset2.default, { asset: asset })
+	        _react2.default.createElement(_AssetRow2.default, { asset: asset })
 	      );
 	    });
 	  };
 
-	  var titleStyles = {
-	    borderBottom: '3px solid ' + (category.color || 'gray'),
-	    color: category.color || 'gray'
+	  var styles = {
+	    border: {
+	      borderBottom: '3px solid ' + (category.color || 'gray')
+	    },
+	    title: { color: category.color || 'gray' }
 	  };
 
 	  return _react2.default.createElement(
@@ -34065,11 +34107,16 @@
 	    { shadow: 2, className: 'item' },
 	    _react2.default.createElement(
 	      _reactMdl.CardTitle,
-	      { style: titleStyles, className: 'title' },
+	      { style: styles.border, className: 'title flxR c-center m-between' },
 	      _react2.default.createElement(
 	        'h4',
-	        null,
+	        { style: styles.title },
 	        category.name
+	      ),
+	      _react2.default.createElement(
+	        _reactRouter.Link,
+	        { to: '/categories/' + category._id },
+	        _react2.default.createElement(_reactMdl.IconButton, { name: 'launch' })
 	      )
 	    ),
 	    _react2.default.createElement(
@@ -34108,15 +34155,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactMdl = __webpack_require__(260);
-
-	var _AssetMenuContainer = __webpack_require__(328);
-
-	var _AssetMenuContainer2 = _interopRequireDefault(_AssetMenuContainer);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Link = function Link(_ref) {
+	var AssetRow = function AssetRow(_ref) {
 	  var asset = _ref.asset;
 
 
@@ -34133,136 +34174,30 @@
 	  };
 
 	  return _react2.default.createElement(
-	    'div',
-	    { className: 'flxR c-center m-between linkRow' },
+	    'a',
+	    { href: asset.link, target: '_blank', className: 'linkRow' },
 	    _react2.default.createElement(
-	      'div',
+	      'p',
 	      null,
-	      _react2.default.createElement(
-	        'p',
-	        null,
-	        _react2.default.createElement(
-	          'a',
-	          { href: asset.link, target: '_blank' },
-	          asset.text || asset.link
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'p',
-	        { className: 'tag' },
-	        tags()
-	      )
+	      asset.text || asset.link
 	    ),
-	    _react2.default.createElement(_AssetMenuContainer2.default, { id: asset._id })
+	    _react2.default.createElement(
+	      'p',
+	      { className: 'tag' },
+	      tags()
+	    )
 	  );
 	};
 
-	exports.default = Link;
+	exports.default = AssetRow;
 
 /***/ },
 /* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _reactRedux = __webpack_require__(166);
-
-	var _assets = __webpack_require__(194);
-
-	var _AssetMenu = __webpack_require__(329);
-
-	var _AssetMenu2 = _interopRequireDefault(_AssetMenu);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var mapStateToProps = function mapStateToProps(state, props) {
-	  return { id: props.id };
-	};
-
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  var removeAsset = function removeAsset(id) {
-	    dispatch((0, _assets.requestRemoveAsset)(id));
-	  };
-	  var openEditModal = function openEditModal(id) {
-	    dispatch((0, _assets.editAsset)(id));
-	  };
-	  return { removeAsset: removeAsset, openEditModal: openEditModal };
-	};
-
-	var AssetMenuContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AssetMenu2.default);
-
-	exports.default = AssetMenuContainer;
-
-/***/ },
-/* 329 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactMdl = __webpack_require__(260);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var assetMenu = function assetMenu(_ref) {
-	  var id = _ref.id;
-	  var removeAsset = _ref.removeAsset;
-	  var openEditModal = _ref.openEditModal;
-
-
-	  var edit = function edit() {
-	    openEditModal(id);
-	  };
-	  var remove = function remove() {
-	    removeAsset(id);
-	  };
-
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    _react2.default.createElement(_reactMdl.IconButton, { name: 'more_vert', id: 'assetMenu-' + id }),
-	    _react2.default.createElement(
-	      _reactMdl.Menu,
-	      { target: 'assetMenu-' + id, valign: 'top', align: 'right' },
-	      _react2.default.createElement(
-	        _reactMdl.MenuItem,
-	        { onClick: edit },
-	        'Edit'
-	      ),
-	      _react2.default.createElement(
-	        _reactMdl.MenuItem,
-	        null,
-	        'Share'
-	      ),
-	      _react2.default.createElement(
-	        _reactMdl.MenuItem,
-	        { onClick: remove },
-	        'Remove'
-	      )
-	    )
-	  );
-	};
-
-	exports.default = assetMenu;
-
-/***/ },
-/* 330 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var isBrowser = (typeof window !== 'undefined');
-	var Masonry = isBrowser ? window.Masonry || __webpack_require__(331) : null;
-	var imagesloaded = isBrowser ? __webpack_require__(338) : null;
+	var Masonry = isBrowser ? window.Masonry || __webpack_require__(329) : null;
+	var imagesloaded = isBrowser ? __webpack_require__(336) : null;
 	var React = __webpack_require__(1);
 	var refName = 'masonryContainer';
 
@@ -34458,7 +34393,7 @@
 
 
 /***/ },
-/* 331 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -34475,8 +34410,8 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	        __webpack_require__(332),
-	        __webpack_require__(334)
+	        __webpack_require__(330),
+	        __webpack_require__(332)
 	      ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ( typeof module == 'object' && module.exports ) {
 	    // CommonJS
@@ -34668,7 +34603,7 @@
 
 
 /***/ },
-/* 332 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -34684,10 +34619,10 @@
 	  if ( true ) {
 	    // AMD - RequireJS
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+	        __webpack_require__(331),
+	        __webpack_require__(332),
 	        __webpack_require__(333),
-	        __webpack_require__(334),
-	        __webpack_require__(335),
-	        __webpack_require__(337)
+	        __webpack_require__(335)
 	      ], __WEBPACK_AMD_DEFINE_RESULT__ = function( EvEmitter, getSize, utils, Item ) {
 	        return factory( window, EvEmitter, getSize, utils, Item);
 	      }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -35569,7 +35504,7 @@
 
 
 /***/ },
-/* 333 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -35684,7 +35619,7 @@
 
 
 /***/ },
-/* 334 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -35899,7 +35834,7 @@
 
 
 /***/ },
-/* 335 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -35916,7 +35851,7 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	      __webpack_require__(336)
+	      __webpack_require__(334)
 	    ], __WEBPACK_AMD_DEFINE_RESULT__ = function( matchesSelector ) {
 	      return factory( window, matchesSelector );
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -36140,7 +36075,7 @@
 
 
 /***/ },
-/* 336 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -36199,7 +36134,7 @@
 
 
 /***/ },
-/* 337 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -36212,8 +36147,8 @@
 	  if ( true ) {
 	    // AMD - RequireJS
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	        __webpack_require__(333),
-	        __webpack_require__(334)
+	        __webpack_require__(331),
+	        __webpack_require__(332)
 	      ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	  } else if ( typeof module == 'object' && module.exports ) {
 	    // CommonJS - Browserify, Webpack
@@ -36743,7 +36678,7 @@
 
 
 /***/ },
-/* 338 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -36760,7 +36695,7 @@
 	  if ( true ) {
 	    // AMD
 	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-	      __webpack_require__(333)
+	      __webpack_require__(331)
 	    ], __WEBPACK_AMD_DEFINE_RESULT__ = function( EvEmitter ) {
 	      return factory( window, EvEmitter );
 	    }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -37119,7 +37054,7 @@
 
 
 /***/ },
-/* 339 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37156,6 +37091,112 @@
 	exports.default = FilterCategories;
 
 /***/ },
+/* 338 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _reactRedux = __webpack_require__(166);
+
+	var _CategorySingle = __webpack_require__(339);
+
+	var _CategorySingle2 = _interopRequireDefault(_CategorySingle);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state, props) {
+
+	  var assets = state.assets.list.filter(function (asset) {
+	    return asset.categories.indexOf(props.params.category) > -1;
+	  });
+	  var category = state.categories.list.find(function (category) {
+	    return category._id === props.params.category;
+	  });
+
+	  return { category: category, assets: assets };
+	};
+
+	var CategorySingleContainer = (0, _reactRedux.connect)(mapStateToProps)(_CategorySingle2.default);
+
+	exports.default = CategorySingleContainer;
+
+/***/ },
+/* 339 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(203);
+
+	var _reactMdl = __webpack_require__(260);
+
+	var _AssetContainer = __webpack_require__(340);
+
+	var _AssetContainer2 = _interopRequireDefault(_AssetContainer);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var CategorySingle = function CategorySingle(_ref) {
+	  var assets = _ref.assets;
+	  var category = _ref.category;
+
+
+	  var assetsMap = function assetsMap(assets) {
+	    return assets.map(function (asset) {
+	      return _react2.default.createElement(
+	        _reactMdl.ListItem,
+	        { key: asset._id },
+	        _react2.default.createElement(_AssetContainer2.default, { asset: asset })
+	      );
+	    });
+	  };
+
+	  var styles = {
+	    border: {
+	      borderBottom: '3px solid ' + (category.color || 'gray')
+	    },
+	    title: { color: category.color || 'gray' }
+	  };
+
+	  return _react2.default.createElement(
+	    _reactMdl.Card,
+	    { shadow: 2, className: 'singleCateogyr' },
+	    _react2.default.createElement(
+	      _reactMdl.CardTitle,
+	      { style: styles.border, className: 'title flxR c-center m-between' },
+	      _react2.default.createElement(
+	        'h4',
+	        { style: styles.title },
+	        category.name
+	      )
+	    ),
+	    _react2.default.createElement(
+	      _reactMdl.CardText,
+	      { className: 'content' },
+	      _react2.default.createElement(
+	        _reactMdl.List,
+	        { className: 'list' },
+	        assetsMap(assets)
+	      )
+	    )
+	  );
+	};
+
+	exports.default = CategorySingle;
+
+/***/ },
 /* 340 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -37169,39 +37210,26 @@
 
 	var _assets = __webpack_require__(194);
 
-	var _AssetEditModal = __webpack_require__(341);
+	var _Asset = __webpack_require__(341);
 
-	var _AssetEditModal2 = _interopRequireDefault(_AssetEditModal);
+	var _Asset2 = _interopRequireDefault(_Asset);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var mapStateToProps = function mapStateToProps(state) {
-	  return {
-	    openModal: state.assets.editting.openModal,
-	    asset: state.assets.editting.asset
-	  };
+	var mapStateToProps = function mapStateToProps(state, props) {
+	  return { asset: props.asset };
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  var update = function update(asset) {
-	    dispatch((0, _assets.updateEdittingAsset)(asset));
+	  var remove = function remove(id) {
+	    dispatch((0, _assets.requestRemoveAsset)(id));
 	  };
-	  var saveAsset = function saveAsset() {
-	    dispatch((0, _assets.saveEdittingAsset)());
-	  };
-	  var closeModal = function closeModal() {
-	    dispatch((0, _assets.cancelEdittingAsset)());
-	  };
-	  return {
-	    saveAsset: saveAsset,
-	    closeModal: closeModal,
-	    update: update
-	  };
+	  return { remove: remove };
 	};
 
-	var AssetEditModalContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_AssetEditModal2.default);
+	var AssetContainer = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Asset2.default);
 
-	exports.default = AssetEditModalContainer;
+	exports.default = AssetContainer;
 
 /***/ },
 /* 341 */
@@ -37221,80 +37249,59 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var AssetEditModal = function AssetEditModal(props) {
-	  var _props$asset = props.asset;
-	  var id = _props$asset.id;
-	  var text = _props$asset.text;
-	  var link = _props$asset.link;
-	  var openModal = props.openModal;
-	  var saveAsset = props.saveAsset;
-	  var closeModal = props.closeModal;
-	  var update = props.update;
+	var Asset = function Asset(_ref) {
+	  var asset = _ref.asset;
+	  var remove = _ref.remove;
 
 
-	  var save = function save() {
-	    saveAsset(id);
-	  };
-	  var cancel = function cancel() {
-	    closeModal();
-	  };
-	  var updateText = function updateText(event) {
-	    update({
-	      text: event.target.value,
-	      link: link
+	  var tags = function tags() {
+	    return asset.tags.map(function (tag, key) {
+	      return _react2.default.createElement(
+	        'i',
+	        { key: key, className: 'tag' },
+	        '#',
+	        tag,
+	        ' '
+	      );
 	    });
 	  };
-	  var updateLink = function updateLink(event) {
-	    update({
-	      link: event.target.value,
-	      text: text
-	    });
+
+	  var handleClick = function handleClick() {
+	    remove(asset._id);
 	  };
 
 	  return _react2.default.createElement(
 	    'div',
-	    null,
+	    { className: 'flxR c-center m-between linkRow' },
 	    _react2.default.createElement(
-	      _reactMdl.Dialog,
-	      { open: openModal },
+	      'div',
+	      null,
 	      _react2.default.createElement(
-	        _reactMdl.DialogTitle,
-	        null,
-	        'Edit Asset'
-	      ),
-	      _react2.default.createElement(
-	        _reactMdl.DialogContent,
-	        null,
-	        _react2.default.createElement(_reactMdl.Textfield, {
-	          onChange: updateText,
-	          label: 'Text...',
-	          value: text
-	        }),
-	        _react2.default.createElement(_reactMdl.Textfield, {
-	          onChange: updateLink,
-	          label: 'URL...',
-	          value: link
-	        })
-	      ),
-	      _react2.default.createElement(
-	        _reactMdl.DialogActions,
+	        'p',
 	        null,
 	        _react2.default.createElement(
-	          _reactMdl.Button,
-	          { type: 'button', onClick: save },
-	          'Save'
-	        ),
-	        _react2.default.createElement(
-	          _reactMdl.Button,
-	          { type: 'button', onClick: cancel },
-	          'Cancel'
+	          'a',
+	          { href: asset.link, target: '_blank' },
+	          asset.text || asset.link
 	        )
+	      ),
+	      _react2.default.createElement(
+	        'p',
+	        { className: 'tag' },
+	        tags()
 	      )
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'flxR c-center m-around' },
+	      _react2.default.createElement(_reactMdl.IconButton, { name: 'edit' }),
+	      _react2.default.createElement(_reactMdl.IconButton, { name: 'share' }),
+	      _react2.default.createElement(_reactMdl.IconButton, { onClick: handleClick, name: 'delete' })
 	    )
 	  );
 	};
 
-	exports.default = AssetEditModal;
+	exports.default = Asset;
 
 /***/ },
 /* 342 */

@@ -105,7 +105,7 @@ export function updateEdittingAsset(payload){
 /**
  * save the asset being editted
  *
- * @returns {object}  action object
+ * @returns {Object}  action object
  */
 export function saveEdittingAsset(){
   return {
@@ -117,7 +117,7 @@ export function saveEdittingAsset(){
  * cancel the asset edition and close the modal
  *
  * @param {Object}  updated input values
- * @returns {object}  action object
+ * @returns {Object}  action object
  */
 export function cancelEdittingAsset(){
   return {
