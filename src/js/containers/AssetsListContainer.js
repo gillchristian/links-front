@@ -4,12 +4,12 @@ import AssetsList from '../components/AssetsList.jsx'
 
 const mapStateToProps = (state, props) => {
 
-  const assets = state.assets.list.toJS()
+  const assets = state.assets.get('list').toJS()
       .filter( asset => asset.categories.indexOf(props.category._id) > -1 )
 
   return {
-    loading: state.assets.loading,
-    error: state.assets.error,
+    loading: state.assets.get('loading'),
+    error: state.assets.get('error'),
     category: props.category,
     assets
   }

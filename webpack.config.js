@@ -42,5 +42,6 @@ module.exports = {
   postcss: webpack => [ rucksack ],
   plugins: [
       //cssExtract
-  ]
+  ],
+  devtool: 'inline-source-map',
 }

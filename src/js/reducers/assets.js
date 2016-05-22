@@ -1,4 +1,4 @@
-import { List } from 'immutable'
+import { List, Map } from 'immutable'
 
 import {
   REQUEST_ASSETS,
@@ -10,10 +10,11 @@ import {
   EDITTING_ASSET_CANCEL,
   EDITTING_ASSET_UPDATE } from '../actions/assets'
 
-const INITIAL_STATE = {
+const INITIAL_STATE = Map({
   list: List([]),
   error: null,
   loading: false,
+  // TODO: improve data structure
   editting: {
     openModal: false,
     asset: {
@@ -21,33 +22,26 @@ const INITIAL_STATE = {
       text: ''
     }
   }
-}
+})
 
 export default function assets(state = INITIAL_STATE, action){
 
   switch (action.type) {
     case REQUEST_ASSETS:
-      return {
-        ...state,
-        loading: true
-      }
+      return state.set('loading', true)
     case REQUEST_ASSETS_SUCCESS:
-      return {
-        ...state,
-        list: List(action.payload),
-        loading: false
-      }
+      return state
+        .set('loading', false)
+        .set('list', List(action.payload))
     case REQUEST_ASSETS_ERROR:
-      return {
-        ...state,
-        error: action.payload.message,
-        loading: false
-      }
+      return state
+        .set('loading', false)
+        .set('error', action.payload)
     case REMOVE_ASSET:
-      return {
-        ...state,
-        list: state.list.filter(item => item._id !== action.payload)
-      }
+      const remover = item => item._id !== action.payload
+      return state
+        .update('list', list => list.filter(remover))
+    // TODO: add asset edition
     case EDIT_ASSET:
       const toEdit = state.list
         .find(asset => asset._id === action.payload)

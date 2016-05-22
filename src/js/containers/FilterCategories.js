@@ -5,7 +5,7 @@ import { Textfield } from 'react-mdl'
 
 const mapStateToProps = state => (
   {
-    value: state.categories.filterValue,
+    value: state.categories.get('filterValue'),
     placeholder: 'type a category name',
     expandableIcon: 'search',
     expandable: true,

@@ -6,12 +6,12 @@ import Categories from '../components/Categories.jsx'
 
 const mapStateToProps = state => {
 
-  const filterValue = state.categories.filterValue.toLowerCase()
+  const filterValue = state.categories.get('filterValue').toLowerCase()
 
-  const categories = state.categories.list
+  const categories = state.categories.get('list').toJS()
     // filtering categories that dont have assets
     .filter(category => {
-      return state.assets.list.toJS()
+      return state.assets.get('list').toJS()
         .filter(asset => asset.categories.indexOf(category._id) > - 1)
         .length
     })
@@ -20,18 +20,15 @@ const mapStateToProps = state => {
 
   return {
     categories,
-    loading: state.categories.loading,
-    shouldUpdate: !state.assets.editting.openModal
+    loading: state.categories.get('loading'),
+    shouldUpdate: !state.assets.get('editting').openModal
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  let getAssets = () => {
-    dispatch(fetchAssets())
-  }
-  let getCategories = () => {
-    dispatch(fetchCategories())
-  }
+  let getAssets = () => dispatch(fetchAssets())
+  let getCategories = () => dispatch(fetchCategories())
+
   return {
     fetchCategories: getCategories,
     fetchAssets: getAssets

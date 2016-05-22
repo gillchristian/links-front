@@ -4,9 +4,10 @@ import CategorySingle from '../components/CategorySingle.jsx'
 
 const mapStateToProps = (state, props) => {
 
-  const assets = state.assets.list
-      .filter( asset => asset.categories.indexOf(props.params.category) > -1 )
-  const category = state.categories.list
+  const assets = state.assets.get('list').toJS()
+    .filter( asset => asset.categories.indexOf(props.params.category) > -1 )
+
+  const category = state.categories.get('list').toJS()
     .find(category => category._id === props.params.category)
 
   return { category, assets }
