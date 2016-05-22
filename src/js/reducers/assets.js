@@ -1,3 +1,5 @@
+import { List } from 'immutable'
+
 import {
   REQUEST_ASSETS,
   REQUEST_ASSETS_SUCCESS,
@@ -9,7 +11,7 @@ import {
   EDITTING_ASSET_UPDATE } from '../actions/assets'
 
 const INITIAL_STATE = {
-  list: [],
+  list: List([]),
   error: null,
   loading: false,
   editting: {
@@ -27,21 +29,17 @@ export default function assets(state = INITIAL_STATE, action){
     case REQUEST_ASSETS:
       return {
         ...state,
-        list: [],
-        error: null,
         loading: true
       }
     case REQUEST_ASSETS_SUCCESS:
       return {
         ...state,
-        list: action.payload,
-        error: null,
+        list: List(action.payload),
         loading: false
       }
     case REQUEST_ASSETS_ERROR:
       return {
         ...state,
-        list: [],
         error: action.payload.message,
         loading: false
       }

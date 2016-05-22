@@ -4,7 +4,7 @@ import AssetsList from '../components/AssetsList.jsx'
 
 const mapStateToProps = (state, props) => {
 
-  const assets = state.assets.list
+  const assets = state.assets.list.toJS()
       .filter( asset => asset.categories.indexOf(props.category._id) > -1 )
 
   return {

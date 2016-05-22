@@ -11,9 +11,9 @@ const mapStateToProps = state => {
   const categories = state.categories.list
     // filtering categories that dont have assets
     .filter(category => {
-      const hasAssets = state.assets.list
+      return state.assets.list.toJS()
         .filter(asset => asset.categories.indexOf(category._id) > - 1)
-      return hasAssets.length
+        .length
     })
     // filtering categories by filterValue
     .filter(category => category.name.toLowerCase().indexOf(filterValue) > -1)
