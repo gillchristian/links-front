@@ -1,0 +1,83 @@
+// .col-x clases from 1 to 100 by 1
+// .col-x { width : x% }
+// @for $i from 1 through 100 {
+//   .col-#{$i} { width: #{$i}%; }
+// }
+
+// /* --- x-small cols --- */
+// @include mediaUntil($xs){
+//     @for $i from 1 through 100 {
+//     .col-#{$i}-xs { width: #{$i}%; }
+//     }
+// }
+
+// /* --- small cols --- */
+// @include mediaFrom($xs){
+//     @for $i from 1 through 100 {
+//     .col-#{$i}-sm { width: #{$i}%; }
+//     }
+// }
+
+// /* --- medium cols --- */
+// @include mediaFrom($md){
+//     @for $i from 1 through 100 {
+//     .col-#{$i}-md { width: #{$i}%; }
+//     }
+// }
+
+// /* --- large cols --- */
+// @include mediaFrom($lg){
+//     @for $i from 1 through 100 {
+//     .col-#{$i}-lg { width: #{$i}%; }
+//     }
+// }
+
+// --- Flex grid ---
+.flxR {
+  display: flex;
+}
+
+.flxC {
+  display: flex;
+  flex-direction: column;
+}
+
+.flxW {
+  flex-wrap: wrap;
+}
+
+$mainAxis: (start, flex-start),
+           (center, center),
+           (end, flex-end),
+           (around, space-around),
+           (between, space-between);
+
+@each $name, $property in $mainAxis {
+  .m-#{$name} {
+    justify-content: #{$property};
+  }
+}
+
+$crossAxis: (start, flex-start),
+           (center, center),
+           (end, flex-end),
+           (baseline, baseline),
+           (strech, strech);
+
+@each $name, $property in $crossAxis {
+  .c-#{$name} {
+    align-items: #{$property};
+  }
+}
+
+@for $i from 1 through 5 {
+  .grow#{$i} {
+    flex-grow: $i;
+  }
+}
+
+.full-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

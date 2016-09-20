@@ -1,0 +1,44 @@
+.item {
+  width: 100%;
+  min-height: 100px;
+  margin: 10px 1%;
+  border-radius: 3px;
+  overflow: visible;
+  @include mediaFrom($mobile-lg) { width: 48%; }
+  @include mediaFrom($tablet) { width: 31%; }
+  @include mediaFrom($desktop-sm) { width: 23%; }
+  @include mediaFrom($lg) { width: 18%; }
+  &:hover {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  }
+  .content {
+    padding: 15px 0;
+    width: 100%;
+    overflow: visible;
+    ul.list {
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      overflow: visible;
+    }
+    & li {
+      overflow: visible;
+      &:hover {
+        background-color: $focus-soft;
+      }
+      p { margin: 0; }
+      .linkRow {
+        width: 100%;
+        cursor: pointer;
+      }
+      .tag {
+        color: gray;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.title {
+  padding: 0 10px 0 20px;
+}
